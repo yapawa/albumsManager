@@ -1,14 +1,26 @@
 {
-	"master": {
-		"awscloudformation": {
-			"AuthRoleName": "albums-manager-master-20190719001755-authRole",
-			"UnauthRoleArn": "arn:aws:iam::380592939077:role/albums-manager-master-20190719001755-unauthRole",
-			"AuthRoleArn": "arn:aws:iam::380592939077:role/albums-manager-master-20190719001755-authRole",
-			"Region": "ap-southeast-1",
-			"DeploymentBucketName": "albums-manager-master-20190719001755-deployment",
-			"UnauthRoleName": "albums-manager-master-20190719001755-unauthRole",
-			"StackName": "albums-manager-master-20190719001755",
-			"StackId": "arn:aws:cloudformation:ap-southeast-1:380592939077:stack/albums-manager-master-20190719001755/99eb5550-a977-11e9-88ac-065fe3973942"
-		}
-	}
+    "master": {
+        "awscloudformation": {
+            "AuthRoleName": "albums-manager-master-20190719001755-authRole",
+            "UnauthRoleArn": "arn:aws:iam::380592939077:role/albums-manager-master-20190719001755-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::380592939077:role/albums-manager-master-20190719001755-authRole",
+            "Region": "ap-southeast-1",
+            "DeploymentBucketName": "albums-manager-master-20190719001755-deployment",
+            "UnauthRoleName": "albums-manager-master-20190719001755-unauthRole",
+            "StackName": "albums-manager-master-20190719001755",
+            "StackId": "arn:aws:cloudformation:ap-southeast-1:380592939077:stack/albums-manager-master-20190719001755/99eb5550-a977-11e9-88ac-065fe3973942"
+        }
+    },
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "albums-manager-dev-20190719002422-authRole",
+            "UnauthRoleArn": "arn:aws:iam::380592939077:role/albums-manager-dev-20190719002422-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::380592939077:role/albums-manager-dev-20190719002422-authRole",
+            "Region": "ap-southeast-1",
+            "DeploymentBucketName": "albums-manager-dev-20190719002422-deployment",
+            "UnauthRoleName": "albums-manager-dev-20190719002422-unauthRole",
+            "StackName": "albums-manager-dev-20190719002422",
+            "StackId": "arn:aws:cloudformation:ap-southeast-1:380592939077:stack/albums-manager-dev-20190719002422/80237d90-a978-11e9-a369-024d84896d6a"
+        }
+    }
 }
