@@ -1,0 +1,14 @@
+{
+	"master": {
+		"awscloudformation": {
+			"AuthRoleName": "albums-manager-master-20190719001755-authRole",
+			"UnauthRoleArn": "arn:aws:iam::380592939077:role/albums-manager-master-20190719001755-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::380592939077:role/albums-manager-master-20190719001755-authRole",
+			"Region": "ap-southeast-1",
+			"DeploymentBucketName": "albums-manager-master-20190719001755-deployment",
+			"UnauthRoleName": "albums-manager-master-20190719001755-unauthRole",
+			"StackName": "albums-manager-master-20190719001755",
+			"StackId": "arn:aws:cloudformation:ap-southeast-1:380592939077:stack/albums-manager-master-20190719001755/99eb5550-a977-11e9-88ac-065fe3973942"
+		}
+	}
+}
