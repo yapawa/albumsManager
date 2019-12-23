@@ -18,11 +18,17 @@
   },
   "devDependencies": {
     "@quasar/app": "^1.0.0",
-    "@vue/eslint-config-standard": "^4.0.0",
+    "@vue/eslint-config-standard": "^5.0.1",
     "babel-eslint": "^10.0.1",
-    "eslint": "^5.10.0",
-    "eslint-loader": "^2.1.1",
-    "eslint-plugin-vue": "^5.0.0"
+    "eslint": "^6.8.0",
+    "eslint-loader": "^3.0.3",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-vue": "^6.1.2",
+    "pug": "^2.0.4",
+    "pug-plain-loader": "^1.0.0"
   },
   "engines": {
     "node": ">= 8.9.0",
