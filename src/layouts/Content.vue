@@ -15,7 +15,7 @@
             img(src="~/assets/yapawa-logo.svg")
           q-toolbar-title(shrink v-if="$q.screen.gt.sm") Yapawa - Content
         q-space
-        q-btn(label="Sign Out" @click="signOut" color="primary")
+        q-btn(:label="$t('Sign Out')" @click="signOut" color="primary")
 
     q-drawer(show-if-above v-model="left" side="left" bordered)
 

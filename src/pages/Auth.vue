@@ -1,8 +1,17 @@
 <template lang="pug">
   q-page(padding)
-    .window-height.window-width.row.justify-center.items-center
-      amplify-authenticator(v-if="!signedIn" :authConfig="authConfig")
-      amplify-sign-out(v-if="signedIn")
+    .window-height.window-width.column.items-center
+      .col-auto.q-mb-md
+        q-btn-toggle(
+          flat
+          color="white"
+          toggle-color="yellow"
+          v-model='locale'
+          @input="setLocale"
+          :options="[{ label: 'De', value: 'de'},{ label: 'En', value: 'en-us'},{ label: 'Fr', value: 'fr'}]"
+        )
+      amplify-authenticator(:key="locale" v-if="!signedIn" :authConfig="authConfig")
+      amplify-sign-out(:key="locale" v-if="signedIn")
 </template>
 
 <script>
@@ -10,6 +19,7 @@ export default {
   name: 'Auth',
   data () {
     return {
+      locale: this.$q.lang.isoName,
       signedIn: false,
       authConfig: {
         signUpConfig: {
@@ -21,6 +31,17 @@ export default {
           isSignUpDisplayed: false
         }
       }
+    }
+  },
+  methods: {
+    setLocale (locale) {
+      // set the Vue-i18n locale
+      this.$i18n.locale = locale
+      this.$Amplify.I18n.setLanguage(locale.substring(0, 2).toLowerCase())
+      // load the Quasar language pack dynamically
+      import(`quasar/lang/${locale}`).then(({ default: messages }) => {
+        this.$q.lang.set(messages)
+      })
     }
   },
   created () {
