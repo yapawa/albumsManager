@@ -14,6 +14,8 @@
           q-avatar(rounded size="md")
             img(src="~/assets/yapawa-logo.svg")
           q-toolbar-title(shrink v-if="$q.screen.gt.sm") Yapawa - Content
+        q-space
+        q-btn(label="Sign Out" @click="signOut" color="primary")
 
     q-drawer(show-if-above v-model="left" side="left" bordered)
 
@@ -29,6 +31,16 @@ export default {
     return {
       left: false,
       right: false
+    }
+  },
+  methods: {
+    signOut: function (event) {
+      this.$Amplify.Auth.signOut()
+        .then(() => {
+          this.$AmplifyEventBus.$emit('authState', 'signedOut')
+          this.$router.replace({ name: 'auth' })
+        })
+        .catch()
     }
   }
 }

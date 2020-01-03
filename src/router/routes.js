@@ -7,7 +7,24 @@ const routes = [
       {
         path: '',
         name: 'home',
-        component: () => import('pages/Index.vue')
+        component: () => import('pages/Index.vue'),
+        meta: {
+          requiresAuth: true
+        }
+      }
+    ]
+  },
+  {
+    path: '/auth',
+    component: () => import('layouts/Plain.vue'),
+    children: [
+      {
+        path: '',
+        name: 'auth',
+        component: () => import('pages/Auth.vue'),
+        meta: {
+          requiresAuth: false
+        }
       }
     ]
   }

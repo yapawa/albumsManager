@@ -5,6 +5,8 @@ import routes from './routes'
 
 Vue.use(VueRouter)
 
+import { SessionStorage } from 'quasar'
+
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation;
@@ -26,5 +28,22 @@ export default function (/* { store, ssrContext } */) {
     base: process.env.VUE_ROUTER_BASE
   })
 
+  Router.beforeResolve((to, from, next) => {
+    if (to.name === 'auth') {
+      SessionStorage.set('redirectPath', from.fullPath)
+    }
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+      Vue.prototype.$Amplify.Auth.currentAuthenticatedUser().then(user => {
+        if (user && user.signInUserSession) {
+          next()
+        } else {
+          next({ name: 'auth' })
+        }
+      }).catch((e) => {
+        next({ name: 'auth' })
+      })
+    }
+    next()
+  })
   return Router
 }
