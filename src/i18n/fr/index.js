@@ -29,7 +29,7 @@ export default {
   'Loading...': "S'il vous plaît, attendez",
   'Lost your code? ': 'Perdu votre code?',
   'Lost your code?': 'Perdu votre code?',
-  'New Password': 'nouveau mot de passe',
+  'New Password': 'Nouveau mot de passe',
   'No account? ': 'Pas de compte ? ',
   'Password attempts exceeded': "Le maximum d'essais du mot de passe a été atteint",
   Password: 'Mot de passe',
@@ -51,5 +51,14 @@ export default {
   'Username cannot be empty': "Le nom d'utilisateur doit être renseigné",
   Username: "Nom d'utilisateur",
   'Verify Contact': 'Vérifier le contact',
-  Verify: 'Vérifier'
+  Verify: 'Vérifier',
+  Account: 'Compte',
+  Profile: 'Profile',
+  'View your profile': 'Afficher votre profile',
+  Language: 'Langue',
+  Update: 'Mise à Jour',
+  'Old Password': 'Ancien mot de passe',
+  'Repeat New Password': 'Répéter nouveau mot de passe',
+  'Passwords don\'t match': 'Les mots de passe ne corréspondent pas',
+  'Password updated': 'Mot de passe mis à jour'
 }

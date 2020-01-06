@@ -56,5 +56,14 @@ export default {
   'Username cannot be empty': 'Username cannot be empty',
   Username: 'Username',
   'Verify Contact': 'Verify Contact',
-  Verify: 'Verify'
+  Verify: 'Verify',
+  Account: 'Account',
+  Profile: 'Profile',
+  'View your profile': 'View your profile',
+  Language: 'Language',
+  Update: 'Update',
+  'Old Password': 'Old Password',
+  'Repeat New Password': 'Repeat New Password',
+  'Passwords don\'t match': 'Passwords don\'t match',
+  'Password updated': 'Password updated'
 }

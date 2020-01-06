@@ -50,5 +50,14 @@ Benutze eine Nummer im Format: +12345678900`,
   'Username cannot be empty': 'Benutzername darf nicht leer sein',
   Username: 'Benutzername',
   'Verify Contact': 'Kontakt verifizieren',
-  Verify: 'Verifizieren'
+  Verify: 'Verifizieren',
+  Account: 'Konto',
+  Profile: 'Profil',
+  'View your profile': 'Ihr Profil ansehen',
+  Language: 'Sprache',
+  Update: 'Aktualisieren',
+  'Old Password': 'Altes Passwort',
+  'Repeat New Password': 'Neues Passwort',
+  'Passwords don\'t match': 'Passwörter stimmen nicht überein',
+  'Password updated': 'Passwort aktualisiert'
 }
