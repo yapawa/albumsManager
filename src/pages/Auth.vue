@@ -19,7 +19,7 @@ export default {
   name: 'Auth',
   data () {
     return {
-      locale: this.$q.lang.isoName,
+      locale: this.$q.localStorage.getItem('userLocale') || this.$q.lang.isoName,
       signedIn: false,
       authConfig: {
         signUpConfig: {
@@ -38,6 +38,7 @@ export default {
       // set the Vue-i18n locale
       this.$i18n.locale = locale
       this.$Amplify.I18n.setLanguage(locale.substring(0, 2).toLowerCase())
+      this.$q.localStorage.set('userLocale', locale)
       // load the Quasar language pack dynamically
       import(`quasar/lang/${locale}`).then(({ default: messages }) => {
         this.$q.lang.set(messages)
@@ -61,6 +62,7 @@ export default {
         this.signedIn = false
       }
     })
+    this.setLocale(this.locale)
   },
   beforeCreate () {
     this.$Amplify.Auth.currentAuthenticatedUser()
