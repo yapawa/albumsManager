@@ -52,7 +52,19 @@ module.exports = function (ctx) {
         'SessionStorage'
       ],
       config: {
-        dark: true
+        dark: true,
+        brand: {
+          primary: '#f2c037',
+          secondary: '#26A69A',
+          accent: '#9C27B0',
+
+          dark: '#1d1d1d',
+
+          positive: '#21BA45',
+          negative: '#C10015',
+          info: '#31CCEC',
+          warning: '#ffff66'
+        }
       }
     },
 
