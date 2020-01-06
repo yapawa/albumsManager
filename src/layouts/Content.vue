@@ -15,22 +15,7 @@
             img(src="~/assets/yapawa-logo.svg")
           q-toolbar-title(shrink v-if="$q.screen.gt.sm") Yapawa - Content
         q-space
-        q-avatar.cursor-pointer(size="24px" font-size="24px")
-          q-icon(name="account_circle")
-          q-tooltip {{ $t('Account') }}
-          q-menu
-            q-list
-              q-item(clickable v-ripple :to="{name: 'profile'}")
-                q-item-section(avatar)
-                  q-icon(name="settings")
-                q-item-section
-                  q-item-label {{ $t('Profile') }}
-                  q-item-label(caption) {{ $t('View your profile') }}
-              q-item(clickable v-ripple @click="signOut")
-                q-item-section(avatar)
-                  q-icon(name="exit_to_app")
-                q-item-section
-                  q-item-label {{ $t('Sign Out') }}
+        profile-menu.q-ml-sm
 
     q-drawer(show-if-above v-model="left" side="left" bordered)
 
@@ -41,12 +26,16 @@
 </template>
 
 <script>
+import ProfileMenu from 'components/ProfileMenu'
 export default {
   data () {
     return {
       left: false,
       right: false
     }
+  },
+  components: {
+    ProfileMenu
   },
   beforeCreate () {
     let locale = this.$q.localStorage.getItem('userLocale') || this.$q.lang.isoName
@@ -70,14 +59,6 @@ export default {
       import(`quasar/lang/${locale}`).then(({ default: messages }) => {
         this.$q.lang.set(messages)
       })
-    },
-    signOut: function (event) {
-      this.$Amplify.Auth.signOut()
-        .then(() => {
-          this.$AmplifyEventBus.$emit('authState', 'signedOut')
-          this.$router.replace({ name: 'auth' })
-        })
-        .catch()
     }
   }
 }
