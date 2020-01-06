@@ -4,14 +4,11 @@
       .col-auto.q-mb-md
         q-btn-toggle(
           flat
-          color="white"
-          toggle-color="yellow"
           v-model='locale'
           @input="setLocale"
           :options="[{ label: 'De', value: 'de'},{ label: 'En', value: 'en-us'},{ label: 'Fr', value: 'fr'}]"
         )
-      amplify-authenticator(:key="locale" v-if="!signedIn" :authConfig="authConfig")
-      amplify-sign-out(:key="locale" v-if="signedIn")
+      amplify-authenticator(:key="locale" :authConfig="authConfig")
 </template>
 
 <script>
@@ -20,7 +17,6 @@ export default {
   data () {
     return {
       locale: this.$q.localStorage.getItem('userLocale') || this.$q.lang.isoName,
-      signedIn: false,
       authConfig: {
         signUpConfig: {
           hiddenDefaults: [
@@ -58,8 +54,6 @@ export default {
             this.$router.replace({ name: 'home' }).catch()
           }
         }
-      } else {
-        this.signedIn = false
       }
     })
     this.setLocale(this.locale)
