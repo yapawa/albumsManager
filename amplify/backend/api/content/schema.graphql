@@ -1,0 +1,87 @@
+type Album
+  @model
+  @auth(rules: [
+    {allow: private}
+  ])
+{
+  id: ID!
+  name: String!
+  parent: Album @connection(name: "AlbumAlbums", keyField: "parentId")
+  parentId: ID!
+  children: [Album] @connection(name: "AlbumAlbums", keyField: "parentId", limit: 1000)
+  photos: [Photo] @connection(name: "AlbumPhotos", keyField: "albumId", limit: 1000)
+  covers: AWSJSON
+  position: Int
+  slug: String
+  description: String
+  summary: String
+  type: AlbumType!
+  visibility: Visibility!
+  status: Status!
+  createdAt: AWSDateTime
+  publishedAt: AWSDateTime
+  updatedAt: AWSDateTime
+  orderBy: OrderBy
+  orderDirection: Direction
+}
+
+type Photo
+  @model
+  @auth(rules: [
+    {allow: private}
+  ])
+{
+  id: ID!
+  album: Album @connection(name: "AlbumPhotos", keyField: "albumId")
+  albumId: ID
+  position: Int
+  file: S3Object
+  width: Int
+  height: Int
+  contentType: String
+  name: String
+  description: String
+  visibility: Visibility!
+  status: Status!
+  capturedAt: AWSDateTime
+  createdAt: AWSDateTime
+  publishedAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type S3Object {
+    bucket: String!
+    key: String!
+    region: String!
+}
+
+enum Status {
+  deleted
+  draft
+  published
+}
+
+enum Visibility {
+  public
+  private
+  protected
+}
+
+enum Direction {
+  asc
+  desc
+}
+
+enum OrderBy {
+  position
+  capturedAt
+  createdAt
+  updatedAt
+  publishedAt
+  name
+}
+
+enum AlbumType {
+  collection
+  album
+}
