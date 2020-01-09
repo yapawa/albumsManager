@@ -1,6 +1,6 @@
 export default function () {
   return {
     active: null,
-    list: []
+    list: null
   }
 }
