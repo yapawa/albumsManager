@@ -19,6 +19,22 @@ const routes = [
         meta: {
           requiresAuth: true
         }
+      },
+      {
+        path: 'albums/new',
+        name: 'AlbumCreate',
+        component: () => import('pages/AlbumCreate.vue'),
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
+        path: 'album/:id',
+        name: 'album',
+        component: () => import('pages/Album.vue'),
+        meta: {
+          requiresAuth: true
+        }
       }
     ]
   },

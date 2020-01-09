@@ -8,6 +8,7 @@ q-btn-toggle(
   color="grey-8"
   :options="typeOptions"
   @input="onChange"
+  :disable="disable"
 )
   template(v-slot:collection)
     album-type-option(icon="library_books" :title="$t('Collection')" :caption="$t('For grouping collections or albums')")
@@ -32,7 +33,8 @@ export default {
     AlbumTypeOption
   },
   props: [
-    'value'
+    'value',
+    'disable'
   ],
   methods: {
     onChange () {

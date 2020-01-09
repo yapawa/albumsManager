@@ -1,5 +1,5 @@
 <template lang="pug">
-q-input(v-model="field" :label="label" :type="type" outlined @input="onChange")
+q-input(v-model="field" :label="label" :type="type" outlined @input="onChange" :autogrow="autogrow")
 </template>
 
 <script>
@@ -18,6 +18,11 @@ export default {
     'label',
     'type'
   ],
+  computed: {
+    autogrow () {
+      return (this.type === 'textarea')
+    }
+  },
   methods: {
     onChange () {
       this.$emit('input', this.field)
