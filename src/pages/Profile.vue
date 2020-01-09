@@ -1,6 +1,6 @@
 <template lang="pug">
   q-page.row.justify-center(padding)
-    .col(v-if="user" style="max-width:450px;width:100%")
+    .col.form-box(v-if="user")
       .text-h4.q-mb-md {{ $t('Profile') }}
       .column.items-center.full-width.q-gutter-md
         q-card.col.full-width(bordered)
