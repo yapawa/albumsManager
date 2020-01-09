@@ -15,6 +15,7 @@
             img(src="~/assets/yapawa-logo.svg")
           q-toolbar-title(shrink v-if="$q.screen.gt.sm") Yapawa - Content
         q-space
+        content-actions
         profile-menu.q-ml-sm
 
     q-drawer(show-if-above v-model="left" side="left" bordered)
@@ -23,10 +24,14 @@
 
     q-page-container
       router-view
+    fetch-albums-tree
 </template>
 
 <script>
+import ContentActions from 'components/ContentActions'
 import ProfileMenu from 'components/ProfileMenu'
+import FetchAlbumsTree from 'components/FetchAlbumsTree'
+
 export default {
   data () {
     return {
@@ -35,7 +40,9 @@ export default {
     }
   },
   components: {
-    ProfileMenu
+    ContentActions,
+    ProfileMenu,
+    FetchAlbumsTree
   },
   beforeCreate () {
     let locale = this.$q.localStorage.getItem('userLocale') || this.$q.lang.isoName
