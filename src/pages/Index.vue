@@ -17,6 +17,9 @@ export default {
       this.init()
     })
   },
+  created () {
+    this.activeAlbum = null
+  },
   methods: {
     init () {
       fitty('.text-fit', {
@@ -31,6 +34,16 @@ export default {
       els[0].style.fontSize = null
       els[1].style.fontSize = null
       fitty.fitAll()
+    }
+  },
+  computed: {
+    activeAlbum: {
+      get () {
+        return this.$store.state.albums.active
+      },
+      set (val) {
+        this.$store.commit('albums/active', val)
+      }
     }
   }
 }

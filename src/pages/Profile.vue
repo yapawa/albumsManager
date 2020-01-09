@@ -89,6 +89,14 @@ export default {
         }
       }
       return false
+    },
+    activeAlbum: {
+      get () {
+        return this.$store.state.albums.active
+      },
+      set (val) {
+        this.$store.commit('albums/active', val)
+      }
     }
   },
   methods: {
@@ -138,6 +146,7 @@ export default {
     }
   },
   created () {
+    this.activeAlbum = null
     this.$Amplify.Auth.currentAuthenticatedUser()
       .then(user => {
         this.user = user

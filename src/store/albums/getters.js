@@ -17,17 +17,14 @@ export const activeId = state => {
 
 export const canAddPhotos = state => {
   if (hasActive(state)) {
-    return true
+    return state.active.type === 'album'
   }
   return false
 }
 
 export const canAddAlbum = state => {
   if (hasActive(state)) {
-    if (state.active.type === 'collection') {
-      return true
-    }
-    return false
+    return state.active.type === 'collection'
   }
   return true
 }
@@ -69,4 +66,19 @@ const listToTree = (list) => {
     }
   }
   return tree
+}
+
+const getPath = (index, leaf) => {
+  return index[leaf] ? getPath(index, index[leaf]).concat([leaf]) : [leaf]
+}
+
+export const breadcrumbs = state => {
+  const list = extend(true, [], state.list)
+  const index = []
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].parentId !== '-') {
+      index[list[i].id] = list[i].parentId
+    }
+  }
+  return leaf => getPath(index, leaf)
 }

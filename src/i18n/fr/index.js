@@ -91,5 +91,6 @@ export default {
   desc: 'Descendant',
   Status: 'Statut',
   published: 'Publié',
-  draft: 'Brouillon'
+  draft: 'Brouillon',
+  'Loading Albums...': 'Chargement des albums...'
 }

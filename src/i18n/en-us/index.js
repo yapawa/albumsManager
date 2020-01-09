@@ -96,5 +96,6 @@ export default {
   desc: 'Descending',
   Status: 'Status',
   published: 'Published',
-  draft: 'Draft'
+  draft: 'Draft',
+  'Loading Albums...': 'Loading Albums...'
 }

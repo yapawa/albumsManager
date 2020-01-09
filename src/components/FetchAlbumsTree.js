@@ -7,6 +7,7 @@ const fields = [
   'visibility',
   'status',
   'position',
+  'type',
   'createdAt',
   'updatedAt',
   'publishedAt',

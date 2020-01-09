@@ -19,6 +19,7 @@
         profile-menu.q-ml-sm
 
     q-drawer(show-if-above v-model="left" side="left" bordered)
+      y-tree
 
     q-drawer(v-model="right" side="right" bordered)
 
@@ -31,6 +32,7 @@
 import ContentActions from 'components/ContentActions'
 import ProfileMenu from 'components/ProfileMenu'
 import FetchAlbumsTree from 'components/FetchAlbumsTree'
+import YTree from 'components/Tree'
 
 export default {
   data () {
@@ -42,7 +44,8 @@ export default {
   components: {
     ContentActions,
     ProfileMenu,
-    FetchAlbumsTree
+    FetchAlbumsTree,
+    YTree
   },
   beforeCreate () {
     let locale = this.$q.localStorage.getItem('userLocale') || this.$q.lang.isoName

@@ -90,5 +90,6 @@ Benutze eine Nummer im Format: +12345678900`,
   desc: 'Absteigend',
   Status: 'Status',
   published: 'Veröffentlicht',
-  draft: 'Entwurf'
+  draft: 'Entwurf',
+  'Loading Albums...': 'Laden der Alben...'
 }
