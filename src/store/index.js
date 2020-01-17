@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import albums from './albums'
+import ui from './ui'
 
 Vue.use(Vuex)
 
@@ -17,7 +18,8 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      albums
+      albums,
+      ui
     },
 
     // enable strict mode (adds overhead!)
@@ -33,9 +35,10 @@ export default function (/* { ssrContext } */) {
     */
 
   if (process.env.DEV && module.hot) {
-    module.hot.accept(['./albums'], () => {
+    module.hot.accept(['./albums', './ui'], () => {
       const newAlbums = require('./albums').default
-      Store.hotUpdate({ modules: { albums: newAlbums } })
+      const newUi = require('./ui').default
+      Store.hotUpdate({ modules: { albums: newAlbums, ui: newUi } })
     })
   }
 

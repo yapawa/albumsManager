@@ -37,8 +37,6 @@ import YTree from 'components/Tree'
 export default {
   data () {
     return {
-      left: false,
-      right: false
     }
   },
   components: {
@@ -60,6 +58,24 @@ export default {
       .catch(() => {
         this.setLocale(locale)
       })
+  },
+  computed: {
+    left: {
+      get () {
+        return this.$store.state.ui.leftDrawerOpen
+      },
+      set (val) {
+        this.$store.commit('ui/leftDrawerOpen', val)
+      }
+    },
+    right: {
+      get () {
+        return this.$store.state.ui.rightDrawerOpen
+      },
+      set (val) {
+        this.$store.commit('ui/rightDrawerOpen', val)
+      }
+    }
   },
   methods: {
     setLocale: function (locale) {
