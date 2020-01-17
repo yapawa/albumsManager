@@ -99,5 +99,12 @@ export default {
   published: 'Published',
   draft: 'Draft',
   'Loading Albums...': 'Loading Albums...',
-  Error: 'Error | Errors'
+  Error: 'Error | Errors',
+  'Clear All': 'Clear All',
+  'files uploaded out of': 'files uploaded out of',
+  'Remove Uploaded Files': 'Remove Uploaded Pictures',
+  'Upload your files': 'Upload your Pictures',
+  'Pick Files': 'Pick Pictures',
+  'Upload Files': 'Upload Pictures',
+  'Abort Upload': 'Abort Upload'
 }

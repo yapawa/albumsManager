@@ -4,3 +4,7 @@ export const leftDrawerOpen = (state, val) => {
 export const rightDrawerOpen = (state, val) => {
   state.rightDrawerOpen = (val === true)
 }
+
+export const actionsDrawerContent = (state, val) => {
+  state.actionsDrawerContent = val
+}

@@ -1,6 +1,7 @@
 export default function () {
   return {
     leftDrawerOpen: true,
-    rightDrawerOpen: false
+    rightDrawerOpen: false,
+    actionsDrawerContent: null
   }
 }

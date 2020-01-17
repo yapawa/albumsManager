@@ -93,5 +93,12 @@ Benutze eine Nummer im Format: +12345678900`,
   published: 'Veröffentlicht',
   draft: 'Entwurf',
   'Loading Albums...': 'Laden der Alben...',
-  Error: 'Fehler | Fehlern'
+  Error: 'Fehler | Fehlern',
+  'Clear All': 'Alles entfernen',
+  'files uploaded out of': 'Fotos hochgeladen aus',
+  'Remove Uploaded Files': 'Hochgeladene Fotos entfernen',
+  'Upload your files': 'Fotos laden',
+  'Pick Files': 'Fotos auswählen',
+  'Upload Files': 'Fotos laden',
+  'Abort Upload': 'Hochladen abbrechen'
 }

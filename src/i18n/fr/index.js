@@ -94,5 +94,12 @@ export default {
   published: 'Publié',
   draft: 'Brouillon',
   'Loading Albums...': 'Chargement des albums...',
-  Error: 'Erreur | Erreurs'
+  Error: 'Erreur | Erreurs',
+  'Clear All': 'Tout effacer',
+  'files uploaded out of': 'fichiers chargés sur',
+  'Remove Uploaded Files': 'Enlever les fichier chargés',
+  'Upload your files': 'Chargez vos photos',
+  'Pick Files': 'Selectionez les photos',
+  'Upload Files': 'Charger les photos',
+  'Abort Upload': 'Annuler le chargement'
 }

@@ -20,6 +20,11 @@ const albumFields = [
 const photoFields = [
   'id',
   'albumId',
+  `file {
+    bucket
+    key
+    region
+  }`,
   'position',
   'width',
   'height',
@@ -80,6 +85,14 @@ export const getPhotos = `query GetAlbum($id: ID!) {
     }
   }
 }`
+export const createPhoto = `mutation CreatePhoto(
+  $input: CreatePhotoInput!
+  $condition: ModelPhotoConditionInput
+) {
+  createPhoto(input: $input, condition: $condition) {
+    ${photoFields.join('\n')}
+  }
+}`
 
 export const onCreateAlbum = `subscription OnCreateAlbum {
   onCreateAlbum {
@@ -90,5 +103,17 @@ export const onCreateAlbum = `subscription OnCreateAlbum {
 export const onUpdateAlbum = `subscription OnUpdateAlbum {
   onUpdateAlbum {
     ${albumFields.join('\n')}
+  }
+}`
+
+export const onCreatePhoto = `subscription OnCreatePhoto {
+  onCreatePhoto {
+    ${photoFields.join('\n')}
+  }
+}`
+
+export const onUpdatePhoto = `subscription OnUpdatePhoto {
+  onUpdatePhoto {
+    ${photoFields.join('\n')}
   }
 }`

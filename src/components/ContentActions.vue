@@ -19,7 +19,8 @@
       dense
       no-wrap
       :label="$q.screen.gt.xs ? $t('Add Photos') : ''"
-      icon="add"
+      icon="add_to_photos"
+      @click="addPhotos"
     )
 </template>
 
@@ -32,6 +33,28 @@ export default {
     },
     canAddPhotos () {
       return this.$store.getters['albums/canAddPhotos']
+    },
+    rightDrawerOpen: {
+      get () {
+        return this.$store.state.ui.rightDrawerOpen
+      },
+      set (val) {
+        this.$store.commit('ui/rightDrawerOpen', val)
+      }
+    },
+    actionsDrawerContent: {
+      get () {
+        return this.$store.state.ui.actionsDrawerContent
+      },
+      set (val) {
+        this.$store.commit('ui/actionsDrawerContent', val)
+      }
+    }
+  },
+  methods: {
+    addPhotos () {
+      this.rightDrawerOpen = true
+      this.actionsDrawerContent = 'uploadPhotos'
     }
   }
 }

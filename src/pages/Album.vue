@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { getAlbum, getAlbums, getPhotos, onUpdateAlbum, onCreateAlbum } from 'src/graphql/queryAlbum'
+import { getAlbum, getAlbums, getPhotos, onUpdateAlbum, onCreateAlbum, onUpdatePhoto, onCreatePhoto } from 'src/graphql/queryAlbum'
 import { albumOrder } from 'src/lib/ordering'
 export default {
   name: 'Album',
@@ -55,20 +55,36 @@ export default {
       this.$Amplify.graphqlOperation(onUpdateAlbum)
     ).subscribe({
       next: (albumData) => {
-        this.update(albumData.value.data.onUpdateAlbum)
+        this.updateAlbum(albumData.value.data.onUpdateAlbum)
       }
     })
     this.subscriptionCreate = this.$Amplify.API.graphql(
       this.$Amplify.graphqlOperation(onCreateAlbum)
     ).subscribe({
       next: (albumData) => {
-        this.update(albumData.value.data.onCreateAlbum)
+        this.updateAlbum(albumData.value.data.onCreateAlbum)
+      }
+    })
+    this.subscriptionPhotoUpdate = this.$Amplify.API.graphql(
+      this.$Amplify.graphqlOperation(onUpdatePhoto)
+    ).subscribe({
+      next: (photoData) => {
+        this.updateContent(photoData.value.data.onUpdatePhoto)
+      }
+    })
+    this.subscriptionPhotoCreate = this.$Amplify.API.graphql(
+      this.$Amplify.graphqlOperation(onCreatePhoto)
+    ).subscribe({
+      next: (photoData) => {
+        this.updateContent(photoData.value.data.onCreatePhoto)
       }
     })
   },
   beforeDestroy () {
     this.subscriptionUpdate.unsubscribe()
     this.subscriptionCreate.unsubscribe()
+    this.subscriptionPhotoUpdate.unsubscribe()
+    this.subscriptionPhotoCreate.unsubscribe()
   },
   methods: {
     fetchAlbum (id) {
@@ -113,7 +129,7 @@ export default {
       delete activeAlbum.photos
       this.activeAlbum = activeAlbum
     },
-    update (item) {
+    updateAlbum (item) {
       Object.keys(item).forEach((key) => (item[key] === null) && delete item[key])
       if (item.id === this.albumData.id) {
         this.albumData = { ...this.albumData, ...item }
