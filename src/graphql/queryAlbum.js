@@ -94,6 +94,15 @@ export const createPhoto = `mutation CreatePhoto(
   }
 }`
 
+export const updateAlbum = `mutation UpdateAlbum(
+  $input: UpdateAlbumInput!
+  $condition: ModelAlbumConditionInput
+) {
+  updateAlbum(input: $input, condition: $condition) {
+    ${albumFields.join('\n')}
+  }
+}`
+
 export const onCreateAlbum = `subscription OnCreateAlbum {
   onCreateAlbum {
     ${albumFields.join('\n')}

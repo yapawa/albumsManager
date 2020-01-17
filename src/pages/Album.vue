@@ -9,7 +9,7 @@
           li(v-for="error in errors" :key="error") {{error.message}}
     .div(v-if="albumData && !loading")
       .text-h6 {{ albumData.name }}
-      .text-subtitle1 {{albumData.description}}
+      .text-caption {{$t('OrderBy')}} {{$t(albumData.orderBy)}} {{$t(albumData.orderDirection)}}
       .row.q-gutter-sm(v-if="albumData.type=='collection'")
         div(v-for="item in albumData.children.items" :key="item.id")
           q-card.bg-grey-9.imageTh.cursor-pointer(@click="$router.push({path: `/album/${item.id}` })")
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { getAlbum, getAlbums, getPhotos, onUpdateAlbum, onCreateAlbum, onUpdatePhoto, onCreatePhoto } from 'src/graphql/queryAlbum'
+import { getAlbum, onUpdateAlbum, onCreateAlbum, onUpdatePhoto, onCreatePhoto } from 'src/graphql/queryAlbum'
 import { albumOrder } from 'src/lib/ordering'
 export default {
   name: 'Album',
@@ -37,7 +37,6 @@ export default {
       loading: true,
       errors: [],
       albumData: null,
-      contentData: null,
       subscriptionUpdate: null,
       subscriptionCreate: null,
       subscriptionPhotoUpdate: null,
@@ -69,14 +68,14 @@ export default {
       this.$Amplify.graphqlOperation(onUpdatePhoto)
     ).subscribe({
       next: (photoData) => {
-        this.updateContent(photoData.value.data.onUpdatePhoto)
+        this.updatePhotos(photoData.value.data.onUpdatePhoto)
       }
     })
     this.subscriptionPhotoCreate = this.$Amplify.API.graphql(
       this.$Amplify.graphqlOperation(onCreatePhoto)
     ).subscribe({
       next: (photoData) => {
-        this.updateContent(photoData.value.data.onCreatePhoto)
+        this.updatePhotos(photoData.value.data.onCreatePhoto)
       }
     })
   },
@@ -92,28 +91,14 @@ export default {
       this.albumData = null
       const query = this.$Amplify.graphqlOperation(getAlbum, { id: id })
       return this.$Amplify.API.graphql(query).then(({ data }) => {
+        if (data.getAlbum.type === 'collection') {
+          data.getAlbum.children.items.sort(albumOrder(data.getAlbum.orderBy, data.getAlbum.orderDirection))
+        } else {
+          data.getAlbum.photos.items.sort(albumOrder(data.getAlbum.orderBy, data.getAlbum.orderDirection))
+        }
         this.albumData = data.getAlbum
         this.setActiveAlbum()
-        let contentQuery = null
-        let contentField = null
-        if (this.albumData.type === 'collection') {
-          contentQuery = this.$Amplify.graphqlOperation(getAlbums, { id: id })
-          contentField = 'children'
-        } else {
-          contentQuery = this.$Amplify.graphqlOperation(getPhotos, { id: id })
-          contentField = 'photos'
-        }
-        return this.$Amplify.API.graphql(contentQuery).then(({ data }) => {
-          const content = data.getAlbum[contentField].items
-          if (contentField === 'photos') {
-            content.forEach(photo => {
-              this.setPhotoSrc(photo.id, photo.file.key)
-            })
-          }
-          content.sort(albumOrder(this.albumData.orderBy, this.albumData.orderDirection))
-          this.loading = false
-          this.contentData = [...content]
-        })
+        this.loading = false
       })
     },
     setPhotoSrc (id, key) {
@@ -125,39 +110,47 @@ export default {
     },
     setActiveAlbum () {
       const activeAlbum = { ...this.albumData }
+      activeAlbum.childrenCount = activeAlbum.children.items.length
+      activeAlbum.photosCount = activeAlbum.photos.items.length
       delete activeAlbum.children
       delete activeAlbum.photos
       this.activeAlbum = activeAlbum
     },
     updateAlbum (item) {
       Object.keys(item).forEach((key) => (item[key] === null) && delete item[key])
+      const contentField = (this.albumData.type === 'collection') ? 'children' : 'photos'
       if (item.id === this.albumData.id) {
-        this.albumData = { ...this.albumData, ...item }
-        this.contentData.sort(albumOrder(this.albumData.orderBy, this.albumData.orderDirection))
-      } else {
-        const idx = this.contentData.findIndex(e => e.id === item.id)
+        console.log('item.id === albumdata.id')
+        let newContent = { ...this.albumData, ...item }
+        newContent[contentField].items.sort(albumOrder(newContent.orderBy, newContent.orderDirection))
+        newContent = null
+        this.albumData = { ...newContent }
+      } else if (item.parentId === this.albumData.id) {
+        const idx = this.albumData[contentField].items.findIndex(e => e.id === item.id)
+        let newContent = { ...this.albumData }
         if (idx >= 0) {
-          let newContent = [...this.contentData]
-          newContent[idx] = { ...this.contentData[idx], ...item }
-          this.contentData = [...newContent]
-          newContent = null
+          newContent[contentField].items[idx] = { ...newContent[contentField].items[idx], ...item }
+        } else {
+          newContent[contentField].items.push(item)
+          newContent[contentField].items.sort(albumOrder(this.albumData.orderBy, this.albumData.orderDirection))
         }
+        this.albumData = { ...newContent }
+        newContent = null
       }
     },
-    updateContent (item) {
+    updatePhotos (item) {
       Object.keys(item).forEach((key) => (item[key] === null) && delete item[key])
-      this.setPhotoSrc(item.id, item.file.key)
-      if (this.contentData.findIndex(e => e.id === item.id) === -1) {
-        this.contentData.push(item)
-        this.contentData.sort(albumOrder(this.albumData.orderBy, this.albumData.orderDirection))
-      } else {
-        const idx = this.contentData.findIndex(e => e.id === item.id)
-        if (idx >= 0) {
-          let newContent = [...this.contentData]
-          newContent[idx] = { ...this.contentData[idx], ...item }
-          this.contentData = [...newContent]
-          newContent = null
+      if (item.albumId === this.albumData.id) {
+        const idx = this.albumData.photos.items.findIndex(e => e.id === item.id)
+        let newContent = { ...this.albumData }
+        if (idx === -1) {
+          newContent.photos.items.push(item)
+        } else if (idx >= 0) {
+          newContent.photos.items[idx] = { ...newContent.photos.items[idx], ...item }
         }
+        newContent.photos.items.sort(albumOrder(this.albumData.orderBy, this.albumData.orderDirection))
+        this.albumData = { ...newContent }
+        newContent = null
       }
     }
   },

@@ -1,5 +1,4 @@
 export default {
-
   'Account recovery requires verified contact information':
           'La récupération du compte nécessite des informations de contact vérifiées',
   'An account with the given email already exists.': 'Un utilisateur avec cette adresse email existe déjà.',
@@ -69,6 +68,7 @@ export default {
   Albums: 'Albums',
   'For grouping photos': 'Pour grouper des photos',
   Name: 'Nom',
+  Slug: 'Nom pour l\'URL',
   Description: 'Description',
   'Parent Album': 'Album parent',
   Root: 'Racine',
@@ -101,5 +101,6 @@ export default {
   'Upload your files': 'Chargez vos photos',
   'Pick Files': 'Selectionez les photos',
   'Upload Files': 'Charger les photos',
-  'Abort Upload': 'Annuler le chargement'
+  'Abort Upload': 'Annuler le chargement',
+  'Edit Album': 'Modifer Album'
 }

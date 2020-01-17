@@ -1,6 +1,17 @@
 <template lang="pug">
   .q-gutter-xs.row.items-center.no-wrap
     q-btn.q-px-md.q-ml-sm(
+      v-if="canEditAlbum"
+      color="white"
+      text-color="black"
+      no-caps
+      dense
+      no-wrap
+      :label="$q.screen.gt.xs ? $t('Edit Album') : ''"
+      icon="edit"
+      :to="{name: 'AlbumEdit'}"
+    )
+    q-btn.q-px-md.q-ml-sm(
       v-if="canAddAlbum"
       color="white"
       text-color="black"
@@ -30,6 +41,9 @@ export default {
   computed: {
     canAddAlbum () {
       return this.$store.getters['albums/canAddAlbum']
+    },
+    canEditAlbum () {
+      return this.$store.getters['albums/canEditAlbum']
     },
     canAddPhotos () {
       return this.$store.getters['albums/canAddPhotos']

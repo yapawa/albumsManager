@@ -74,6 +74,7 @@ export default {
   Albums: 'Albums',
   'For grouping photos': 'For grouping Photos',
   Name: 'Name',
+  Slug: 'Slug',
   Description: 'Description',
   'Parent Album': 'Parent Album',
   Root: 'Root',
@@ -106,5 +107,6 @@ export default {
   'Upload your files': 'Upload your Pictures',
   'Pick Files': 'Pick Pictures',
   'Upload Files': 'Upload Pictures',
-  'Abort Upload': 'Abort Upload'
+  'Abort Upload': 'Abort Upload',
+  'Edit Album': 'Edit Album'
 }

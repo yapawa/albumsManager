@@ -35,6 +35,14 @@ const routes = [
         meta: {
           requiresAuth: true
         }
+      },
+      {
+        path: 'album/:id/edit',
+        name: 'AlbumEdit',
+        component: () => import('pages/AlbumEdit.vue'),
+        meta: {
+          requiresAuth: true
+        }
       }
     ]
   },

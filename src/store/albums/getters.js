@@ -22,6 +22,10 @@ export const canAddPhotos = state => {
   return false
 }
 
+export const canEditAlbum = state => {
+  return hasActive(state)
+}
+
 export const canAddAlbum = state => {
   if (hasActive(state)) {
     return state.active.type === 'collection'

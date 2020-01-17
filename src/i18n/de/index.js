@@ -68,6 +68,7 @@ Benutze eine Nummer im Format: +12345678900`,
   Albums: 'Alben',
   'For grouping photos': 'Zum Gruppieren von Fotos',
   Name: 'Name',
+  Slug: 'Name für Adresse',
   Description: 'Beschreibung',
   'Parent Album': 'Elternalbum',
   Root: 'Wurzel',
@@ -100,5 +101,6 @@ Benutze eine Nummer im Format: +12345678900`,
   'Upload your files': 'Fotos laden',
   'Pick Files': 'Fotos auswählen',
   'Upload Files': 'Fotos laden',
-  'Abort Upload': 'Hochladen abbrechen'
+  'Abort Upload': 'Hochladen abbrechen',
+  'Edit Album': 'Album bearbeiten'
 }
