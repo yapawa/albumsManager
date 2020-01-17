@@ -79,6 +79,7 @@ export default {
   protected: 'Protégé',
   Summary: 'Sommaire',
   Create: 'Créer',
+  Cancel: 'Annuler',
   OrderBy: 'Trier par',
   position: 'Manuel',
   capturedAt: 'Date de prise de vue',
@@ -92,5 +93,6 @@ export default {
   Status: 'Statut',
   published: 'Publié',
   draft: 'Brouillon',
-  'Loading Albums...': 'Chargement des albums...'
+  'Loading Albums...': 'Chargement des albums...',
+  Error: 'Erreur | Erreurs'
 }

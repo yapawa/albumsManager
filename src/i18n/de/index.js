@@ -78,6 +78,7 @@ Benutze eine Nummer im Format: +12345678900`,
   protected: 'Geschützt',
   Summary: 'Zusammenfassung',
   Create: 'Erstellen',
+  Cancel: 'Absagen',
   OrderBy: 'Sortieren nach',
   position: 'Manuell',
   capturedAt: 'Aufnahmedatum',
@@ -91,5 +92,6 @@ Benutze eine Nummer im Format: +12345678900`,
   Status: 'Status',
   published: 'Veröffentlicht',
   draft: 'Entwurf',
-  'Loading Albums...': 'Laden der Alben...'
+  'Loading Albums...': 'Laden der Alben...',
+  Error: 'Fehler | Fehlern'
 }

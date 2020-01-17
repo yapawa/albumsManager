@@ -27,10 +27,12 @@
               y-album-select-order-by(v-model="orderBy" :albumType="type")
               y-album-select-order-direction(v-model="orderDirection")
         q-card-actions(v-if="!loading" align="right")
+          q-btn.q-px-md(:label="$t('Cancel')" color="secondary" text-color="black" :to="{name:'album', params: {id: this.activeAlbum.id}}")
           q-btn.q-px-md(:label="$t('Create')" color="primary" text-color="black" @click="createAlbum" :disable="!canCreate")
 </template>
 
 <script>
+import { createAlbum } from 'src/graphql/queryAlbum'
 import { date, uid } from 'quasar'
 import YAlbumForm from 'components/albums'
 

@@ -84,6 +84,7 @@ export default {
   protected: 'Protected',
   Summary: 'Summary',
   Create: 'Create',
+  Cancel: 'Cancel',
   OrderBy: 'Sort By',
   position: 'Manual',
   capturedAt: 'Date taken',
@@ -97,5 +98,6 @@ export default {
   Status: 'Status',
   published: 'Published',
   draft: 'Draft',
-  'Loading Albums...': 'Loading Albums...'
+  'Loading Albums...': 'Loading Albums...',
+  Error: 'Error | Errors'
 }
