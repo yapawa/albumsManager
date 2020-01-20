@@ -95,6 +95,9 @@ export default {
           data.getAlbum.children.items.sort(albumOrder(data.getAlbum.orderBy, data.getAlbum.orderDirection))
         } else {
           data.getAlbum.photos.items.sort(albumOrder(data.getAlbum.orderBy, data.getAlbum.orderDirection))
+          data.getAlbum.photos.items.forEach(p => {
+            this.setPhotoSrc(p.id, p.file.key)
+          })
         }
         this.albumData = data.getAlbum
         this.setActiveAlbum()
@@ -141,6 +144,9 @@ export default {
     updatePhotos (item) {
       Object.keys(item).forEach((key) => (item[key] === null) && delete item[key])
       if (item.albumId === this.albumData.id) {
+        if (item.file && item.file.key) {
+          this.setPhotoSrc(item.id, item.file.key)
+        }
         const idx = this.albumData.photos.items.findIndex(e => e.id === item.id)
         let newContent = { ...this.albumData }
         if (idx === -1) {
