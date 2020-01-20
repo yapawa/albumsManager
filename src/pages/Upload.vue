@@ -68,7 +68,8 @@ export default {
       s3: null,
       userInfo: null,
       uploadBatch: null,
-      albumId: null
+      albumId: null,
+      position: 1
     }
   },
   computed: {
@@ -84,6 +85,7 @@ export default {
       this.$router.replace({ name: 'album' })
     }
     this.albumId = this.$route.params.id
+    this.position = this.activeAlbum.photosCount + 1
     this.$Amplify.Auth.currentCredentials()
       .then(credentials => {
         this.credentials = this.$Amplify.Auth.essentialCredentials(credentials)
@@ -112,7 +114,7 @@ export default {
         const input = {
           id: file.S3Metadata.photoId,
           albumId: file.S3Metadata.albumId,
-          position: 1,
+          position: file.__position,
           file: {
             bucket: file.storage.bucket,
             key: file.storage.key,
@@ -138,6 +140,8 @@ export default {
       // https://stackoverflow.com/a/46814952/283851
       for (let i = 0; i < files.length; i++) {
         const photoId = uid()
+        files[i].__position = this.position
+        this.position++
         const Metadata = {
           owner: this.userInfo.username,
           filename: files[i].name,
