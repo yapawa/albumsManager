@@ -8,8 +8,13 @@
         ul
           li(v-for="error in errors" :key="error") {{error.message}}
     .div(v-if="albumData && !loading")
-      .text-h6 {{ albumData.name }}
-      .text-caption {{$t('OrderBy')}} {{$t(albumData.orderBy)}} {{$t(albumData.orderDirection)}}
+      .row
+        .col-auto.text-h6 {{ albumData.name }}
+        q-space
+        .col-auto.row.q-pl-md.q-gutter-sm
+          y-album-select-order-by(v-model="albumData.orderBy" :albumType="albumData.type" dense @input="onChangeOrdering")
+          y-album-select-order-direction(v-model="albumData.orderDirection" dense @input="onChangeOrdering")
+      q-separator.q-my-sm
       .row.q-gutter-sm(v-if="albumData.type=='collection'")
         div(v-for="item in albumData.children.items" :key="item.id")
           q-card.bg-grey-9.imageTh.cursor-pointer(@click="$router.push({path: `/album/${item.id}` })")
@@ -28,8 +33,9 @@
 </template>
 
 <script>
-import { getAlbum, onUpdateAlbum, onCreateAlbum, onUpdatePhoto, onCreatePhoto } from 'src/graphql/queryAlbum'
+import { getAlbum, updateAlbum, onUpdateAlbum, onCreateAlbum, onUpdatePhoto, onCreatePhoto } from 'src/graphql/queryAlbum'
 import { albumOrder } from 'src/lib/ordering'
+import YAlbumForm from 'components/albums'
 export default {
   name: 'Album',
   data () {
@@ -43,6 +49,9 @@ export default {
       subscriptionPhotoCreate: null,
       photoSrc: {}
     }
+  },
+  components: {
+    ...YAlbumForm
   },
   beforeRouteUpdate (to, from, next) {
     this.fetchAlbum(to.params.id)
@@ -125,11 +134,10 @@ export default {
       Object.keys(item).forEach((key) => (item[key] === null) && delete item[key])
       const contentField = (this.albumData.type === 'collection') ? 'children' : 'photos'
       if (item.id === this.albumData.id) {
-        console.log('item.id === albumdata.id')
         let newContent = { ...this.albumData, ...item }
         newContent[contentField].items.sort(albumOrder(newContent.orderBy, newContent.orderDirection))
-        newContent = null
         this.albumData = { ...newContent }
+        newContent = null
       } else if (item.parentId === this.albumData.id) {
         const idx = this.albumData[contentField].items.findIndex(e => e.id === item.id)
         let newContent = { ...this.albumData }
@@ -160,6 +168,16 @@ export default {
         this.albumData = { ...newContent }
         newContent = null
       }
+    },
+    onChangeOrdering () {
+      const input = {
+        id: this.albumData.id,
+        orderBy: this.albumData.orderBy,
+        orderDirection: this.albumData.orderDirection
+      }
+      this.$Amplify.API.graphql(
+        this.$Amplify.graphqlOperation(updateAlbum, { input })
+      )
     }
   },
   computed: {

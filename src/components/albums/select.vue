@@ -7,6 +7,7 @@ q-select(
   :label="label"
   emit-value
   map-options
+  :dense="dense"
   @input="onChange"
 )
 </template>
@@ -30,7 +31,8 @@ export default {
   props: [
     'value',
     'label',
-    'options'
+    'options',
+    'dense'
   ],
   methods: {
     onChange () {

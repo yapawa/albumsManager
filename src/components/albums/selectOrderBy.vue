@@ -1,5 +1,5 @@
 <template lang="pug">
-y-album-select(v-model="field" :label="$t('OrderBy')" :options="options" @input="onChange")
+y-album-select(v-model="field" :label="$t('OrderBy')" :options="options" @input="onChange" :dense="dense")
 </template>
 
 <script>
@@ -14,7 +14,8 @@ export default {
   },
   props: [
     'value',
-    'albumType'
+    'albumType',
+    'dense'
   ],
   watch: {
     value (val) {
