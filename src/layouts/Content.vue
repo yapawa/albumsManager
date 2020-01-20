@@ -21,9 +21,6 @@
     q-drawer(show-if-above v-model="left" side="left" bordered)
       y-tree
 
-    q-drawer(v-model="right" side="right" bordered)
-      actions-drawer-content
-
     q-page-container
       router-view
     fetch-albums-tree
@@ -33,7 +30,6 @@
 import ContentActions from 'components/ContentActions'
 import ProfileMenu from 'components/ProfileMenu'
 import FetchAlbumsTree from 'components/FetchAlbumsTree'
-import ActionsDrawerContent from 'components/ActionsDrawerContent'
 import YTree from 'components/Tree'
 
 export default {
@@ -45,7 +41,6 @@ export default {
     ContentActions,
     ProfileMenu,
     FetchAlbumsTree,
-    ActionsDrawerContent,
     YTree
   },
   beforeCreate () {

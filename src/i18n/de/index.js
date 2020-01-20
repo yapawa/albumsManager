@@ -101,6 +101,7 @@ Benutze eine Nummer im Format: +12345678900`,
   'Upload your files': 'Fotos laden',
   'Pick Files': 'Fotos auswählen',
   'Upload Files': 'Fotos laden',
+  'Drop Images Here': 'Bilder hierher ziehen',
   'Abort Upload': 'Hochladen abbrechen',
   'Edit Album': 'Album bearbeiten'
 }

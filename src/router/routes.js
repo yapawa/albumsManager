@@ -43,6 +43,14 @@ const routes = [
         meta: {
           requiresAuth: true
         }
+      },
+      {
+        path: 'upload/:id',
+        name: 'Upload',
+        component: () => import('pages/Upload.vue'),
+        meta: {
+          requiresAuth: true
+        }
       }
     ]
   },

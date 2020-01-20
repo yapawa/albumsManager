@@ -106,6 +106,7 @@ export default {
   'Remove Uploaded Files': 'Remove Uploaded Pictures',
   'Upload your files': 'Upload your Pictures',
   'Pick Files': 'Pick Pictures',
+  'Drop Images Here': 'Drop Images Here',
   'Upload Files': 'Upload Pictures',
   'Abort Upload': 'Abort Upload',
   'Edit Album': 'Edit Album'

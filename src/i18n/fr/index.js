@@ -101,6 +101,7 @@ export default {
   'Upload your files': 'Chargez vos photos',
   'Pick Files': 'Selectionez les photos',
   'Upload Files': 'Charger les photos',
+  'Drop Images Here': 'Glissez vos photos ici',
   'Abort Upload': 'Annuler le chargement',
   'Edit Album': 'Modifer Album'
 }

@@ -1,65 +1,58 @@
 <template lang="pug">
-  q-uploader(
-    ref="fileUploader"
-    :url="getUrl"
-    :headers="getHeaders"
-    send-raw
-    dark
-    multiple
-    square
-    flat
-    bordered
-    method="put"
-    accept="image/*"
-    color="grey-3"
-    text-color="grey-10"
-    @finish="finish"
-    @uploaded="uploaded"
-    @added="added"
-    v-if="ensureCredentials"
-  )
-    template(v-slot:header="scope")
-      .row.no-wrap.items-center.q-pa-sm.q-gutter-xs
-        q-btn(v-if="scope.queuedFiles.length > 0" icon="clear_all" @click="scope.removeQueuedFiles" round dense flat)
-          q-tooltip {{ $t('Clear All') }}
-        q-btn(v-if="scope.uploadedFiles.length > 0" icon="done_all" @click="scope.removeUploadedFiles" round dense flat)
-          q-tooltip {{ $t('Remove Uploaded Files') }}
-        q-spinner(v-if="scope.isUploading" class="q-uploader__spinner")
-        .col(v-if="scope.files.length > 0")
-          .q-uploader__subtitle {{ scope.uploadedFiles.length }} {{ $t('files uploaded out of') }} {{ scope.files.length }}
-        .col(v-else)
-          .q-uploader__title {{ $t('Upload your files') }}
-        q-btn(v-if="scope.canAddFiles" type="a" icon="add_box" round dense flat)
-          q-uploader-add-trigger
-          q-tooltip {{ $t('Pick Files') }}
-        q-btn(v-if="scope.canUpload" icon="cloud_upload" @click="scope.upload" round dense flat)
-          q-tooltip {{ $t('Upload Files') }}
-        q-btn(v-if="scope.isUploading" icon="clear" @click="scope.abort" round dense flat)
-          q-tooltip {{ $t('Abort Upload') }}
-      q-linear-progress.q-mt-none(:value="scope.uploadProgress" size="20px" track-color="grey-8")
-        .absolute-full.flex.flex-center
-          q-badge(color="grey-3" text-color="black" :label="`${scope.uploadedSizeLabel} / ${scope.uploadSizeLabel} (${scope.uploadProgressLabel})`")
+  q-page.column(padding)
+    .text-h6 {{ activeAlbum.name }}
+    q-uploader.col.fit(
+      ref="fileUploader"
+      :url="getUrl"
+      :headers="getHeaders"
+      send-raw
+      dark
+      multiple
+      square
+      flat
+      bordered
+      method="put"
+      accept="image/*"
+      color="grey-3"
+      text-color="grey-10"
+      @finish="finish"
+      @uploaded="uploaded"
+      @added="added"
+      v-if="ensureCredentials"
+    )
+      template(v-slot:header="scope")
+        .row.no-wrap.items-center.q-pa-sm.q-gutter-xs
+          q-btn(v-if="scope.queuedFiles.length > 0" icon="clear_all" @click="scope.removeQueuedFiles" round dense flat)
+            q-tooltip {{ $t('Clear All') }}
+          q-btn(v-if="scope.uploadedFiles.length > 0" icon="done_all" @click="scope.removeUploadedFiles" round dense flat)
+            q-tooltip {{ $t('Remove Uploaded Files') }}
+          q-spinner(v-if="scope.isUploading" class="q-uploader__spinner")
+          .col(v-if="scope.files.length > 0")
+            .q-uploader__subtitle {{ scope.uploadedFiles.length }} {{ $t('files uploaded out of') }} {{ scope.files.length }}
+          .col(v-else)
+            .q-uploader__title {{ $t('Upload your files') }}
+          q-btn(v-if="scope.canAddFiles" type="a" icon="add_box" round dense flat)
+            q-uploader-add-trigger
+            q-tooltip {{ $t('Pick Files') }}
+          q-btn(v-if="scope.canUpload" icon="cloud_upload" @click="scope.upload" round dense flat)
+            q-tooltip {{ $t('Upload Files') }}
+          q-btn(v-if="scope.isUploading" icon="clear" @click="scope.abort" round dense flat)
+            q-tooltip {{ $t('Abort Upload') }}
+        q-linear-progress.q-mt-none(:value="scope.uploadProgress" size="20px" track-color="grey-8")
+          .absolute-full.flex.flex-center
+            q-badge(color="grey-3" text-color="black" :label="`${scope.uploadedSizeLabel} / ${scope.uploadSizeLabel} (${scope.uploadProgressLabel})`")
 
-    template(v-slot:list="scope")
-      q-list(separator)
-        q-item(v-for="file in scope.files" :key="file.name" :class="file.__uploaded ? 'dimmed' : ''")
-          q-item-section
-            q-item-label.full-width.ellipsis {{ file.name }}
-            q-item-label(caption) {{ file.__sizeLabel }} / {{ file.__progressLabel }}
-          q-item-section.gt-xs(
-            v-if="file.__img"
-            thumbnail
-          )
-            img(:src="file.__img.src")
-          q-item-section(top side)
-            q-btn.gt-xs(
-              size="12px"
-              flat
-              dense
-              round
-              icon="delete"
-              @click="scope.removeFile(file)"
-            )
+      template(v-slot:list="scope")
+        .row.q-gutter-sm(v-if="scope.files.length>0")
+          q-card.col-auto(v-for="file in scope.files" :key="file.name" :class="file.__uploaded ? '' : ''" flat)
+            q-img(:src="file.__img.src" :ratio="1" style="width:120px;height:120px;")
+              .absolute-full.flex.flex-center.transparent.q-pa-none
+                q-linear-progress.q-ma-none(rounded :value="file.__progress" size="20px" track-color="grey-2")
+              q-btn.float-right(fab dense flat icon="clear" @click="scope.removeFile(file)" size="8px")
+        .column.fit.justify-center.items-center(v-else @click="pickFiles")
+          .col
+            q-icon.self-center(size="184px" name="cloud_upload" color="grey-6")
+          .col.text-h5.text-grey-6 {{ $t('Drop Images Here') }}
 </template>
 
 <script>
@@ -74,18 +67,23 @@ export default {
       credentials: null,
       s3: null,
       userInfo: null,
-      uploadBatch: null
+      uploadBatch: null,
+      albumId: null
     }
   },
   computed: {
     ensureCredentials () {
       return (this.credentials && this.credentials.authenticated && this.credentials.authenticated === true && this.userInfo)
     },
-    albumId () {
-      return this.$store.getters['albums/activeId']
+    activeAlbum () {
+      return this.$store.state.albums.active
     }
   },
   created () {
+    if (!this.activeAlbum) {
+      this.$router.replace({ name: 'album' })
+    }
+    this.albumId = this.$route.params.id
     this.$Amplify.Auth.currentCredentials()
       .then(credentials => {
         this.credentials = this.$Amplify.Auth.essentialCredentials(credentials)
@@ -102,9 +100,11 @@ export default {
     this.uploadBatch = uid()
   },
   methods: {
+    pickFiles () {
+      this.$refs.fileUploader.pickFiles()
+    },
     finish () {
-      this.$refs.fileUploader.reset()
-      this.$emit('finish')
+      this.$router.push({ name: 'album' })
     },
     uploaded (info) {
       info.files.forEach(file => {
@@ -148,7 +148,7 @@ export default {
           photoId
         }
         files[i].S3Metadata = Metadata
-        const key = `${this.userInfo.username}/${this.albumId}/${files[i].name}`
+        const key = `${this.albumId}/${photoId}/${files[i].name}`
         files[i].storage = {
           key,
           bucket: this.$Amplify.Storage._config.AWSS3.bucket,
