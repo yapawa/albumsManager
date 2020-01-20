@@ -86,3 +86,8 @@ export const breadcrumbs = state => {
   }
   return leaf => getPath(index, leaf)
 }
+
+export const countSiblings = state => parentId => {
+  const list = extend(true, [], state.list)
+  return list.filter(l => l.parentId === parentId).length
+}

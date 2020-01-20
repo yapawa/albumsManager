@@ -14,11 +14,15 @@ export default {
   },
   props: [
     'value',
-    'dense'
+    'dense',
+    'albumType'
   ],
   watch: {
     value (val) {
       this.field = val
+    },
+    albumType (val) {
+      this.field = (val === 'collection') ? 'desc' : 'asc'
     }
   },
   created () {

@@ -20,6 +20,9 @@ export default {
   watch: {
     value (val) {
       this.field = val
+    },
+    albumType (val) {
+      this.field = (val === 'collection') ? 'createdAt' : 'capturedAt'
     }
   },
   created () {

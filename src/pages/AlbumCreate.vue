@@ -25,9 +25,10 @@
               y-album-select-visibility(v-model="visibility")
               y-album-select-status(v-model="status")
               y-album-select-order-by(v-model="orderBy" :albumType="type")
-              y-album-select-order-direction(v-model="orderDirection")
+              y-album-select-order-direction(v-model="orderDirection" :albumType="type")
         q-card-actions(v-if="!loading" align="right")
-          q-btn.q-px-md(:label="$t('Cancel')" color="secondary" text-color="black" :to="{name:'album', params: {id: this.activeAlbum.id}}")
+          q-btn.q-px-md(v-if="!this.activeAlbum" :label="$t('Cancel')" color="secondary" text-color="black" :to="{name:'home'}")
+          q-btn.q-px-md(v-if="this.activeAlbum" :label="$t('Cancel')" color="secondary" text-color="black" :to="{name:'album', params: {id: this.activeAlbum.id}}")
           q-btn.q-px-md(:label="$t('Create')" color="primary" text-color="black" @click="createAlbum" :disable="!canCreate")
 </template>
 
@@ -50,8 +51,8 @@ export default {
       parentAlbumId: 'root',
       newAlbumId: uid(),
       visibility: 'public',
-      orderBy: 'createdAt',
-      orderDirection: 'desc',
+      orderBy: 'capturedAt',
+      orderDirection: 'asc',
       status: 'published',
       summary: null,
       type: 'album',
@@ -66,7 +67,7 @@ export default {
     ...YAlbumForm
   },
   created () {
-    if (!this.hasRoot === 0) {
+    if (this.hasRoot === false) {
       this.createRoot()
     }
     if (this.activeAlbum && this.activeAlbum.id) {
@@ -92,6 +93,9 @@ export default {
         return (this.name.trim().length > 0)
       }
       return false
+    },
+    countSiblings () {
+      return this.$store.getters['albums/countSiblings'](this.parentAlbumId)
     }
   },
   methods: {
@@ -112,12 +116,13 @@ export default {
     },
     createAlbum () {
       const description = this.description ? this.description.trim() : null
+      const position = this.countSiblings + 1
       const input = {
         id: this.newAlbumId,
         parentId: this.parentAlbumId,
         name: this.name ? this.name.trim() : null,
         visibility: this.visibility,
-        position: 1,
+        position,
         type: this.type,
         slug: this.name ? slug(this.name) : null,
         status: this.status,
