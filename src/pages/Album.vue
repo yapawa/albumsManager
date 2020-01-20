@@ -102,6 +102,8 @@ export default {
         this.albumData = data.getAlbum
         this.setActiveAlbum()
         this.loading = false
+      }).catch((err) => { // eslint-disable-line handle-callback-err
+        this.$router.replace({ name: 'home' })
       })
     },
     setPhotoSrc (id, key) {

@@ -95,6 +95,9 @@ export default {
         })
     },
     setFields () {
+      if (!this.activeAlbum) {
+        this.$router.push({ name: 'album' })
+      }
       this.albumData = { ...this.activeAlbum }
       this.loading = false
     }
