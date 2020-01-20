@@ -49,16 +49,28 @@
               .absolute-full.flex.flex-center.transparent.q-pa-none
                 q-linear-progress.q-ma-none(rounded :value="file.__progress" size="20px" track-color="grey-2")
               q-btn.float-right(fab dense flat icon="clear" @click="scope.removeFile(file)" size="8px")
+            q-card-section
+              q-btn(v-if="file.__exif" label="exif" @click="dialogData = file.__exif;showDialog=true" color="primary")
+              q-btn(v-if="file.__iptc" label="iptc" @click="dialogData = file.__iptc;showDialog=true" color="primary")
+              .text-caption {{file.__position}}
+              .text-caption {{file.__id}}
         .column.fit.justify-center.items-center(v-else @click="pickFiles")
           .col
             q-icon.self-center(size="184px" name="cloud_upload" color="grey-6")
           .col.text-h5.text-grey-6 {{ $t('Drop Images Here') }}
+    q-dialog(v-model="showDialog")
+      q-card
+        q-card-section
+          pre {{ dialogData }}
 </template>
 
 <script>
 import * as S3 from 'aws-sdk/clients/s3'
 import { uid, date } from 'quasar'
 import { createPhoto } from 'src/graphql/queryAlbum'
+// import loadImage from 'blueimp-load-image/js'
+// import { getImageUrl, applyRotation } from 'src/lib/imageOrientation'
+import { getImageUrl } from 'src/lib/imageOrientation'
 
 export default {
   name: 'UploadPhotos',
@@ -69,7 +81,9 @@ export default {
       userInfo: null,
       uploadBatch: null,
       albumId: null,
-      position: 1
+      position: 1,
+      dialogData: null,
+      showDialog: false
     }
   },
   computed: {
@@ -139,6 +153,25 @@ export default {
       // https://github.com/blueimp/JavaScript-Load-Image
       // https://stackoverflow.com/a/46814952/283851
       for (let i = 0; i < files.length; i++) {
+        // loadImage(files[i].__img.src, (img, data) => {
+        // img.src = img.toDataURL('image/jpeg')
+        // console.log(img.toDataURL(files[i].type))
+        // if (data.exif) {
+        //   files[i].__exif = data.exif.getAll()
+        // }
+        // if (data.iptc) {
+        //   files[i].__iptc = data.iptc.getAll()
+        // }
+        // console.log(data.exif.getAll())
+        // console.log(data.iptc.getAll())
+        // files[i].__img.src = img.toDataURL(files[i].type)
+        // this.$refs.fileUploader.$forceUpdate()
+        // files[i].__img.srcRotated = img.toDataURL(files[i].type)
+        // }, { orientation: true, maxWidth: 200 })
+
+        const { orientation, src } = getImageUrl(files[i].__img, 200)
+        files[i].__img.src = src
+        files[i].__orientation = orientation || 1
         const photoId = uid()
         files[i].__position = this.position
         this.position++
