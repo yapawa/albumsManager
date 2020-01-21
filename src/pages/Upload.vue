@@ -44,7 +44,7 @@
 
       template(v-slot:list="scope")
         .row.q-gutter-sm(v-if="scope.files.length>0")
-          q-card.col-auto(v-for="file in scope.files" :key="file.name" :class="file.__uploaded ? '' : ''" flat)
+          q-card.col-auto(v-for="file in scope.files" :key="file.__id" :class="file.__uploaded ? '' : ''" flat)
             q-img(:src="file.__img.src" :ratio="1" style="width:120px;height:120px;")
               .absolute-full.flex.flex-center.transparent.q-pa-none
                 q-linear-progress.q-ma-none(rounded :value="file.__progress" size="20px" track-color="grey-2")
@@ -53,7 +53,6 @@
               q-btn(v-if="file.__exif" label="exif" @click="dialogData = file.__exif;showDialog=true" color="primary")
               q-btn(v-if="file.__iptc" label="iptc" @click="dialogData = file.__iptc;showDialog=true" color="primary")
               .text-caption {{file.__position}}
-              .text-caption {{file.__id}}
         .column.fit.justify-center.items-center(v-else @click="pickFiles")
           .col
             q-icon.self-center(size="184px" name="cloud_upload" color="grey-6")
@@ -68,9 +67,8 @@
 import * as S3 from 'aws-sdk/clients/s3'
 import { uid, date } from 'quasar'
 import { createPhoto } from 'src/graphql/queryAlbum'
-// import loadImage from 'blueimp-load-image/js'
-// import { getImageUrl, applyRotation } from 'src/lib/imageOrientation'
-import { getImageUrl } from 'src/lib/imageOrientation'
+import { getOrientationData } from 'src/lib/imageOrientation'
+import { parseExif } from 'src/lib/exif'
 
 export default {
   name: 'UploadPhotos',
@@ -124,57 +122,54 @@ export default {
     },
     uploaded (info) {
       info.files.forEach(file => {
-        const nowStamp = Date.now()
-        const input = {
-          id: file.S3Metadata.photoId,
-          albumId: file.S3Metadata.albumId,
-          position: file.__position,
-          file: {
-            bucket: file.storage.bucket,
-            key: file.storage.key,
-            region: file.storage.region
-          },
-          width: file.__img.width,
-          height: file.__img.height,
-          contentType: file.__img.type,
-          name: file.name,
-          visibility: 'public',
-          status: 'published',
-          capturedAt: date.formatDate(file.lastModified, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),
-          publishedAt: date.formatDate(nowStamp, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
-        }
-        this.$Amplify.API.graphql(
-          this.$Amplify.graphqlOperation(createPhoto, { input })
-        )
+        parseExif(file.__img.originalSrc).then(exif => {
+          const nowStamp = Date.now()
+          let capturedAt = date.formatDate(file.lastModified, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
+          if (exif.DateTimeOriginal) {
+            capturedAt = date.formatDate(exif.DateTimeOriginal, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
+          }
+          if (exif.DateTimeDigitized) {
+            capturedAt = date.formatDate(exif.DateTimeDigitized, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
+          }
+          const input = {
+            id: file.__S3Metadata.photoId,
+            albumId: file.__S3Metadata.albumId,
+            position: file.__position,
+            file: {
+              bucket: file.__storage.bucket,
+              key: file.__storage.key,
+              region: file.__storage.region
+            },
+            width: file.__width,
+            height: file.__height,
+            contentType: file.__img.type,
+            name: file.name,
+            visibility: 'public',
+            status: 'published',
+            capturedAt,
+            publishedAt: date.formatDate(nowStamp, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),
+            exif: JSON.stringify(exif)
+          }
+          this.$Amplify.API.graphql(
+            this.$Amplify.graphqlOperation(createPhoto, { input })
+          )
+        })
       })
     },
     added (files) {
-      // Rotate image
-      // https://github.com/blueimp/JavaScript-Load-Image
-      // https://stackoverflow.com/a/46814952/283851
       for (let i = 0; i < files.length; i++) {
-        // loadImage(files[i].__img.src, (img, data) => {
-        // img.src = img.toDataURL('image/jpeg')
-        // console.log(img.toDataURL(files[i].type))
-        // if (data.exif) {
-        //   files[i].__exif = data.exif.getAll()
-        // }
-        // if (data.iptc) {
-        //   files[i].__iptc = data.iptc.getAll()
-        // }
-        // console.log(data.exif.getAll())
-        // console.log(data.iptc.getAll())
-        // files[i].__img.src = img.toDataURL(files[i].type)
-        // this.$refs.fileUploader.$forceUpdate()
-        // files[i].__img.srcRotated = img.toDataURL(files[i].type)
-        // }, { orientation: true, maxWidth: 200 })
-
-        const { orientation, src } = getImageUrl(files[i].__img, 200)
-        files[i].__img.src = src
-        files[i].__orientation = orientation || 1
         const photoId = uid()
         files[i].__position = this.position
+        files[i].__id = photoId
         this.position++
+
+        const orientationData = getOrientationData(files[i].__img, 200)
+        files[i].__img.originalSrc = files[i].__img.src
+        files[i].__img.src = orientationData.src
+        files[i].__width = orientationData.imageWidth
+        files[i].__height = orientationData.imageHeight
+        files[i].__orientation = orientationData.orientation || 1
+        console.log(files[i])
         const Metadata = {
           owner: this.userInfo.username,
           filename: files[i].name,
@@ -182,21 +177,24 @@ export default {
           uploadedAt: Date.now().toString(),
           uploadBatch: this.uploadBatch,
           albumId: this.albumId,
-          photoId
+          photoId,
+          orientation: files[i].__orientation.toString(),
+          width: files[i].__width.toString(),
+          height: files[i].__height.toString()
         }
-        files[i].S3Metadata = Metadata
+        files[i].__S3Metadata = Metadata
         const key = `${this.albumId}/${photoId}/${files[i].name}`
-        files[i].storage = {
+        files[i].__storage = {
           key,
           bucket: this.$Amplify.Storage._config.AWSS3.bucket,
           region: this.$Amplify.Storage._config.AWSS3.region
         }
         const params = { Key: `public/${key}`, Expires: 3600, ContentType: files[i].type, Metadata }
-        files[i].uploadUrl = this.s3.getSignedUrl('putObject', params)
+        files[i].__uploadUrl = this.s3.getSignedUrl('putObject', params)
       }
     },
     getUrl (files) {
-      return files[0].uploadUrl
+      return files[0].__uploadUrl
     },
     getHeaders (files) {
       return [{ name: 'Content-Type', value: files[0].type }]

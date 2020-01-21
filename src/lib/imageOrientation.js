@@ -1,9 +1,13 @@
 // Based on: https://stackoverflow.com/a/46814952/283851
 
-export const getImageUrl = (image, maxWidth) => {
+export const getOrientationData = (image, maxWidth) => {
   const orientation = readOrientation(image.src)
   const src = applyRotation(image, orientation || 1, maxWidth || 99999)
-  return { orientation, src }
+  const [imageWidth, imageHeight] = orientation >= 5 && orientation <= 8
+    ? [image.height, image.width]
+    : [image.width, image.height]
+
+  return { orientation, src, imageWidth, imageHeight }
 }
 
 const toArrayBuffer = (dataUri) => {
