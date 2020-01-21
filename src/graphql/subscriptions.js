@@ -1,17 +1,39 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateAlbum = `subscription OnCreateAlbum {
-  onCreateAlbum {
-    id
-    name
-    parent {
+export const onCreateAlbum = /* GraphQL */ `
+  subscription OnCreateAlbum {
+    onCreateAlbum {
       id
       name
       parent {
         id
         name
+        parent {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         parentId
+        children {
+          nextToken
+        }
+        photos {
+          nextToken
+        }
         covers
         position
         slug
@@ -28,9 +50,44 @@ export const onCreateAlbum = `subscription OnCreateAlbum {
       }
       parentId
       children {
+        items {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         nextToken
       }
       photos {
+        items {
+          id
+          albumId
+          position
+          width
+          height
+          contentType
+          name
+          description
+          visibility
+          status
+          capturedAt
+          createdAt
+          publishedAt
+          updatedAt
+          exif
+        }
         nextToken
       }
       covers
@@ -47,74 +104,41 @@ export const onCreateAlbum = `subscription OnCreateAlbum {
       orderBy
       orderDirection
     }
-    parentId
-    children {
-      items {
-        id
-        name
-        parentId
-        covers
-        position
-        slug
-        description
-        summary
-        type
-        visibility
-        status
-        createdAt
-        publishedAt
-        updatedAt
-        orderBy
-        orderDirection
-      }
-      nextToken
-    }
-    photos {
-      items {
-        id
-        albumId
-        position
-        width
-        height
-        contentType
-        name
-        description
-        visibility
-        status
-        capturedAt
-        createdAt
-        publishedAt
-        updatedAt
-      }
-      nextToken
-    }
-    covers
-    position
-    slug
-    description
-    summary
-    type
-    visibility
-    status
-    createdAt
-    publishedAt
-    updatedAt
-    orderBy
-    orderDirection
   }
-}
 `;
-export const onUpdateAlbum = `subscription OnUpdateAlbum {
-  onUpdateAlbum {
-    id
-    name
-    parent {
+export const onUpdateAlbum = /* GraphQL */ `
+  subscription OnUpdateAlbum {
+    onUpdateAlbum {
       id
       name
       parent {
         id
         name
+        parent {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         parentId
+        children {
+          nextToken
+        }
+        photos {
+          nextToken
+        }
         covers
         position
         slug
@@ -131,9 +155,44 @@ export const onUpdateAlbum = `subscription OnUpdateAlbum {
       }
       parentId
       children {
+        items {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         nextToken
       }
       photos {
+        items {
+          id
+          albumId
+          position
+          width
+          height
+          contentType
+          name
+          description
+          visibility
+          status
+          capturedAt
+          createdAt
+          publishedAt
+          updatedAt
+          exif
+        }
         nextToken
       }
       covers
@@ -150,74 +209,41 @@ export const onUpdateAlbum = `subscription OnUpdateAlbum {
       orderBy
       orderDirection
     }
-    parentId
-    children {
-      items {
-        id
-        name
-        parentId
-        covers
-        position
-        slug
-        description
-        summary
-        type
-        visibility
-        status
-        createdAt
-        publishedAt
-        updatedAt
-        orderBy
-        orderDirection
-      }
-      nextToken
-    }
-    photos {
-      items {
-        id
-        albumId
-        position
-        width
-        height
-        contentType
-        name
-        description
-        visibility
-        status
-        capturedAt
-        createdAt
-        publishedAt
-        updatedAt
-      }
-      nextToken
-    }
-    covers
-    position
-    slug
-    description
-    summary
-    type
-    visibility
-    status
-    createdAt
-    publishedAt
-    updatedAt
-    orderBy
-    orderDirection
   }
-}
 `;
-export const onDeleteAlbum = `subscription OnDeleteAlbum {
-  onDeleteAlbum {
-    id
-    name
-    parent {
+export const onDeleteAlbum = /* GraphQL */ `
+  subscription OnDeleteAlbum {
+    onDeleteAlbum {
       id
       name
       parent {
         id
         name
+        parent {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         parentId
+        children {
+          nextToken
+        }
+        photos {
+          nextToken
+        }
         covers
         position
         slug
@@ -234,9 +260,44 @@ export const onDeleteAlbum = `subscription OnDeleteAlbum {
       }
       parentId
       children {
+        items {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         nextToken
       }
       photos {
+        items {
+          id
+          albumId
+          position
+          width
+          height
+          contentType
+          name
+          description
+          visibility
+          status
+          capturedAt
+          createdAt
+          publishedAt
+          updatedAt
+          exif
+        }
         nextToken
       }
       covers
@@ -253,73 +314,40 @@ export const onDeleteAlbum = `subscription OnDeleteAlbum {
       orderBy
       orderDirection
     }
-    parentId
-    children {
-      items {
-        id
-        name
-        parentId
-        covers
-        position
-        slug
-        description
-        summary
-        type
-        visibility
-        status
-        createdAt
-        publishedAt
-        updatedAt
-        orderBy
-        orderDirection
-      }
-      nextToken
-    }
-    photos {
-      items {
-        id
-        albumId
-        position
-        width
-        height
-        contentType
-        name
-        description
-        visibility
-        status
-        capturedAt
-        createdAt
-        publishedAt
-        updatedAt
-      }
-      nextToken
-    }
-    covers
-    position
-    slug
-    description
-    summary
-    type
-    visibility
-    status
-    createdAt
-    publishedAt
-    updatedAt
-    orderBy
-    orderDirection
   }
-}
 `;
-export const onCreatePhoto = `subscription OnCreatePhoto {
-  onCreatePhoto {
-    id
-    album {
+export const onCreatePhoto = /* GraphQL */ `
+  subscription OnCreatePhoto {
+    onCreatePhoto {
       id
-      name
-      parent {
+      album {
         id
         name
+        parent {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         parentId
+        children {
+          nextToken
+        }
+        photos {
+          nextToken
+        }
         covers
         position
         slug
@@ -334,58 +362,60 @@ export const onCreatePhoto = `subscription OnCreatePhoto {
         orderBy
         orderDirection
       }
-      parentId
-      children {
-        nextToken
-      }
-      photos {
-        nextToken
-      }
-      covers
+      albumId
       position
-      slug
+      file {
+        bucket
+        key
+        region
+      }
+      width
+      height
+      contentType
+      name
       description
-      summary
-      type
       visibility
       status
+      capturedAt
       createdAt
       publishedAt
       updatedAt
-      orderBy
-      orderDirection
+      exif
     }
-    albumId
-    position
-    file {
-      bucket
-      key
-      region
-    }
-    width
-    height
-    contentType
-    name
-    description
-    visibility
-    status
-    capturedAt
-    createdAt
-    publishedAt
-    updatedAt
   }
-}
 `;
-export const onUpdatePhoto = `subscription OnUpdatePhoto {
-  onUpdatePhoto {
-    id
-    album {
+export const onUpdatePhoto = /* GraphQL */ `
+  subscription OnUpdatePhoto {
+    onUpdatePhoto {
       id
-      name
-      parent {
+      album {
         id
         name
+        parent {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         parentId
+        children {
+          nextToken
+        }
+        photos {
+          nextToken
+        }
         covers
         position
         slug
@@ -400,58 +430,60 @@ export const onUpdatePhoto = `subscription OnUpdatePhoto {
         orderBy
         orderDirection
       }
-      parentId
-      children {
-        nextToken
-      }
-      photos {
-        nextToken
-      }
-      covers
+      albumId
       position
-      slug
+      file {
+        bucket
+        key
+        region
+      }
+      width
+      height
+      contentType
+      name
       description
-      summary
-      type
       visibility
       status
+      capturedAt
       createdAt
       publishedAt
       updatedAt
-      orderBy
-      orderDirection
+      exif
     }
-    albumId
-    position
-    file {
-      bucket
-      key
-      region
-    }
-    width
-    height
-    contentType
-    name
-    description
-    visibility
-    status
-    capturedAt
-    createdAt
-    publishedAt
-    updatedAt
   }
-}
 `;
-export const onDeletePhoto = `subscription OnDeletePhoto {
-  onDeletePhoto {
-    id
-    album {
+export const onDeletePhoto = /* GraphQL */ `
+  subscription OnDeletePhoto {
+    onDeletePhoto {
       id
-      name
-      parent {
+      album {
         id
         name
+        parent {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         parentId
+        children {
+          nextToken
+        }
+        photos {
+          nextToken
+        }
         covers
         position
         slug
@@ -466,45 +498,25 @@ export const onDeletePhoto = `subscription OnDeletePhoto {
         orderBy
         orderDirection
       }
-      parentId
-      children {
-        nextToken
-      }
-      photos {
-        nextToken
-      }
-      covers
+      albumId
       position
-      slug
+      file {
+        bucket
+        key
+        region
+      }
+      width
+      height
+      contentType
+      name
       description
-      summary
-      type
       visibility
       status
+      capturedAt
       createdAt
       publishedAt
       updatedAt
-      orderBy
-      orderDirection
+      exif
     }
-    albumId
-    position
-    file {
-      bucket
-      key
-      region
-    }
-    width
-    height
-    contentType
-    name
-    description
-    visibility
-    status
-    capturedAt
-    createdAt
-    publishedAt
-    updatedAt
   }
-}
 `;

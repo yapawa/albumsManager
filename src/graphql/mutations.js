@@ -1,20 +1,42 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createAlbum = `mutation CreateAlbum(
-  $input: CreateAlbumInput!
-  $condition: ModelAlbumConditionInput
-) {
-  createAlbum(input: $input, condition: $condition) {
-    id
-    name
-    parent {
+export const createAlbum = /* GraphQL */ `
+  mutation CreateAlbum(
+    $input: CreateAlbumInput!
+    $condition: ModelAlbumConditionInput
+  ) {
+    createAlbum(input: $input, condition: $condition) {
       id
       name
       parent {
         id
         name
+        parent {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         parentId
+        children {
+          nextToken
+        }
+        photos {
+          nextToken
+        }
         covers
         position
         slug
@@ -31,9 +53,44 @@ export const createAlbum = `mutation CreateAlbum(
       }
       parentId
       children {
+        items {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         nextToken
       }
       photos {
+        items {
+          id
+          albumId
+          position
+          width
+          height
+          contentType
+          name
+          description
+          visibility
+          status
+          capturedAt
+          createdAt
+          publishedAt
+          updatedAt
+          exif
+        }
         nextToken
       }
       covers
@@ -50,77 +107,44 @@ export const createAlbum = `mutation CreateAlbum(
       orderBy
       orderDirection
     }
-    parentId
-    children {
-      items {
-        id
-        name
-        parentId
-        covers
-        position
-        slug
-        description
-        summary
-        type
-        visibility
-        status
-        createdAt
-        publishedAt
-        updatedAt
-        orderBy
-        orderDirection
-      }
-      nextToken
-    }
-    photos {
-      items {
-        id
-        albumId
-        position
-        width
-        height
-        contentType
-        name
-        description
-        visibility
-        status
-        capturedAt
-        createdAt
-        publishedAt
-        updatedAt
-      }
-      nextToken
-    }
-    covers
-    position
-    slug
-    description
-    summary
-    type
-    visibility
-    status
-    createdAt
-    publishedAt
-    updatedAt
-    orderBy
-    orderDirection
   }
-}
 `;
-export const updateAlbum = `mutation UpdateAlbum(
-  $input: UpdateAlbumInput!
-  $condition: ModelAlbumConditionInput
-) {
-  updateAlbum(input: $input, condition: $condition) {
-    id
-    name
-    parent {
+export const updateAlbum = /* GraphQL */ `
+  mutation UpdateAlbum(
+    $input: UpdateAlbumInput!
+    $condition: ModelAlbumConditionInput
+  ) {
+    updateAlbum(input: $input, condition: $condition) {
       id
       name
       parent {
         id
         name
+        parent {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         parentId
+        children {
+          nextToken
+        }
+        photos {
+          nextToken
+        }
         covers
         position
         slug
@@ -137,9 +161,44 @@ export const updateAlbum = `mutation UpdateAlbum(
       }
       parentId
       children {
+        items {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         nextToken
       }
       photos {
+        items {
+          id
+          albumId
+          position
+          width
+          height
+          contentType
+          name
+          description
+          visibility
+          status
+          capturedAt
+          createdAt
+          publishedAt
+          updatedAt
+          exif
+        }
         nextToken
       }
       covers
@@ -156,77 +215,44 @@ export const updateAlbum = `mutation UpdateAlbum(
       orderBy
       orderDirection
     }
-    parentId
-    children {
-      items {
-        id
-        name
-        parentId
-        covers
-        position
-        slug
-        description
-        summary
-        type
-        visibility
-        status
-        createdAt
-        publishedAt
-        updatedAt
-        orderBy
-        orderDirection
-      }
-      nextToken
-    }
-    photos {
-      items {
-        id
-        albumId
-        position
-        width
-        height
-        contentType
-        name
-        description
-        visibility
-        status
-        capturedAt
-        createdAt
-        publishedAt
-        updatedAt
-      }
-      nextToken
-    }
-    covers
-    position
-    slug
-    description
-    summary
-    type
-    visibility
-    status
-    createdAt
-    publishedAt
-    updatedAt
-    orderBy
-    orderDirection
   }
-}
 `;
-export const deleteAlbum = `mutation DeleteAlbum(
-  $input: DeleteAlbumInput!
-  $condition: ModelAlbumConditionInput
-) {
-  deleteAlbum(input: $input, condition: $condition) {
-    id
-    name
-    parent {
+export const deleteAlbum = /* GraphQL */ `
+  mutation DeleteAlbum(
+    $input: DeleteAlbumInput!
+    $condition: ModelAlbumConditionInput
+  ) {
+    deleteAlbum(input: $input, condition: $condition) {
       id
       name
       parent {
         id
         name
+        parent {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         parentId
+        children {
+          nextToken
+        }
+        photos {
+          nextToken
+        }
         covers
         position
         slug
@@ -243,9 +269,44 @@ export const deleteAlbum = `mutation DeleteAlbum(
       }
       parentId
       children {
+        items {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         nextToken
       }
       photos {
+        items {
+          id
+          albumId
+          position
+          width
+          height
+          contentType
+          name
+          description
+          visibility
+          status
+          capturedAt
+          createdAt
+          publishedAt
+          updatedAt
+          exif
+        }
         nextToken
       }
       covers
@@ -262,76 +323,43 @@ export const deleteAlbum = `mutation DeleteAlbum(
       orderBy
       orderDirection
     }
-    parentId
-    children {
-      items {
-        id
-        name
-        parentId
-        covers
-        position
-        slug
-        description
-        summary
-        type
-        visibility
-        status
-        createdAt
-        publishedAt
-        updatedAt
-        orderBy
-        orderDirection
-      }
-      nextToken
-    }
-    photos {
-      items {
-        id
-        albumId
-        position
-        width
-        height
-        contentType
-        name
-        description
-        visibility
-        status
-        capturedAt
-        createdAt
-        publishedAt
-        updatedAt
-      }
-      nextToken
-    }
-    covers
-    position
-    slug
-    description
-    summary
-    type
-    visibility
-    status
-    createdAt
-    publishedAt
-    updatedAt
-    orderBy
-    orderDirection
   }
-}
 `;
-export const createPhoto = `mutation CreatePhoto(
-  $input: CreatePhotoInput!
-  $condition: ModelPhotoConditionInput
-) {
-  createPhoto(input: $input, condition: $condition) {
-    id
-    album {
+export const createPhoto = /* GraphQL */ `
+  mutation CreatePhoto(
+    $input: CreatePhotoInput!
+    $condition: ModelPhotoConditionInput
+  ) {
+    createPhoto(input: $input, condition: $condition) {
       id
-      name
-      parent {
+      album {
         id
         name
+        parent {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         parentId
+        children {
+          nextToken
+        }
+        photos {
+          nextToken
+        }
         covers
         position
         slug
@@ -346,61 +374,63 @@ export const createPhoto = `mutation CreatePhoto(
         orderBy
         orderDirection
       }
-      parentId
-      children {
-        nextToken
-      }
-      photos {
-        nextToken
-      }
-      covers
+      albumId
       position
-      slug
+      file {
+        bucket
+        key
+        region
+      }
+      width
+      height
+      contentType
+      name
       description
-      summary
-      type
       visibility
       status
+      capturedAt
       createdAt
       publishedAt
       updatedAt
-      orderBy
-      orderDirection
+      exif
     }
-    albumId
-    position
-    file {
-      bucket
-      key
-      region
-    }
-    width
-    height
-    contentType
-    name
-    description
-    visibility
-    status
-    capturedAt
-    createdAt
-    publishedAt
-    updatedAt
   }
-}
 `;
-export const updatePhoto = `mutation UpdatePhoto(
-  $input: UpdatePhotoInput!
-  $condition: ModelPhotoConditionInput
-) {
-  updatePhoto(input: $input, condition: $condition) {
-    id
-    album {
+export const updatePhoto = /* GraphQL */ `
+  mutation UpdatePhoto(
+    $input: UpdatePhotoInput!
+    $condition: ModelPhotoConditionInput
+  ) {
+    updatePhoto(input: $input, condition: $condition) {
       id
-      name
-      parent {
+      album {
         id
         name
+        parent {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         parentId
+        children {
+          nextToken
+        }
+        photos {
+          nextToken
+        }
         covers
         position
         slug
@@ -415,61 +445,63 @@ export const updatePhoto = `mutation UpdatePhoto(
         orderBy
         orderDirection
       }
-      parentId
-      children {
-        nextToken
-      }
-      photos {
-        nextToken
-      }
-      covers
+      albumId
       position
-      slug
+      file {
+        bucket
+        key
+        region
+      }
+      width
+      height
+      contentType
+      name
       description
-      summary
-      type
       visibility
       status
+      capturedAt
       createdAt
       publishedAt
       updatedAt
-      orderBy
-      orderDirection
+      exif
     }
-    albumId
-    position
-    file {
-      bucket
-      key
-      region
-    }
-    width
-    height
-    contentType
-    name
-    description
-    visibility
-    status
-    capturedAt
-    createdAt
-    publishedAt
-    updatedAt
   }
-}
 `;
-export const deletePhoto = `mutation DeletePhoto(
-  $input: DeletePhotoInput!
-  $condition: ModelPhotoConditionInput
-) {
-  deletePhoto(input: $input, condition: $condition) {
-    id
-    album {
+export const deletePhoto = /* GraphQL */ `
+  mutation DeletePhoto(
+    $input: DeletePhotoInput!
+    $condition: ModelPhotoConditionInput
+  ) {
+    deletePhoto(input: $input, condition: $condition) {
       id
-      name
-      parent {
+      album {
         id
         name
+        parent {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+        }
         parentId
+        children {
+          nextToken
+        }
+        photos {
+          nextToken
+        }
         covers
         position
         slug
@@ -484,45 +516,25 @@ export const deletePhoto = `mutation DeletePhoto(
         orderBy
         orderDirection
       }
-      parentId
-      children {
-        nextToken
-      }
-      photos {
-        nextToken
-      }
-      covers
+      albumId
       position
-      slug
+      file {
+        bucket
+        key
+        region
+      }
+      width
+      height
+      contentType
+      name
       description
-      summary
-      type
       visibility
       status
+      capturedAt
       createdAt
       publishedAt
       updatedAt
-      orderBy
-      orderDirection
+      exif
     }
-    albumId
-    position
-    file {
-      bucket
-      key
-      region
-    }
-    width
-    height
-    contentType
-    name
-    description
-    visibility
-    status
-    capturedAt
-    createdAt
-    publishedAt
-    updatedAt
   }
-}
 `;
