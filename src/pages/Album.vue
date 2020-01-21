@@ -12,30 +12,51 @@
         .col-auto.text-h6 {{ albumData.name }}
         q-space
         .col-auto.row.q-pl-md.q-gutter-sm
-          y-album-select-order-by(v-model="albumData.orderBy" :albumType="albumData.type" dense @input="onChangeOrdering")
-          y-album-select-order-direction(v-model="albumData.orderDirection" dense @input="onChangeOrdering")
+          q-icon(v-if="orderHasChanged" size="lg" color="warning" name="warning")
+          y-album-select-order-by(v-model="albumData.orderBy" :albumType="albumData.type" dense @input="onChangeOrderingOption")
+          y-album-select-order-direction(v-model="albumData.orderDirection" dense @input="onChangeOrderingOption")
       q-separator.q-my-sm
-      .row.q-gutter-sm(v-if="albumData.type=='collection'")
-        div(v-for="item in albumData.children.items" :key="item.id")
-          q-card.bg-grey-9.imageTh.cursor-pointer(@click="$router.push({path: `/album/${item.id}` })")
+      draggable(v-if="albumData.type=='collection'"
+        v-model="albumData.children.items"
+        group="children"
+        :disabled="false"
+        :sort="albumData.orderBy == 'position'"
+        animation="200"
+        ghostClass="ghost"
+        @sort="onSort"
+      )
+        transition-group.row.q-gutter-sm(type="transition" name="flip-list")
+          q-card.bg-grey-9.imageTh.cursor-pointer(v-for="item in albumData.children.items" :key="item.id" @click="$router.push({path: `/album/${item.id}` })"  data-type="children")
             .row.bg-grey-8.justify-center(style="width:120px;height:120px;")
               q-icon.self-center(name="photo" size="xl")
             q-card-section
               .text-caption.ellipsis {{item.name}}
               .text-caption.ellipsis {{item.id}}
-      .row.q-gutter-sm(v-if="albumData.type=='album'")
-        div(v-for="item in albumData.photos.items" :key="item.id")
-          q-card.bg-grey-9.imageTh
+              .text-caption.ellipsis {{item.position}}
+      draggable(v-if="albumData.type=='album'"
+        v-model="albumData.photos.items"
+        group="photos"
+        :disabled="false"
+        :sort="albumData.orderBy == 'position'"
+        animation="200"
+        ghostClass="ghost"
+        @sort="onSort"
+      )
+        transition-group.row.q-gutter-sm(type="transition" name="flip-list")
+          q-card.bg-grey-9.imageTh(v-for="item in albumData.photos.items" :key="item.id" data-type="photos")
             q-img.bg-grey-8(:ratio="1" :src="photoSrc[item.id]")
             q-card-section
               .text-caption.ellipsis {{item.name}}
               .text-caption.ellipsis {{item.id}}
+              .text-caption.ellipsis {{item.position}}
 </template>
 
 <script>
-import { getAlbum, updateAlbum, onUpdateAlbum, onCreateAlbum, onUpdatePhoto, onCreatePhoto } from 'src/graphql/queryAlbum'
+import { getAlbum, updateAlbum, updatePhoto, onUpdateAlbum, onCreateAlbum, onUpdatePhoto, onCreatePhoto } from 'src/graphql/queryAlbum'
 import { albumOrder } from 'src/lib/ordering'
 import YAlbumForm from 'components/albums'
+import draggable from 'vuedraggable'
+import { debounce } from 'quasar'
 export default {
   name: 'Album',
   data () {
@@ -47,12 +68,25 @@ export default {
       subscriptionCreate: null,
       subscriptionPhotoUpdate: null,
       subscriptionPhotoCreate: null,
-      photoSrc: {}
+      photoSrc: {},
+      orderHasChanged: false,
+      drag: false
     }
   },
   components: {
-    ...YAlbumForm
+    ...YAlbumForm,
+    draggable
   },
+  // beforeRouteLeave (to, from, next) {
+  //   console.log('routeleave')
+  //   console.log(this.orderHasChanged)
+  //   if (this.orderHasChanged) {
+  //     console.log('not saved')
+  //     next(false)
+  //   } else {
+  //     next()
+  //   }
+  // },
   beforeRouteUpdate (to, from, next) {
     this.fetchAlbum(to.params.id)
     next()
@@ -87,6 +121,7 @@ export default {
         this.updatePhotos(photoData.value.data.onCreatePhoto)
       }
     })
+    this.updatePositionLater = debounce(this.updatePosition, 4000)
   },
   beforeDestroy () {
     this.subscriptionUpdate.unsubscribe()
@@ -95,9 +130,35 @@ export default {
     this.subscriptionPhotoCreate.unsubscribe()
   },
   methods: {
+    updatePosition (type) {
+      const updatePromises = []
+      const srcOrder = [...this.albumData[type].items]
+      if (this.albumData.orderDirection === 'desc') {
+        srcOrder.reverse()
+      }
+      const query = type === 'children' ? updateAlbum : updatePhoto
+      for (let i = 0; i < srcOrder.length; i++) {
+        const newPosition = i + 1
+        if (newPosition !== srcOrder[i].position) {
+          const input = {
+            id: srcOrder[i].id,
+            position: newPosition
+          }
+          updatePromises.push(this.$Amplify.API.graphql(this.$Amplify.graphqlOperation(query, { input })))
+        }
+      }
+      Promise.all(updatePromises).then(res => {
+        this.orderHasChanged = false
+      })
+    },
+    updatePositionNow () {
+      this.updatePositionLater.cancel()
+      this.updatePosition()
+    },
     fetchAlbum (id) {
       this.loading = true
       this.albumData = null
+      this.orderHasChanged = false
       const query = this.$Amplify.graphqlOperation(getAlbum, { id: id })
       return this.$Amplify.API.graphql(query).then(({ data }) => {
         if (data.getAlbum.type === 'collection') {
@@ -169,7 +230,7 @@ export default {
         newContent = null
       }
     },
-    onChangeOrdering () {
+    onChangeOrderingOption () {
       const input = {
         id: this.albumData.id,
         orderBy: this.albumData.orderBy,
@@ -177,7 +238,28 @@ export default {
       }
       this.$Amplify.API.graphql(
         this.$Amplify.graphqlOperation(updateAlbum, { input })
-      )
+      ).then(res => {
+        this.orderHasChanged = false
+        this.updatePositionLater.cancel()
+      })
+    },
+    onSort (evt) {
+      const type = evt.item.dataset.type
+      let countChanges = 0
+      const srcOrder = [...this.albumData[type].items]
+      if (this.albumData.orderDirection === 'desc') {
+        srcOrder.reverse()
+      }
+      for (let i = 0; i < srcOrder.length; i++) {
+        const newPosition = i + 1
+        if (newPosition !== srcOrder[i].position) {
+          countChanges++
+        }
+      }
+      this.orderHasChanged = countChanges > 0
+      if (this.orderHasChanged) {
+        this.updatePositionLater(type)
+      }
     }
   },
   computed: {
@@ -195,4 +277,11 @@ export default {
 <style lang="sass" scoped>
 .q-card.imageTh
   width: 120px
+.flip-list-move
+  transition: transform 0.5s
+.no-move
+  transition: transform 0s
+.ghost
+  opacity: 0.5
+  background: #c8ebfb
 </style>
