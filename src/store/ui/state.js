@@ -1,5 +1,6 @@
 export default function () {
   return {
-    leftDrawerOpen: true
+    leftDrawerOpen: true,
+    supportsWebp: false
   }
 }

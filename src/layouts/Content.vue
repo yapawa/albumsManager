@@ -57,6 +57,9 @@ export default {
         this.setLocale(locale)
       })
   },
+  created () {
+    this.checkWebpSupport()
+  },
   computed: {
     left: {
       get () {
@@ -66,12 +69,12 @@ export default {
         this.$store.commit('ui/leftDrawerOpen', val)
       }
     },
-    right: {
+    supportsWebp: {
       get () {
-        return this.$store.state.ui.rightDrawerOpen
+        return this.$store.state.ui.supportsWebp
       },
       set (val) {
-        this.$store.commit('ui/rightDrawerOpen', val)
+        this.$store.commit('ui/supportsWebp', val)
       }
     }
   },
@@ -82,6 +85,24 @@ export default {
       // load the Quasar language pack dynamically
       import(`quasar/lang/${locale}`).then(({ default: messages }) => {
         this.$q.lang.set(messages)
+      })
+    },
+    checkWebpSupport () {
+      if (!self.createImageBitmap) {
+        this.supportsWebp = false
+        return false
+      }
+      const webpData = 'data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA='
+      return fetch(webpData).then(r => {
+        return r.blob().then(blob => {
+          return createImageBitmap(blob).then(() => {
+            this.supportsWebp = true
+            return true
+          }, () => {
+            this.supportsWebp = false
+            return false
+          })
+        })
       })
     }
   }
