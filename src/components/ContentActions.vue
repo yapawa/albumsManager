@@ -32,6 +32,7 @@
       :label="$q.screen.gt.xs ? $t('Add Photos') : ''"
       icon="add_to_photos"
       :to="{name: 'Upload'}"
+      :disabled="alreadyUploading"
     )
 </template>
 
@@ -47,6 +48,9 @@ export default {
     },
     canAddPhotos () {
       return this.$store.getters['albums/canAddPhotos']
+    },
+    alreadyUploading () {
+      return this.$route.name === 'Upload'
     }
   }
 }
