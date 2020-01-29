@@ -31,7 +31,7 @@
             .q-uploader__subtitle {{ scope.uploadedFiles.length }} {{ $t('files uploaded out of') }} {{ scope.files.length }}
           .col(v-else)
             .q-uploader__title {{ $t('Upload your files') }}
-          q-btn(v-if="scope.canAddFiles" type="a" icon="add_box" round dense flat)
+          q-btn(v-if="scope.canAddFiles" type="a" icon="add_to_photos" round dense flat)
             q-uploader-add-trigger
             q-tooltip {{ $t('Pick Files') }}
           q-btn(v-if="scope.canUpload" icon="cloud_upload" @click="scope.upload" round dense flat)
@@ -49,18 +49,10 @@
               .absolute-full.flex.flex-center.transparent.q-pa-none
                 q-linear-progress.q-ma-none(rounded :value="file.__progress" size="20px" track-color="grey-2")
               q-btn.float-right(fab dense flat icon="clear" @click="scope.removeFile(file)" size="8px")
-            q-card-section
-              q-btn(v-if="file.__exif" label="exif" @click="dialogData = file.__exif;showDialog=true" color="primary")
-              q-btn(v-if="file.__iptc" label="iptc" @click="dialogData = file.__iptc;showDialog=true" color="primary")
-              .text-caption {{file.__position}}
         .column.fit.justify-center.items-center(v-else @click="pickFiles")
           .col
             q-icon.self-center(size="184px" name="cloud_upload" color="grey-6")
           .col.text-h5.text-grey-6 {{ $t('Drop Images Here') }}
-    q-dialog(v-model="showDialog")
-      q-card
-        q-card-section
-          pre {{ dialogData }}
 </template>
 
 <script>
@@ -125,11 +117,13 @@ export default {
         parseExif(file.__img.originalSrc).then(exif => {
           const nowStamp = Date.now()
           let capturedAt = date.formatDate(file.lastModified, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
-          if (exif.DateTimeOriginal) {
-            capturedAt = date.formatDate(exif.DateTimeOriginal, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
-          }
-          if (exif.DateTimeDigitized) {
-            capturedAt = date.formatDate(exif.DateTimeDigitized, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
+          if (exif) {
+            if (exif.DateTimeOriginal) {
+              capturedAt = date.formatDate(exif.DateTimeOriginal, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
+            }
+            if (exif.DateTimeDigitized) {
+              capturedAt = date.formatDate(exif.DateTimeDigitized, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
+            }
           }
           const input = {
             id: file.__S3Metadata.photoId,
@@ -169,7 +163,6 @@ export default {
         files[i].__width = orientationData.imageWidth
         files[i].__height = orientationData.imageHeight
         files[i].__orientation = orientationData.orientation || 1
-        console.log(files[i])
         const Metadata = {
           owner: this.userInfo.username,
           filename: files[i].name,
@@ -217,3 +210,23 @@ export default {
   }
 }
 </script>
+<style lang="sass">
+.q-linear-progress
+  &.border-primary
+    border-style: solid
+    border-width: 1px
+    border-color: $grey-8
+.q-img__content
+  > div
+    &.q-pa-none
+      padding: 0
+    &.q-px-none
+      padding-left: 0
+      padding-right: 0
+    &.q-py-none
+      padding-top: 0
+      padding-bottom: 0
+    &.q-px-xs
+      padding-right: 4px
+      padding-left: 4px
+</style>
