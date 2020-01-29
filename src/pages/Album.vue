@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-page(padding)
+  q-page.q-pt-none(padding)
     .text-center(v-if="loading")
       q-spinner(size="3em")
     .row.justify-center(v-if="errors.length > 0")
@@ -8,13 +8,30 @@
         ul
           li(v-for="error in errors" :key="error") {{error.message}}
     .div(v-if="albumData && !loading")
+      q-slide-transition
+        .row.q-py-sm(v-show="showEdit")
+          .col-auto.row.q-pl-md.q-gutter-sm(v-show="showEdit")
+            draggable.rounded-borders.row.no-wrap(
+              v-model="covers"
+              style="border: 1px dotted white;width:320px;height:80px"
+              :group="{ name: 'covers', pull: true, put: true }"
+              :sort="true"
+              @change="onChange"
+            )
+              q-card.bg-grey-9(v-for="item in covers" :key="item.id" data-type="covers" style="width:80px;height:80px")
+                q-img.bg-grey-8(:ratio="1" :src="photoSrc[item.id]")
+          q-space
+          .col-auto.row.q-pl-md.q-gutter-sm
+            q-icon(v-if="orderHasChanged" size="lg" color="warning" name="warning")
+            y-album-select-order-by(v-model="albumData.orderBy" :albumType="albumData.type" dense @input="onChangeOrderingOption")
+            y-album-select-order-direction(v-model="albumData.orderDirection" dense @input="onChangeOrderingOption")
       .row
-        .col-auto.text-h6 {{ albumData.name }}
-        q-space
-        .col-auto.row.q-pl-md.q-gutter-sm
-          q-icon(v-if="orderHasChanged" size="lg" color="warning" name="warning")
-          y-album-select-order-by(v-model="albumData.orderBy" :albumType="albumData.type" dense @input="onChangeOrderingOption")
-          y-album-select-order-direction(v-model="albumData.orderDirection" dense @input="onChangeOrderingOption")
+        .col(:class="showEdit ? 'slider-left' : ''")
+        .col-12.col-md-auto.text-center.slider-handle.q-px-md
+          q-icon(name="arrow_drop_down" @click="showEdit = !showEdit" size="xs" :class="showEdit ? 'rotate-180' : ''")
+        .col(:class="showEdit ? 'slider-right' : ''")
+      .row
+        .text-h6 {{ albumData.name }}
       q-separator.q-my-sm
       draggable(v-if="albumData.type=='collection'"
         v-model="albumData.children.items"
@@ -24,6 +41,7 @@
         animation="200"
         ghostClass="ghost"
         @sort="onSort"
+        revert-on-spill="true"
       )
         transition-group.row.q-gutter-sm(type="transition" name="flip-list")
           q-card.bg-grey-9.imageTh.cursor-pointer(v-for="item in albumData.children.items" :key="item.id" @click="$router.push({path: `/album/${item.id}` })"  data-type="children")
@@ -35,12 +53,13 @@
               .text-caption.ellipsis {{item.position}}
       draggable(v-if="albumData.type=='album'"
         v-model="albumData.photos.items"
-        group="photos"
+        :group="{ name: 'photos', pull: 'clone', put: false }"
         :disabled="false"
         :sort="albumData.orderBy == 'position'"
         animation="200"
         ghostClass="ghost"
         @sort="onSort"
+        revert-on-spill="true"
       )
         transition-group.row.q-gutter-sm(type="transition" name="flip-list")
           q-card.bg-grey-9.imageTh(v-for="item in albumData.photos.items" :key="item.id" data-type="photos")
@@ -70,7 +89,9 @@ export default {
       subscriptionPhotoCreate: null,
       photoSrc: {},
       orderHasChanged: false,
-      drag: false
+      drag: false,
+      covers: [],
+      showEdit: false
     }
   },
   components: {
@@ -88,6 +109,7 @@ export default {
   //   }
   // },
   beforeRouteUpdate (to, from, next) {
+    this.showEdit = false
     this.fetchAlbum(to.params.id)
     next()
   },
@@ -260,6 +282,11 @@ export default {
       if (this.orderHasChanged) {
         this.updatePositionLater(type)
       }
+    },
+    onChange (evt) {
+      console.log(evt)
+      // this.covers.push(evt.added.element)
+      console.log(this.covers)
     }
   },
   computed: {
@@ -284,4 +311,15 @@ export default {
 .ghost
   opacity: 0.5
   background: #c8ebfb
+.slider-
+  &left
+    border-top: 1px solid $grey-2
+  &right
+    border-top: 1px solid $grey-2
+  &handle
+    border-bottom-right-radius: 8px
+    border-bottom-left-radius: 8px
+    border-bottom: 1px solid $grey-2
+    border-left: 1px solid $grey-2
+    border-right: 1px solid $grey-2
 </style>
