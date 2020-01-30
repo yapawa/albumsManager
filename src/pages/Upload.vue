@@ -136,7 +136,7 @@ export default {
             },
             width: file.__width,
             height: file.__height,
-            contentType: file.__img.type,
+            contentType: file.type,
             name: file.name,
             visibility: 'public',
             status: 'published',
