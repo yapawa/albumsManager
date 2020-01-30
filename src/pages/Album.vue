@@ -10,16 +10,17 @@
     .div(v-if="albumData && !loading")
       q-slide-transition
         .row.q-py-sm(v-show="showEdit")
-          .col-auto.row.q-pl-md.q-gutter-sm(v-show="showEdit")
-            draggable.rounded-borders.row.no-wrap(
+          .col-auto.row.q-pl-md(v-show="showEdit")
+            draggable.rounded-borders.row.no-wrap.q-gutter-xs.covers-drop(
               v-model="covers"
-              style="border: 1px dotted white;width:320px;height:80px"
-              :group="{ name: 'covers', pull: true, put: true }"
+              :group="{ name: 'covers', pull: false, put: canPut }"
               :sort="true"
-              @change="onChange"
+              @change="onCoversChange"
             )
-              q-card.bg-grey-9(v-for="item in covers" :key="item.id" data-type="covers" style="width:80px;height:80px")
+              q-card.bg-grey-9.covers-th(v-for="item in covers" :key="item.id" data-type="covers")
                 q-img.bg-grey-8(:ratio="1" :src="photoSrc[item.id]")
+                  .fixed-top-right.q-pa-none
+                    q-btn(dense flat icon="delete" size="10px" @click="removeCover(item.id)")
           q-space
           .col-auto.row.q-pl-md.q-gutter-sm
             q-icon(v-if="orderHasChanged" size="lg" color="warning" name="warning")
@@ -27,8 +28,8 @@
             y-album-select-order-direction(v-model="albumData.orderDirection" dense @input="onChangeOrderingOption")
       .row
         .col(:class="showEdit ? 'slider-left' : ''")
-        .col-12.col-md-auto.text-center.slider-handle.q-px-md
-          q-icon(name="arrow_drop_down" @click="showEdit = !showEdit" size="xs" :class="showEdit ? 'rotate-180' : ''")
+        .col-12.col-md-auto.text-center.slider-handle.q-px-md.cursor-pointer(@click="showEdit = !showEdit")
+          q-icon(name="arrow_drop_down" size="xs" :class="showEdit ? 'rotate-180' : ''")
         .col(:class="showEdit ? 'slider-right' : ''")
       .row
         .text-h6 {{ albumData.name }}
@@ -44,7 +45,7 @@
         revert-on-spill="true"
       )
         transition-group.row.q-gutter-sm(type="transition" name="flip-list")
-          q-card.bg-grey-9.imageTh.cursor-pointer(v-for="item in albumData.children.items" :key="item.id" @click="$router.push({path: `/album/${item.id}` })"  data-type="children")
+          q-card.bg-grey-9.imageTh.cursor-pointer(v-for="item in albumData.children.items" :key="item.id" @click="$router.push({path: `/album/${item.id}` })" data-type="children")
             .row.bg-grey-8.justify-center(style="width:120px;height:120px;")
               q-icon.self-center(name="photo" size="xl")
             q-card-section
@@ -60,9 +61,10 @@
         ghostClass="ghost"
         @sort="onSort"
         revert-on-spill="true"
+        :clone="clonePhoto"
       )
         transition-group.row.q-gutter-sm(type="transition" name="flip-list")
-          q-card.bg-grey-9.imageTh(v-for="item in albumData.photos.items" :key="item.id" data-type="photos")
+          q-card.bg-grey-9.imageTh(v-for="item in albumData.photos.items" :key="item.id" data-type="photos" :data-id="item.id")
             q-img.bg-grey-8(:ratio="1" :src="photoSrc[item.id]")
             q-card-section
               .text-caption.ellipsis {{item.name}}
@@ -89,25 +91,14 @@ export default {
       subscriptionPhotoCreate: null,
       photoSrc: {},
       orderHasChanged: false,
-      drag: false,
-      covers: [],
-      showEdit: false
+      showEdit: false,
+      covers: []
     }
   },
   components: {
     ...YAlbumForm,
     draggable
   },
-  // beforeRouteLeave (to, from, next) {
-  //   console.log('routeleave')
-  //   console.log(this.orderHasChanged)
-  //   if (this.orderHasChanged) {
-  //     console.log('not saved')
-  //     next(false)
-  //   } else {
-  //     next()
-  //   }
-  // },
   beforeRouteUpdate (to, from, next) {
     this.showEdit = false
     this.fetchAlbum(to.params.id)
@@ -173,9 +164,13 @@ export default {
         this.orderHasChanged = false
       })
     },
-    updatePositionNow () {
-      this.updatePositionLater.cancel()
-      this.updatePosition()
+    updateCovers () {
+      this.albumData.covers = this.covers
+      const input = {
+        id: this.albumData.id,
+        covers: JSON.stringify(this.covers)
+      }
+      this.$Amplify.API.graphql(this.$Amplify.graphqlOperation(updateAlbum, { input }))
     },
     fetchAlbum (id) {
       this.loading = true
@@ -191,7 +186,9 @@ export default {
             this.setPhotoSrc(p.id, p.file.key)
           })
         }
+        data.getAlbum.covers = JSON.parse(data.getAlbum.covers)
         this.albumData = data.getAlbum
+        this.covers = this.albumData.covers || []
         this.setActiveAlbum()
         this.loading = false
       }).catch((err) => { // eslint-disable-line handle-callback-err
@@ -283,10 +280,33 @@ export default {
         this.updatePositionLater(type)
       }
     },
-    onChange (evt) {
-      console.log(evt)
-      // this.covers.push(evt.added.element)
-      console.log(this.covers)
+    onCoversChange (evt) {
+      this.updateCovers()
+    },
+    removeCover (id) {
+      this.covers = this.covers.filter(e => e.id !== id)
+      this.updateCovers()
+    },
+    clonePhoto (el) {
+      return {
+        id: el.id,
+        contentType: el.contentType,
+        key: el.file.key,
+        width: el.width,
+        height: el.height,
+        updatedAt: el.updatedAt
+      }
+    },
+    canPut (to, from, el, evt) {
+      if (from.options.group.name === 'photos' && this.covers.length < 4) {
+        const itemId = el.getAttribute('data-id')
+        const existingIds = this.covers.map(item => item.id)
+        if (existingIds.indexOf(itemId) > -1) {
+          return false
+        }
+        return true
+      }
+      return false
     }
   },
   computed: {
@@ -302,6 +322,8 @@ export default {
 }
 </script>
 <style lang="sass" scoped>
+$cover-th: 60px
+
 .q-card.imageTh
   width: 120px
 .flip-list-move
@@ -322,4 +344,25 @@ export default {
     border-bottom: 1px solid $grey-2
     border-left: 1px solid $grey-2
     border-right: 1px solid $grey-2
+.covers-drop
+  border: 1px dotted white
+  width: 4 * $cover-th + 5 * map-get($space-xs,x)
+  height: $cover-th + 2 * map-get($space-xs,y)
+  background-color: $grey-9
+.covers-th
+  width: $cover-th
+  height: $cover-th
+.q-img__content
+  > div
+    &.q-pa-none
+      padding: 0
+    &.q-px-none
+      padding-left: 0
+      padding-right: 0
+    &.q-py-none
+      padding-top: 0
+      padding-bottom: 0
+    &.q-px-xs
+      padding-right: 4px
+      padding-left: 4px
 </style>
