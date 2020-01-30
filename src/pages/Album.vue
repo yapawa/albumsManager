@@ -191,6 +191,9 @@ export default {
         this.covers = this.albumData.covers || []
         this.setActiveAlbum()
         this.loading = false
+        if (data.getAlbum.type === 'album' && data.getAlbum.photos.items.length === 0) {
+          this.$router.push({ name: 'Upload' })
+        }
       }).catch((err) => { // eslint-disable-line handle-callback-err
         this.$router.replace({ name: 'home' })
       })
