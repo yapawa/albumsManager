@@ -22,13 +22,13 @@
                   .fixed-top-right.q-pa-none
                     q-btn(dense flat icon="delete" size="10px" @click="removeCover(item.id)")
           q-space
-          .col-auto.row.q-pl-md.q-gutter-sm
-            q-icon(v-if="orderHasChanged" size="lg" color="warning" name="warning")
+          .col-auto.row.q-pl-md.q-gutter-sm.items-center
             y-album-select-order-by(v-model="albumData.orderBy" :albumType="albumData.type" dense @input="onChangeOrderingOption")
             y-album-select-order-direction(v-model="albumData.orderDirection" dense @input="onChangeOrderingOption")
       .row.justify-between.items-center
         .text-h6.col {{ albumData.name }}
         .col.text-right
+          q-spinner-puff(v-if="orderHasChanged" color="warning" size="lg")
           q-btn.q-px-sm.q-ml-sm(
               color="grey-4"
               text-color="black"
