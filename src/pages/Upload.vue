@@ -19,7 +19,7 @@
 
 <script>
 import { uid, date } from 'quasar'
-import { createPhoto } from 'src/graphql/queryAlbum'
+import { createPhoto, updateAlbum } from 'src/graphql/queryAlbum'
 import { YUploader } from 'components/uploader'
 
 export default {
@@ -70,7 +70,30 @@ export default {
   },
   methods: {
     finish () {
-      this.$router.push({ name: 'album' })
+      this.updateCovers().then(data => {
+        this.$router.push({ name: 'album' })
+      })
+    },
+    updateCovers () {
+      const covers = this.activeAlbum.covers || []
+      const coversToAdd = this.$refs.fileUploader.files.slice(0, (4 - covers.length)).map(f => {
+        return {
+          id: f.__id,
+          contentType: f.type,
+          key: this.getKey(f),
+          width: f.__width,
+          height: f.__height,
+          updatedAt: f.__updatedAt
+        }
+      })
+      const newCovers = [...covers, ...coversToAdd]
+      const input = {
+        id: this.albumId,
+        covers: JSON.stringify(newCovers)
+      }
+      return this.$Amplify.API.graphql(
+        this.$Amplify.graphqlOperation(updateAlbum, { input })
+      )
     },
     uploaded ({ file }) {
       const nowStamp = Date.now()
@@ -83,6 +106,7 @@ export default {
           capturedAt = date.formatDate(file.__exif.DateTimeDigitized, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
         }
       }
+      file.__updatedAt = date.formatDate(nowStamp, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
       const input = {
         id: file.__id,
         albumId: this.albumId,
@@ -99,7 +123,7 @@ export default {
         visibility: 'public',
         status: 'published',
         capturedAt,
-        publishedAt: date.formatDate(nowStamp, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),
+        publishedAt: file.__updatedAt,
         exif: JSON.stringify(file.__exif)
       }
       this.$Amplify.API.graphql(
