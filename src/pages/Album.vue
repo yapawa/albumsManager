@@ -9,8 +9,8 @@
           li(v-for="error in errors" :key="error") {{error.message}}
     .div(v-if="albumData && !loading")
       q-slide-transition
-        .row.q-py-sm(v-show="showEdit")
-          .col-auto.row.q-pl-md(v-show="showEdit")
+        .row.q-my-sm(v-show="showEdit")
+          .col-auto
             draggable.rounded-borders.row.no-wrap.q-gutter-xs.covers-drop(
               v-model="covers"
               :group="{ name: 'covers', pull: false, put: canPut }"
@@ -26,13 +26,18 @@
             q-icon(v-if="orderHasChanged" size="lg" color="warning" name="warning")
             y-album-select-order-by(v-model="albumData.orderBy" :albumType="albumData.type" dense @input="onChangeOrderingOption")
             y-album-select-order-direction(v-model="albumData.orderDirection" dense @input="onChangeOrderingOption")
-      .row
-        .col(:class="showEdit ? 'slider-left' : ''")
-        .col-12.col-md-auto.text-center.slider-handle.q-px-md.cursor-pointer(@click="showEdit = !showEdit")
-          q-icon(name="arrow_drop_down" size="xs" :class="showEdit ? 'rotate-180' : ''")
-        .col(:class="showEdit ? 'slider-right' : ''")
-      .row
-        .text-h6 {{ albumData.name }}
+      .row.justify-between.items-center
+        .text-h6.col {{ albumData.name }}
+        .col.text-right
+          q-btn.q-px-sm.q-ml-sm(
+              color="grey-4"
+              text-color="black"
+              dense
+              icon="edit"
+              @click="showEdit = !showEdit"
+              size="sm"
+          )
+
       q-separator.q-my-sm
       draggable(v-if="albumData.type=='collection'"
         v-model="albumData.children.items"
@@ -336,17 +341,6 @@ $cover-th: 60px
 .ghost
   opacity: 0.5
   background: #c8ebfb
-.slider-
-  &left
-    border-top: 1px solid $grey-2
-  &right
-    border-top: 1px solid $grey-2
-  &handle
-    border-bottom-right-radius: 8px
-    border-bottom-left-radius: 8px
-    border-bottom: 1px solid $grey-2
-    border-left: 1px solid $grey-2
-    border-right: 1px solid $grey-2
 .covers-drop
   border: 1px dotted white
   width: 4 * $cover-th + 5 * map-get($space-xs,x)
