@@ -17,7 +17,7 @@
     "aws-amplify-vue": "^1.1.2",
     "blueimp-load-image": "^2.26.0",
     "fitty": "^2.3.0",
-    "quasar": "^1.8.3",
+    "quasar": "^1.8.4",
     "slug": "^2.1.1",
     "vue-i18n": "^8.0.0",
     "vuedraggable": "^2.23.2"
