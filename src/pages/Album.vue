@@ -11,16 +11,7 @@
       q-slide-transition
         .row.q-my-sm(v-show="showEdit")
           .col-auto
-            draggable.rounded-borders.row.no-wrap.q-gutter-xs.covers-drop(
-              v-model="covers"
-              :group="{ name: 'covers', pull: false, put: canPut }"
-              :sort="true"
-              @change="onCoversChange"
-            )
-              q-card.bg-grey-9.covers-th(v-for="item in covers" :key="item.id" data-type="covers")
-                q-img.bg-grey-8(:ratio="1" :src="photoSrc[item.id]")
-                  .fixed-top-right.q-pa-none
-                    q-btn(dense flat icon="delete" size="10px" @click="removeCover(item.id)")
+            y-album-covers(:albumData="albumData" :photoSrc="photoSrc")
           q-space
           .col-auto.row.q-pl-md.q-gutter-sm.items-center
             y-album-select-order-by(v-model="albumData.orderBy" :albumType="albumData.type" dense @input="onChangeOrderingOption")
@@ -67,6 +58,7 @@
         @sort="onSort"
         revert-on-spill="true"
         :clone="clonePhoto"
+        :setData="setData"
       )
         transition-group.row.q-gutter-sm(type="transition" name="flip-list")
           q-card.bg-grey-9.imageTh(v-for="item in albumData.photos.items" :key="item.id" data-type="photos" :data-id="item.id")
@@ -169,14 +161,6 @@ export default {
         this.orderHasChanged = false
       })
     },
-    updateCovers () {
-      this.albumData.covers = this.covers
-      const input = {
-        id: this.albumData.id,
-        covers: JSON.stringify(this.covers)
-      }
-      this.$Amplify.API.graphql(this.$Amplify.graphqlOperation(updateAlbum, { input }))
-    },
     fetchAlbum (id) {
       this.loading = true
       this.albumData = null
@@ -185,6 +169,15 @@ export default {
       return this.$Amplify.API.graphql(query).then(({ data }) => {
         if (data.getAlbum.type === 'collection') {
           data.getAlbum.children.items.sort(albumOrder(data.getAlbum.orderBy, data.getAlbum.orderDirection))
+          data.getAlbum.children.items.forEach(a => {
+            if (a.covers) {
+              const covers = JSON.parse(a.covers)
+              if (covers.length > 0) {
+                // console.log(a.id, covers[0])
+                this.setPhotoSrc(a.id, covers[0].key)
+              }
+            }
+          })
         } else {
           data.getAlbum.photos.items.sort(albumOrder(data.getAlbum.orderBy, data.getAlbum.orderDirection))
           data.getAlbum.photos.items.forEach(p => {
@@ -288,13 +281,6 @@ export default {
         this.updatePositionLater(type)
       }
     },
-    onCoversChange (evt) {
-      this.updateCovers()
-    },
-    removeCover (id) {
-      this.covers = this.covers.filter(e => e.id !== id)
-      this.updateCovers()
-    },
     clonePhoto (el) {
       return {
         id: el.id,
@@ -305,16 +291,8 @@ export default {
         updatedAt: el.updatedAt
       }
     },
-    canPut (to, from, el, evt) {
-      if (from.options.group.name === 'photos' && this.covers.length < 4) {
-        const itemId = el.getAttribute('data-id')
-        const existingIds = this.covers.map(item => item.id)
-        if (existingIds.indexOf(itemId) > -1) {
-          return false
-        }
-        return true
-      }
-      return false
+    setData (dataTransfer, dragEl) {
+      dataTransfer.setData('text', JSON.stringify(this.clonePhoto(this.albumData.photos.items.filter(el => el.id === dragEl.dataset.id)[0])))
     }
   },
   computed: {
@@ -341,14 +319,6 @@ $cover-th: 60px
 .ghost
   opacity: 0.5
   background: #c8ebfb
-.covers-drop
-  border: 1px dotted white
-  width: 4 * $cover-th + 5 * map-get($space-xs,x)
-  height: $cover-th + 2 * map-get($space-xs,y)
-  background-color: $grey-9
-.covers-th
-  width: $cover-th
-  height: $cover-th
 .q-img__content
   > div
     &.q-pa-none

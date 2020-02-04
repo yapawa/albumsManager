@@ -6,6 +6,7 @@ import YAlbumSelectVisibility from 'components/albums/selectVisibility'
 import YAlbumSelectStatus from 'components/albums/selectStatus'
 import YAlbumSelectOrderBy from 'components/albums/selectOrderBy'
 import YAlbumSelectOrderDirection from 'components/albums/selectOrderDirection'
+import YAlbumCovers from 'components/albums/covers'
 
 export default {
   YAlbumType,
@@ -15,5 +16,6 @@ export default {
   YAlbumSelectVisibility,
   YAlbumSelectStatus,
   YAlbumSelectOrderBy,
-  YAlbumSelectOrderDirection
+  YAlbumSelectOrderDirection,
+  YAlbumCovers
 }
