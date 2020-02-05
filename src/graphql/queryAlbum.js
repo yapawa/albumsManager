@@ -53,6 +53,16 @@ export const getAlbum = `query GetAlbum($id: ID!) {
     children {
       items {
         ${albumFields.join('\n')}
+        children {
+          items {
+            id
+          }
+        }
+        photos {
+          items {
+            id
+          }
+        }
       }
       nextToken
     }

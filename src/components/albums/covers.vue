@@ -7,7 +7,6 @@ draggable.rounded-borders.row.no-wrap.q-gutter-xs.covers-drop(
 )
   q-card.bg-grey-9.covers-th(v-for="item in covers" :key="item.id" data-type="covers")
     q-img.bg-grey-8(:ratio="1" :src="photoSrc[item.id]")
-      .fixed-bottom.q-pa-none {{ item.name }}
       .fixed-top-right.q-pa-none
         q-btn(dense flat icon="delete" size="10px" @click="remove(item.id)")
 </template>

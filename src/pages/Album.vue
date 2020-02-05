@@ -41,13 +41,11 @@
         revert-on-spill="true"
       )
         transition-group.row.q-gutter-sm(type="transition" name="flip-list")
-          q-card.bg-grey-9.imageTh.cursor-pointer(v-for="item in albumData.children.items" :key="item.id" @click="$router.push({path: `/album/${item.id}` })" data-type="children")
-            .row.bg-grey-8.justify-center(style="width:120px;height:120px;")
-              q-icon.self-center(name="photo" size="xl")
-            q-card-section
-              .text-caption.ellipsis {{item.name}}
-              .text-caption.ellipsis {{item.id}}
-              .text-caption.ellipsis {{item.position}}
+          q-card.bg-grey-9.albumTh.cursor-pointer(v-for="item in albumData.children.items" :key="item.id" @click="$router.push({name: 'album', params:{id:item.id}})" data-type="children")
+            q-img(v-if="item.covers.length>0" :src="photoSrc[item.covers[0].id]" :ratio="1")
+              .absolute-top-right.q-pa-none {{getContentCount(item) }}
+            q-card-section.q-pa-xs
+              .text-caption.text-center.ellipsis {{item.name}}
       draggable(v-if="albumData.type=='album'"
         v-model="albumData.photos.items"
         :group="{ name: 'photos', pull: 'clone', put: false }"
@@ -61,12 +59,10 @@
         :setData="setData"
       )
         transition-group.row.q-gutter-sm(type="transition" name="flip-list")
-          q-card.bg-grey-9.imageTh(v-for="item in albumData.photos.items" :key="item.id" data-type="photos" :data-id="item.id")
+          q-card.bg-grey-9.photoTh(v-for="item in albumData.photos.items" :key="item.id" data-type="photos" :data-id="item.id")
             q-img.bg-grey-8(:ratio="1" :src="photoSrc[item.id]")
-            q-card-section
-              .text-caption.ellipsis {{item.name}}
-              .text-caption.ellipsis {{item.id}}
-              .text-caption.ellipsis {{item.position}}
+              .absolute-top-right.q-pa-none
+                q-btn(dense flat icon="delete" size="10px" @click="remove(item.id)")
 </template>
 
 <script>
@@ -140,6 +136,9 @@ export default {
     this.subscriptionPhotoCreate.unsubscribe()
   },
   methods: {
+    remove (id) {
+      alert('Missing function: Remove(' + id + ')')
+    },
     updatePosition (type) {
       const updatePromises = []
       const srcOrder = [...this.albumData[type].items]
@@ -169,14 +168,11 @@ export default {
       return this.$Amplify.API.graphql(query).then(({ data }) => {
         if (data.getAlbum.type === 'collection') {
           data.getAlbum.children.items.sort(albumOrder(data.getAlbum.orderBy, data.getAlbum.orderDirection))
-          data.getAlbum.children.items.forEach(a => {
-            if (a.covers) {
-              const covers = JSON.parse(a.covers)
-              if (covers.length > 0) {
-                // console.log(a.id, covers[0])
-                this.setPhotoSrc(a.id, covers[0].key)
-              }
-            }
+          data.getAlbum.children.items.forEach((a, idx) => {
+            data.getAlbum.children.items[idx].covers = JSON.parse(a.covers) || []
+            data.getAlbum.children.items[idx].covers.forEach(c => {
+              this.setPhotoSrc(c.id, c.key)
+            })
           })
         } else {
           data.getAlbum.photos.items.sort(albumOrder(data.getAlbum.orderBy, data.getAlbum.orderDirection))
@@ -293,6 +289,9 @@ export default {
     },
     setData (dataTransfer, dragEl) {
       dataTransfer.setData('text', JSON.stringify(this.clonePhoto(this.albumData.photos.items.filter(el => el.id === dragEl.dataset.id)[0])))
+    },
+    getContentCount (item) {
+      return item.children.items.length + item.photos.items.length
     }
   },
   computed: {
@@ -309,9 +308,12 @@ export default {
 </script>
 <style lang="sass" scoped>
 $cover-th: 60px
+$th: 100px
 
-.q-card.imageTh
-  width: 120px
+.q-card.photoTh
+  width: $th
+.q-card.albumTh
+  width: $th
 .flip-list-move
   transition: transform 0.5s
 .no-move
