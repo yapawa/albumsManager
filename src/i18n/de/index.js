@@ -103,5 +103,7 @@ Benutze eine Nummer im Format: +12345678900`,
   'Upload Files': 'Fotos laden',
   'Drop Images Here': 'Bilder hierher ziehen',
   'Abort Upload': 'Hochladen abbrechen',
-  'Edit Album': 'Album bearbeiten'
+  'Edit Album': 'Album bearbeiten',
+  Delete: 'Löschen',
+  'confirm-delete-picture': 'Möchten Sie das Foto wirklich löschen?'
 }

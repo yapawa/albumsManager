@@ -103,5 +103,7 @@ export default {
   'Upload Files': 'Charger les photos',
   'Drop Images Here': 'Glissez vos photos ici',
   'Abort Upload': 'Annuler le chargement',
-  'Edit Album': 'Modifer Album'
+  'Edit Album': 'Modifer Album',
+  Delete: 'Supprimer',
+  'confirm-delete-picture': 'Êtes vous sûr de vouloir supprimer la photo?'
 }

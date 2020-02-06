@@ -145,3 +145,19 @@ export const onUpdatePhoto = `subscription OnUpdatePhoto {
     ${photoFields.join('\n')}
   }
 }`
+export const onDeletePhoto = /* GraphQL */ `
+subscription OnDeletePhoto {
+  onDeletePhoto {
+    id
+  }
+}`
+
+export const deletePhoto = `
+mutation DeletePhoto(
+  $input: DeletePhotoInput!
+  $condition: ModelPhotoConditionInput
+) {
+  deletePhoto(input: $input, condition: $condition) {
+    id
+  }
+}`

@@ -59,18 +59,27 @@
         :setData="setData"
       )
         transition-group.row.q-gutter-sm(type="transition" name="flip-list")
-          q-card.bg-grey-9.photoTh(v-for="item in albumData.photos.items" :key="item.id" data-type="photos" :data-id="item.id")
+          q-card.bg-grey-9.photoTh(v-for="item in albumData.photos.items" :key="item.id" data-type="photos" :data-id="item.id" @mouseenter="onPhotoOver" @mouseleave="onPhotoOut")
             q-img.bg-grey-8(:ratio="1" :src="photoSrc[item.id]")
-              .absolute-top-right.q-pa-none
-                q-btn(dense flat icon="delete" size="10px" @click="remove(item.id)")
+              .absolute-top-right.q-pa-none(:class="(photoHover === item.id) ? '':'hidden'")
+                q-btn(dense flat icon="delete" size="10px" @click="confirmRemovePhoto(item.id)")
+    q-dialog(v-model="confirm" persistent)
+      q-card.bg-grey-8
+        q-card-section.row.items-center.justify-center
+          q-img.rounded-borders(:src="photoSrc[toDelete]" :ratio="1" style="width:70px")
+        q-card-section.row.items-center.justify-center
+          .col.text-body1 {{ $t('confirm-delete-picture') }}
+        q-card-actions.bg-grey-6(align="around")
+          q-btn(:disable="deletingPhoto" :label="$t('Cancel')" color="secondary" text-color="black" v-close-popup)
+          q-btn(:loading="deletingPhoto" :label="$t('Delete')" color="primary" text-color="black" @click="removePhoto")
 </template>
 
 <script>
-import { getAlbum, updateAlbum, updatePhoto, onUpdateAlbum, onCreateAlbum, onUpdatePhoto, onCreatePhoto } from 'src/graphql/queryAlbum'
+import { getAlbum, updateAlbum, updatePhoto, onUpdateAlbum, onCreateAlbum, onUpdatePhoto, onCreatePhoto, onDeletePhoto, deletePhoto } from 'src/graphql/queryAlbum'
 import { albumOrder } from 'src/lib/ordering'
 import YAlbumForm from 'components/albums'
 import draggable from 'vuedraggable'
-import { debounce } from 'quasar'
+import { debounce, event } from 'quasar'
 export default {
   name: 'Album',
   data () {
@@ -85,7 +94,11 @@ export default {
       photoSrc: {},
       orderHasChanged: false,
       showEdit: false,
-      covers: []
+      covers: [],
+      photoHover: null,
+      confirm: false,
+      toDelete: null,
+      deletingPhoto: false
     }
   },
   components: {
@@ -127,6 +140,13 @@ export default {
         this.updatePhotos(photoData.value.data.onCreatePhoto)
       }
     })
+    this.subscriptionPhotoDelete = this.$Amplify.API.graphql(
+      this.$Amplify.graphqlOperation(onDeletePhoto)
+    ).subscribe({
+      next: (photoData) => {
+        this.deletePhotos(photoData.value.data.onDeletePhoto)
+      }
+    })
     this.updatePositionLater = debounce(this.updatePosition, 4000)
   },
   beforeDestroy () {
@@ -134,10 +154,41 @@ export default {
     this.subscriptionCreate.unsubscribe()
     this.subscriptionPhotoUpdate.unsubscribe()
     this.subscriptionPhotoCreate.unsubscribe()
+    this.subscriptionPhotoDelete.unsubscribe()
   },
   methods: {
-    remove (id) {
-      alert('Missing function: Remove(' + id + ')')
+    onPhotoOver (e) {
+      if (e.target.dataset.type && e.target.dataset.id && e.target.dataset.type === 'photos') {
+        this.photoHover = e.target.dataset.id
+      }
+      event.stopAndPrevent(e)
+    },
+    onPhotoOut (e) {
+      this.photoHover = null
+      event.stopAndPrevent(e)
+    },
+    confirmRemovePhoto (id) {
+      this.toDelete = id
+      this.confirm = true
+    },
+    removePhoto () {
+      if (this.toDelete) {
+        this.deletingPhoto = true
+        const input = {
+          id: this.toDelete
+        }
+        return this.$Amplify.API.graphql(this.$Amplify.graphqlOperation(deletePhoto, { input })).then(res => {
+          this.confirm = false
+          this.deletingPhoto = false
+          this.toDelete = null
+        })
+          .catch(err => {
+            console.error('deletePhoto', err)
+            this.confirm = false
+            this.deletingPhoto = false
+            this.toDelete = null
+          })
+      }
     },
     updatePosition (type) {
       const updatePromises = []
@@ -244,6 +295,12 @@ export default {
         newContent.photos.items.sort(albumOrder(this.albumData.orderBy, this.albumData.orderDirection))
         this.albumData = { ...newContent }
         newContent = null
+      }
+    },
+    deletePhotos (item) {
+      const idx = this.albumData.photos.items.findIndex(e => e.id === item.id)
+      if (idx > -1) {
+        this.albumData.photos.items.splice(idx, 1)
       }
     },
     onChangeOrderingOption () {

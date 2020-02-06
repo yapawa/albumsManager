@@ -109,5 +109,7 @@ export default {
   'Drop Images Here': 'Drop Images Here',
   'Upload Files': 'Upload Pictures',
   'Abort Upload': 'Abort Upload',
-  'Edit Album': 'Edit Album'
+  'Edit Album': 'Edit Album',
+  Delete: 'Delete',
+  'confirm-delete-picture': 'Are you sure you want to delete the photo?'
 }
