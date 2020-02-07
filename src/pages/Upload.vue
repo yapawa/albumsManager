@@ -21,6 +21,11 @@
 import { uid, date } from 'quasar'
 import { createPhoto, updateAlbum } from 'src/graphql/queryAlbum'
 import { YUploader } from 'components/uploader'
+const path = require('path')
+
+const slug = require('slug')
+slug.defaults.mode = 'rfc3986'
+slug.defaults.modes.rfc3986.lower = true
 
 export default {
   name: 'UploadPhotos',
@@ -120,6 +125,7 @@ export default {
         height: file.__height,
         contentType: file.type,
         name: file.name,
+        slug: slug(path.basename(file.name, path.extname(file.name))),
         visibility: 'public',
         status: 'published',
         capturedAt,

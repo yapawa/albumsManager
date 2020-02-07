@@ -82,6 +82,7 @@ export const createAlbum = /* GraphQL */ `
           height
           contentType
           name
+          slug
           description
           visibility
           status
@@ -190,6 +191,7 @@ export const updateAlbum = /* GraphQL */ `
           height
           contentType
           name
+          slug
           description
           visibility
           status
@@ -298,6 +300,7 @@ export const deleteAlbum = /* GraphQL */ `
           height
           contentType
           name
+          slug
           description
           visibility
           status
@@ -385,6 +388,7 @@ export const createPhoto = /* GraphQL */ `
       height
       contentType
       name
+      slug
       description
       visibility
       status
@@ -456,6 +460,7 @@ export const updatePhoto = /* GraphQL */ `
       height
       contentType
       name
+      slug
       description
       visibility
       status
@@ -527,6 +532,7 @@ export const deletePhoto = /* GraphQL */ `
       height
       contentType
       name
+      slug
       description
       visibility
       status

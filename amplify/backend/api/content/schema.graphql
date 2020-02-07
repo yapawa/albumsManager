@@ -40,6 +40,7 @@ type Photo
   height: Int
   contentType: String
   name: String
+  slug: String
   description: String
   visibility: Visibility!
   status: Status!

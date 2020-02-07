@@ -79,6 +79,7 @@ export const getAlbum = /* GraphQL */ `
           height
           contentType
           name
+          slug
           description
           visibility
           status
@@ -216,6 +217,7 @@ export const getPhoto = /* GraphQL */ `
       height
       contentType
       name
+      slug
       description
       visibility
       status
@@ -265,6 +267,7 @@ export const listPhotos = /* GraphQL */ `
         height
         contentType
         name
+        slug
         description
         visibility
         status
