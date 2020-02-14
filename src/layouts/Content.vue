@@ -59,6 +59,7 @@ export default {
   },
   created () {
     this.checkWebpSupport()
+    this.setDpr()
   },
   computed: {
     left: {
@@ -75,6 +76,14 @@ export default {
       },
       set (val) {
         this.$store.commit('ui/supportsWebp', val)
+      }
+    },
+    dpr: {
+      get () {
+        return this.$store.state.ui.dpr
+      },
+      set (val) {
+        this.$store.commit('ui/dpr', val)
       }
     }
   },
@@ -104,6 +113,15 @@ export default {
           })
         })
       })
+    },
+    setDpr () {
+      let dpr = 1
+      if (devicePixelRatio) {
+        dpr = devicePixelRatio
+      } else if (window.devicePixelRatio) {
+        dpr = window.devicePixelRatio
+      }
+      this.dpr = parseFloat(parseFloat(dpr).toFixed(1))
     }
   }
 }
