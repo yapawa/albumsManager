@@ -78,7 +78,7 @@
 
 <script>
 import { getAlbum, updateAlbum, updatePhoto, onUpdateAlbum, onCreateAlbum, onUpdatePhoto, onCreatePhoto, onDeletePhoto, deletePhoto } from 'src/graphql/queryAlbum'
-import { albumOrder } from 'src/lib/ordering'
+import { albumOrder } from 'src/utils/ordering'
 import YAlbumForm from 'components/albums'
 import draggable from 'vuedraggable'
 import { debounce, event } from 'quasar'

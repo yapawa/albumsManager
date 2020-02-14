@@ -1,5 +1,5 @@
 import { extend } from 'quasar'
-import { albumOrder } from 'src/lib/ordering'
+import { albumOrder } from 'src/utils/ordering'
 
 const hasActive = (state) => {
   if (state.active && state.active.id) {
