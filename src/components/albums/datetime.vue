@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  q-input(v-model="field" :label="label" outlined @input="onChange" mask="####-##-## ##:##:##")
+  q-input(v-model="field" :label="label" outlined @input="onChange" mask="####-##-## ##:##:##" :dense="dense" :readonly="readonly" :disable="disable")
     template(v-slot:append)
       q-icon.cursor-pointer.set-now(name="access_time" @click="setNow")
 </template>
@@ -19,7 +19,10 @@ export default {
   },
   props: [
     'value',
-    'label'
+    'label',
+    'dense',
+    'readonly',
+    'disable'
   ],
   methods: {
     onChange () {

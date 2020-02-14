@@ -1,10 +1,10 @@
 <template lang="pug">
-q-input(v-model="field" :label="label" :type="type" outlined @input="onChange" :autogrow="autogrow" :dense="dense")
+q-input(v-model="field" :label="label" :type="type" outlined :autogrow="autogrow" disable readonly :dense="dense")
 </template>
 
 <script>
 export default {
-  name: 'AlbumInput',
+  name: 'AlbumInputRo',
   data () {
     return {
       field: null
@@ -22,11 +22,6 @@ export default {
   computed: {
     autogrow () {
       return (this.type === 'textarea')
-    }
-  },
-  methods: {
-    onChange () {
-      this.$emit('input', this.field)
     }
   }
 }
