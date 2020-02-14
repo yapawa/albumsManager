@@ -63,6 +63,8 @@
             q-img.bg-grey-8(:ratio="1" :src="photoSrc[item.id]")
               .absolute-top-right.q-pa-none(:class="(photoHover === item.id) ? '':'hidden'")
                 q-btn(dense flat icon="delete" size="10px" @click="confirmRemovePhoto(item.id)")
+              .absolute-top-left.q-pa-none(:class="(photoHover === item.id) ? '':'hidden'")
+                q-btn(dense flat icon="edit" size="10px" :to="{name: 'PhotoEdit', params: {id: item.id }}")
     q-dialog(v-model="confirmDeletePhoto" persistent)
       q-card.bg-grey-8
         q-card-section.row.items-center.justify-center
@@ -98,7 +100,9 @@ export default {
       photoHover: null,
       confirmDeletePhoto: false,
       toDelete: null,
-      deletingPhoto: false
+      deletingPhoto: false,
+      photoEditor: false,
+      selectedPhoto: null
     }
   },
   components: {
@@ -215,6 +219,7 @@ export default {
       this.loading = true
       this.albumData = null
       this.orderHasChanged = false
+      this.photoEditor = false
       const query = this.$Amplify.graphqlOperation(getAlbum, { id: id })
       return this.$Amplify.API.graphql(query).then(({ data }) => {
         if (data.getAlbum.type === 'collection') {

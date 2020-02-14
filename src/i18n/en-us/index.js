@@ -112,5 +112,8 @@ export default {
   'Edit Album': 'Edit Album',
   Delete: 'Delete',
   'confirm-delete-picture': 'Are you sure you want to delete the photo?',
-  'Update from name': 'Update from Name'
+  'Update from name': 'Update from Name',
+  Dimensions: 'Dimensions',
+  Filename: 'Filename',
+  Size: 'Size'
 }

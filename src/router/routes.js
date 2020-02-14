@@ -45,6 +45,14 @@ const routes = [
         }
       },
       {
+        path: 'photo/:id/edit',
+        name: 'PhotoEdit',
+        component: () => import('pages/PhotoEdit.vue'),
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
         path: 'upload/:id',
         name: 'Upload',
         component: () => import('pages/Upload.vue'),
