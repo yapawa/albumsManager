@@ -13,6 +13,11 @@ export default {
   created () {
     this.field = this.value
   },
+  watch: {
+    value: function (val) {
+      this.field = val
+    }
+  },
   props: [
     'value',
     'label',
