@@ -9,3 +9,7 @@ export const supportsWebp = (state, val) => {
 export const dpr = (state, val) => {
   state.dpr = parseFloat(parseFloat(val).toFixed(1))
 }
+
+export const cacheDomain = (state, val) => {
+  state.cacheDomain = val.trim()
+}

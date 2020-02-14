@@ -60,6 +60,7 @@ export default {
   created () {
     this.checkWebpSupport()
     this.setDpr()
+    this.setCacheDomain()
   },
   computed: {
     left: {
@@ -84,6 +85,14 @@ export default {
       },
       set (val) {
         this.$store.commit('ui/dpr', val)
+      }
+    },
+    cacheDomain: {
+      get () {
+        return this.$store.state.ui.cacheDomain
+      },
+      set (val) {
+        this.$store.commit('ui/cacheDomain', val)
       }
     }
   },
@@ -122,6 +131,16 @@ export default {
         dpr = window.devicePixelRatio
       }
       this.dpr = parseFloat(parseFloat(dpr).toFixed(1))
+    },
+    setCacheDomain () {
+      let cacheDomain = null
+      try {
+        const config = require('src/config/config.json')
+        cacheDomain = config.cacheDomain
+      } catch (err) {
+        console.error(err)
+      }
+      this.cacheDomain = cacheDomain
     }
   }
 }
