@@ -6,13 +6,14 @@ draggable.rounded-borders.row.no-wrap.q-gutter-xs.covers-drop(
   @change="onChange"
 )
   q-card.bg-grey-9.covers-th(v-for="item in covers" :key="item.id" data-type="covers")
-    q-img.bg-grey-8(:ratio="1" :src="photoSrc[item.id]")
+    q-img.bg-grey-8(:ratio="1" :src="cacheUrl(item, {w:100,h:100})")
       .fixed-top-right.q-pa-none
         q-btn(dense flat icon="delete" size="10px" @click="remove(item.id)")
 </template>
 <script>
 import draggable from 'vuedraggable'
 import CoversUpdate from './coversUpdate'
+import YThumbnails from 'src/mixins/thumbnails'
 
 export default {
   name: 'YAlbumCovers',
@@ -25,11 +26,11 @@ export default {
     draggable
   },
   mixins: [
-    CoversUpdate
+    CoversUpdate,
+    YThumbnails
   ],
   props: [
-    'albumData',
-    'photoSrc'
+    'albumData'
   ],
   created () {
     this.covers = this.albumData.covers || []

@@ -2,7 +2,7 @@
   q-page.row.justify-center(padding)
     .col.form-box(v-if="!loading")
       q-card.form-box(bordered)
-        q-img(:src="selectedPhotoDetails.src" style="max-width:450px;max-height:350px" contain)
+        q-img(:src="cacheUrl(selectedPhotoDetails, {w:450,h:350,c:'fit'})" style="max-width:450px;max-height:350px" contain)
         q-card-section.q-gutter-sm
           y-album-input-ro(v-model="selectedPhotoDetails.id" label="Id" dense)
           y-album-input-ro(v-model="dimensions" :label="$t('Dimensions')" dense)
@@ -29,6 +29,7 @@ import { getPhoto, updatePhoto } from 'src/graphql/queryAlbum'
 import YAlbumForm from 'components/albums'
 import { date, format } from 'quasar'
 const { humanStorageSize } = format
+import YThumbnails from 'src/mixins/thumbnails'
 
 const path = require('path')
 const slug = require('slug')
@@ -46,6 +47,9 @@ export default {
   components: {
     ...YAlbumForm
   },
+  mixins: [
+    YThumbnails
+  ],
   computed: {
     dimensions () {
       const { width, height } = this.selectedPhotoDetails
@@ -92,12 +96,9 @@ export default {
       )
         .then(({ data }) => {
           data.getPhoto.exif = JSON.parse(data.getPhoto.exif)
-          this.$Amplify.Storage.get(data.getPhoto.file.key).then(url => {
-            data.getPhoto.src = url
-            data.getPhoto.filename = path.basename(data.getPhoto.file.key)
-            this.selectedPhotoDetails = { ...data.getPhoto }
-            this.loading = false
-          })
+          data.getPhoto.filename = path.basename(data.getPhoto.file.key)
+          this.selectedPhotoDetails = { ...data.getPhoto }
+          this.loading = false
         })
     },
     updatePhoto () {

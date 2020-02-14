@@ -11,7 +11,7 @@
       q-slide-transition
         .row.q-my-sm(v-show="showEdit")
           .col-auto
-            y-album-covers(:albumData="albumData" :photoSrc="photoSrc")
+            y-album-covers(:albumData="albumData")
           q-space
           .col-auto.row.q-pl-md.q-gutter-sm.items-center
             y-album-select-order-by(v-model="albumData.orderBy" :albumType="albumData.type" dense @input="onChangeOrderingOption")
@@ -42,7 +42,7 @@
       )
         transition-group.row.q-gutter-sm(type="transition" name="flip-list")
           q-card.bg-grey-9.albumTh.cursor-pointer(v-for="item in albumData.children.items" :key="item.id" @click="$router.push({name: 'album', params:{id:item.id}})" data-type="children")
-            q-img(v-if="item.covers.length>0" :src="photoSrc[item.covers[0].id]" :ratio="1")
+            q-img(v-if="item.covers.length>0" :src="cacheUrl(item.covers[0], {w:100, h:100})" :ratio="1")
               .absolute-top-right.q-pa-none {{getContentCount(item) }}
             q-card-section.q-pa-xs
               .text-caption.text-center.ellipsis {{item.name}}
@@ -60,7 +60,7 @@
       )
         transition-group.row.q-gutter-sm(type="transition" name="flip-list")
           q-card.bg-grey-9.photoTh(v-for="item in albumData.photos.items" :key="item.id" data-type="photos" :data-id="item.id" @mouseenter="onPhotoOver" @mouseleave="onPhotoOut")
-            q-img.bg-grey-8(:ratio="1" :src="photoSrc[item.id]")
+            q-img.bg-grey-8(:ratio="1" :src="cacheUrl(item, {w:100, h:100})")
               .absolute-top-right.q-pa-none(:class="(photoHover === item.id) ? '':'hidden'")
                 q-btn(dense flat icon="delete" size="10px" @click="confirmRemovePhoto(item.id)")
               .absolute-top-left.q-pa-none(:class="(photoHover === item.id) ? '':'hidden'")
@@ -68,7 +68,7 @@
     q-dialog(v-model="confirmDeletePhoto" persistent)
       q-card.bg-grey-8
         q-card-section.row.items-center.justify-center
-          q-img.rounded-borders(:src="photoSrc[toDelete]" :ratio="1" style="width:70px")
+          q-img.rounded-borders(:src="getPhotoSrc(toDelete, {w:100, h:100})" :ratio="1" style="width:70px")
         q-card-section.row.items-center.justify-center
           .col.text-body1 {{ $t('confirm-delete-picture') }}
         q-card-actions.bg-grey-6(align="around")
@@ -82,6 +82,7 @@ import { albumOrder } from 'src/utils/ordering'
 import YAlbumForm from 'components/albums'
 import draggable from 'vuedraggable'
 import { debounce, event } from 'quasar'
+import YThumbnails from 'src/mixins/thumbnails'
 export default {
   name: 'Album',
   data () {
@@ -93,7 +94,6 @@ export default {
       subscriptionCreate: null,
       subscriptionPhotoUpdate: null,
       subscriptionPhotoCreate: null,
-      photoSrc: {},
       orderHasChanged: false,
       showEdit: false,
       covers: [],
@@ -109,6 +109,9 @@ export default {
     ...YAlbumForm,
     draggable
   },
+  mixins: [
+    YThumbnails
+  ],
   beforeRouteUpdate (to, from, next) {
     this.showEdit = false
     this.fetchAlbum(to.params.id)
@@ -226,15 +229,9 @@ export default {
           data.getAlbum.children.items.sort(albumOrder(data.getAlbum.orderBy, data.getAlbum.orderDirection))
           data.getAlbum.children.items.forEach((a, idx) => {
             data.getAlbum.children.items[idx].covers = JSON.parse(a.covers) || []
-            data.getAlbum.children.items[idx].covers.forEach(c => {
-              this.setPhotoSrc(c.id, c.key)
-            })
           })
         } else {
           data.getAlbum.photos.items.sort(albumOrder(data.getAlbum.orderBy, data.getAlbum.orderDirection))
-          data.getAlbum.photos.items.forEach(p => {
-            this.setPhotoSrc(p.id, p.file.key)
-          })
         }
         data.getAlbum.covers = JSON.parse(data.getAlbum.covers)
         this.albumData = data.getAlbum
@@ -248,12 +245,14 @@ export default {
         this.$router.replace({ name: 'home' })
       })
     },
-    setPhotoSrc (id, key) {
-      this.$Amplify.Storage.get(key).then(url => {
-        const newItem = {}
-        newItem[id] = url
-        this.photoSrc = { ...this.photoSrc, ...newItem }
-      })
+    getPhotoSrc (id, options) {
+      if (this.albumData && this.albumData.photos && this.albumData.photos.items) {
+        const item = this.albumData.photos.items.filter(p => p.id === id)[0]
+        if (item && item.id) {
+          return this.cacheUrl(item, options)
+        }
+      }
+      return null
     },
     setActiveAlbum () {
       const activeAlbum = { ...this.albumData }
@@ -287,9 +286,6 @@ export default {
     updatePhotos (item) {
       Object.keys(item).forEach((key) => (item[key] === null) && delete item[key])
       if (item.albumId === this.albumData.id) {
-        if (item.file && item.file.key) {
-          this.setPhotoSrc(item.id, item.file.key)
-        }
         const idx = this.albumData.photos.items.findIndex(e => e.id === item.id)
         let newContent = { ...this.albumData }
         if (idx === -1) {
@@ -343,10 +339,13 @@ export default {
       return {
         id: el.id,
         contentType: el.contentType,
-        key: el.file.key,
+        file: {
+          key: el.file.key
+        },
         width: el.width,
         height: el.height,
-        updatedAt: el.updatedAt
+        updatedAt: el.updatedAt,
+        slug: el.slug
       }
     },
     setData (dataTransfer, dragEl) {
