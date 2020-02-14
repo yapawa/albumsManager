@@ -67,3 +67,11 @@ export default {
   }
 }
 </script>
+<style lang="sass">
+div[data-test="authenticator-error"].error
+  background-color: $negative
+  font-weight: 700
+  margin-top: 5px
+  padding: 5px
+  border-radius: 5px
+</style>
