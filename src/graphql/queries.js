@@ -77,6 +77,7 @@ export const getAlbum = /* GraphQL */ `
           position
           width
           height
+          size
           contentType
           name
           slug
@@ -215,6 +216,7 @@ export const getPhoto = /* GraphQL */ `
       }
       width
       height
+      size
       contentType
       name
       slug
@@ -265,6 +267,7 @@ export const listPhotos = /* GraphQL */ `
         }
         width
         height
+        size
         contentType
         name
         slug

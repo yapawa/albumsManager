@@ -38,6 +38,7 @@ type Photo
   file: S3Object
   width: Int
   height: Int
+  size: Int
   contentType: String
   name: String
   slug: String

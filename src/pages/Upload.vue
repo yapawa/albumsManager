@@ -131,6 +131,7 @@ export default {
         },
         width: file.__width,
         height: file.__height,
+        size: parseInt(file.size),
         contentType: file.type,
         name: file.name,
         slug: slug(path.basename(file.name, path.extname(file.name))),

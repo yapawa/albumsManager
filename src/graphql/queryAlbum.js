@@ -28,6 +28,7 @@ const photoFields = [
   'position',
   'width',
   'height',
+  'size',
   'contentType',
   'name',
   'slug',
