@@ -100,15 +100,23 @@ export default {
         this.$Amplify.graphqlOperation(updateAlbum, { input })
       )
     },
+    parseExifDateTime (datetime) {
+      const re = /(\d{4}):(\d{2}):(\d{2})\s+(\d{2}):(\d{2}):(\d{2})/
+      const matches = datetime.match(re)
+      return date.buildDate({ year: matches[1], month: matches[2], date: matches[3], hours: matches[4], minutes: matches[5], seconds: matches[6] })
+    },
     uploaded ({ file }) {
       const nowStamp = Date.now()
       let capturedAt = date.formatDate(file.lastModified, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
       if (file.__exif) {
+        if (file.__exif.DateTime) {
+          capturedAt = date.formatDate(this.parseExifDateTime(file.__exif.DateTime), 'YYYY-MM-DDTHH:mm:ss.SSSZ')
+        }
         if (file.__exif.DateTimeOriginal) {
-          capturedAt = date.formatDate(file.__exif.DateTimeOriginal, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
+          capturedAt = date.formatDate(this.parseExifDateTime(file.__exif.DateTimeOriginal), 'YYYY-MM-DDTHH:mm:ss.SSSZ')
         }
         if (file.__exif.DateTimeDigitized) {
-          capturedAt = date.formatDate(file.__exif.DateTimeDigitized, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
+          capturedAt = date.formatDate(this.parseExifDateTime(file.__exif.DateTimeDigitized), 'YYYY-MM-DDTHH:mm:ss.SSSZ')
         }
       }
       file.__updatedAt = date.formatDate(nowStamp, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
