@@ -63,7 +63,7 @@
             q-img.bg-grey-8(:ratio="1" :src="photoSrc[item.id]")
               .absolute-top-right.q-pa-none(:class="(photoHover === item.id) ? '':'hidden'")
                 q-btn(dense flat icon="delete" size="10px" @click="confirmRemovePhoto(item.id)")
-    q-dialog(v-model="confirm" persistent)
+    q-dialog(v-model="confirmDeletePhoto" persistent)
       q-card.bg-grey-8
         q-card-section.row.items-center.justify-center
           q-img.rounded-borders(:src="photoSrc[toDelete]" :ratio="1" style="width:70px")
@@ -96,7 +96,7 @@ export default {
       showEdit: false,
       covers: [],
       photoHover: null,
-      confirm: false,
+      confirmDeletePhoto: false,
       toDelete: null,
       deletingPhoto: false
     }
@@ -169,7 +169,7 @@ export default {
     },
     confirmRemovePhoto (id) {
       this.toDelete = id
-      this.confirm = true
+      this.confirmDeletePhoto = true
     },
     removePhoto () {
       if (this.toDelete) {
@@ -178,13 +178,13 @@ export default {
           id: this.toDelete
         }
         return this.$Amplify.API.graphql(this.$Amplify.graphqlOperation(deletePhoto, { input })).then(res => {
-          this.confirm = false
+          this.confirmDeletePhoto = false
           this.deletingPhoto = false
           this.toDelete = null
         })
           .catch(err => {
             console.error('deletePhoto', err)
-            this.confirm = false
+            this.confirmDeletePhoto = false
             this.deletingPhoto = false
             this.toDelete = null
           })
