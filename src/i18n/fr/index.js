@@ -105,5 +105,6 @@ export default {
   'Abort Upload': 'Annuler le chargement',
   'Edit Album': 'Modifer Album',
   Delete: 'Supprimer',
-  'confirm-delete-picture': 'Êtes vous sûr de vouloir supprimer la photo?'
+  'confirm-delete-picture': 'Êtes vous sûr de vouloir supprimer la photo?',
+  'Update from name': 'Mettre à jour depuis le Nom'
 }

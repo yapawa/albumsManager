@@ -105,5 +105,6 @@ Benutze eine Nummer im Format: +12345678900`,
   'Abort Upload': 'Hochladen abbrechen',
   'Edit Album': 'Album bearbeiten',
   Delete: 'Löschen',
-  'confirm-delete-picture': 'Möchten Sie das Foto wirklich löschen?'
+  'confirm-delete-picture': 'Möchten Sie das Foto wirklich löschen?',
+  'Update from name': 'Vom Name aktualisieren'
 }

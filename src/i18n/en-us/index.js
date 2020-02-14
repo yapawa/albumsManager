@@ -111,5 +111,6 @@ export default {
   'Abort Upload': 'Abort Upload',
   'Edit Album': 'Edit Album',
   Delete: 'Delete',
-  'confirm-delete-picture': 'Are you sure you want to delete the photo?'
+  'confirm-delete-picture': 'Are you sure you want to delete the photo?',
+  'Update from name': 'Update from Name'
 }
