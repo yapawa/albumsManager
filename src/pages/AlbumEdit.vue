@@ -29,6 +29,7 @@
 <script>
 import { updateAlbum } from 'src/graphql/queryAlbum'
 import YAlbumForm from 'components/albums'
+import { date } from 'quasar'
 
 const slug = require('slug')
 slug.defaults.mode = 'rfc3986'
@@ -78,7 +79,9 @@ export default {
         orderDirection: this.albumData.orderDirection,
         description: this.albumData.description ? this.albumData.description.trim() : null,
         summary: this.albumData.summary ? this.albumData.summary.trim() : null,
-        parentId: this.activeAlbum.parentId
+        parentId: this.activeAlbum.parentId,
+        createdAt: date.formatDate(this.activeAlbum.createdAt, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),
+        publishedAt: date.formatDate(this.activeAlbum.publishedAt, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
       }
       if (this.canUpdateType) {
         input.type = this.albumData.type
