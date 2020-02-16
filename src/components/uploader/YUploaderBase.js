@@ -171,24 +171,6 @@ export default Vue.extend({
               }
             )
           })
-          // const reader = new FileReader()
-          // const p = new Promise((resolve, reject) => {
-          //   reader.onload = e => {
-          //     return getImageUrl(file, 200)
-          //       .then(({ src, width, height, orientation }) => {
-          //         const img = new Image()
-          //         img.src = src
-          //         file.__img = img
-          //         file.__width = width
-          //         file.__height = height
-          //         file.__orientation = orientation
-          //         resolve(true)
-          //       })
-          //   }
-          //   reader.onerror = e => { reject(e) }
-          // })
-          //
-          // reader.readAsDataURL(file)
           filesReady.push(p)
         }
       })
