@@ -100,7 +100,6 @@ export const getPhotos = `query GetAlbum($id: ID!) {
 export const getPhoto = `query GetPhoto($id: ID!) {
   getPhoto(id: $id) {
     ${photoFields.join('\n')}
-    exif
   }
 }`
 

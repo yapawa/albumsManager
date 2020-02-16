@@ -88,7 +88,6 @@ export const getAlbum = /* GraphQL */ `
           createdAt
           publishedAt
           updatedAt
-          exif
         }
         nextToken
       }
@@ -227,7 +226,6 @@ export const getPhoto = /* GraphQL */ `
       createdAt
       publishedAt
       updatedAt
-      exif
     }
   }
 `;
@@ -278,7 +276,6 @@ export const listPhotos = /* GraphQL */ `
         createdAt
         publishedAt
         updatedAt
-        exif
       }
       nextToken
     }

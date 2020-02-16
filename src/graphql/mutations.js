@@ -91,7 +91,6 @@ export const createAlbum = /* GraphQL */ `
           createdAt
           publishedAt
           updatedAt
-          exif
         }
         nextToken
       }
@@ -201,7 +200,6 @@ export const updateAlbum = /* GraphQL */ `
           createdAt
           publishedAt
           updatedAt
-          exif
         }
         nextToken
       }
@@ -311,7 +309,6 @@ export const deleteAlbum = /* GraphQL */ `
           createdAt
           publishedAt
           updatedAt
-          exif
         }
         nextToken
       }
@@ -400,7 +397,6 @@ export const createPhoto = /* GraphQL */ `
       createdAt
       publishedAt
       updatedAt
-      exif
     }
   }
 `;
@@ -473,7 +469,6 @@ export const updatePhoto = /* GraphQL */ `
       createdAt
       publishedAt
       updatedAt
-      exif
     }
   }
 `;
@@ -546,7 +541,6 @@ export const deletePhoto = /* GraphQL */ `
       createdAt
       publishedAt
       updatedAt
-      exif
     }
   }
 `;

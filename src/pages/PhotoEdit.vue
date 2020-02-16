@@ -95,7 +95,6 @@ export default {
         this.$Amplify.graphqlOperation(getPhoto, { id })
       )
         .then(({ data }) => {
-          data.getPhoto.exif = JSON.parse(data.getPhoto.exif)
           data.getPhoto.filename = path.basename(data.getPhoto.file.key)
           this.selectedPhotoDetails = { ...data.getPhoto }
           this.loading = false

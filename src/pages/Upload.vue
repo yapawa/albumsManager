@@ -138,8 +138,7 @@ export default {
         visibility: 'public',
         status: 'published',
         capturedAt,
-        publishedAt: file.__updatedAt,
-        exif: JSON.stringify(file.__exif)
+        publishedAt: file.__updatedAt
       }
       this.$Amplify.API.graphql(
         this.$Amplify.graphqlOperation(createPhoto, { input })

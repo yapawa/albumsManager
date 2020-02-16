@@ -169,6 +169,16 @@ export default {
         this.$emit('uploaded', { file, s3Uploader })
         this.workingThreads--
         this.s3Uploaders = this.s3Uploaders.filter(x => x !== s3Uploader)
+        if (file.__exif) {
+          const s3PutParams = {
+            Bucket: this.bucket,
+            Key: `${s3Key}.exif`,
+            Body: JSON.stringify(file.__exif, null, 2),
+            ContentType: 'application/json'
+          }
+
+          s3.putObject(s3PutParams).promise()
+        }
       })
     }
   }

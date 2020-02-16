@@ -88,7 +88,6 @@ export const onCreateAlbum = /* GraphQL */ `
           createdAt
           publishedAt
           updatedAt
-          exif
         }
         nextToken
       }
@@ -195,7 +194,6 @@ export const onUpdateAlbum = /* GraphQL */ `
           createdAt
           publishedAt
           updatedAt
-          exif
         }
         nextToken
       }
@@ -302,7 +300,6 @@ export const onDeleteAlbum = /* GraphQL */ `
           createdAt
           publishedAt
           updatedAt
-          exif
         }
         nextToken
       }
@@ -388,7 +385,6 @@ export const onCreatePhoto = /* GraphQL */ `
       createdAt
       publishedAt
       updatedAt
-      exif
     }
   }
 `;
@@ -458,7 +454,6 @@ export const onUpdatePhoto = /* GraphQL */ `
       createdAt
       publishedAt
       updatedAt
-      exif
     }
   }
 `;
@@ -528,7 +523,6 @@ export const onDeletePhoto = /* GraphQL */ `
       createdAt
       publishedAt
       updatedAt
-      exif
     }
   }
 `;

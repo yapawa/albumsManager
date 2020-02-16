@@ -49,7 +49,6 @@ type Photo
   createdAt: AWSDateTime
   publishedAt: AWSDateTime
   updatedAt: AWSDateTime
-  exif: AWSJSON
 }
 
 type S3Object {
