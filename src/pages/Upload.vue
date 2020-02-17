@@ -85,10 +85,13 @@ export default {
         return {
           id: f.__id,
           contentType: f.type,
-          key: this.getKey(f),
+          file: {
+            key: this.getKey(f)
+          },
           width: f.__width,
           height: f.__height,
-          updatedAt: f.__updatedAt
+          updatedAt: f.__updatedAt,
+          slug: slug(path.basename(f.name, path.extname(f.name)))
         }
       })
       const newCovers = [...covers, ...coversToAdd]
