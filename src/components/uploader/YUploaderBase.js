@@ -153,7 +153,7 @@ export default Vue.extend({
                 }
                 if (data.exif) {
                   file.__exif = data.exif.getAll()
-                  file.__orientation = file.__exif.orientation || -1
+                  file.__orientation = data.exif.get(0x0112) || -1
                   const [imageWidth, imageHeight] = file.__orientation >= 5 && file.__orientation <= 8
                     ? [file.__height, file.__width]
                     : [file.__width, file.__height]
