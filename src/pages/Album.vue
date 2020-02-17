@@ -61,6 +61,9 @@
         transition-group.row.q-gutter-sm(type="transition" name="flip-list")
           q-card.bg-grey-9.photoTh(v-for="item in albumData.photos.items" :key="item.id" data-type="photos" :data-id="item.id" @mouseenter="onPhotoOver" @mouseleave="onPhotoOut")
             q-img.bg-grey-8(:ratio="1" :src="cacheUrl(item, {w:100, h:100})" placeholder-src="~/assets/placeholder-logo.svg")
+              template(v-slot:error)
+                .fixed-center.q-pa-none
+                  q-btn(dense flat icon="delete" size="12px" @click="confirmRemovePhoto(item.id)")
               .absolute-top-right.q-pa-none(:class="(photoHover === item.id) ? '':'hidden'")
                 q-btn(dense flat icon="delete" size="10px" @click="confirmRemovePhoto(item.id)")
               .absolute-top-left.q-pa-none(:class="(photoHover === item.id) ? '':'hidden'")

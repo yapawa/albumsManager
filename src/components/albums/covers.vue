@@ -9,6 +9,9 @@ draggable.rounded-borders.row.no-wrap.q-gutter-xs.covers-drop(
     q-img.bg-grey-8(:ratio="1" :src="cacheUrl(item, {w:100,h:100})" placeholder-src="~/assets/placeholder-logo.svg")
       .fixed-top-right.q-pa-none
         q-btn(dense flat icon="delete" size="10px" @click="remove(item.id)")
+      template(v-slot:error)
+        .fixed-center.q-pa-none
+          q-btn(dense flat icon="delete" size="10px" @click="remove(item.id)")
 </template>
 <script>
 import draggable from 'vuedraggable'
