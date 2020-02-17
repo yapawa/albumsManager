@@ -42,7 +42,7 @@
       )
         transition-group.row.q-gutter-sm(type="transition" name="flip-list")
           q-card.bg-grey-9.albumTh.cursor-pointer(v-for="item in albumData.children.items" :key="item.id" @click="$router.push({name: 'album', params:{id:item.id}})" data-type="children")
-            q-img(v-if="item.covers.length>0" :src="cacheUrl(item.covers[0], {w:100, h:100})" :ratio="1")
+            q-img(v-if="item.covers.length>0" :src="cacheUrl(item.covers[0], {w:100, h:100})" :ratio="1" placeholder-src="~/assets/placeholder-logo.svg")
               .absolute-top-right.q-pa-none {{getContentCount(item) }}
             q-card-section.q-pa-xs
               .text-caption.text-center.ellipsis {{item.name}}
@@ -60,7 +60,7 @@
       )
         transition-group.row.q-gutter-sm(type="transition" name="flip-list")
           q-card.bg-grey-9.photoTh(v-for="item in albumData.photos.items" :key="item.id" data-type="photos" :data-id="item.id" @mouseenter="onPhotoOver" @mouseleave="onPhotoOut")
-            q-img.bg-grey-8(:ratio="1" :src="cacheUrl(item, {w:100, h:100})")
+            q-img.bg-grey-8(:ratio="1" :src="cacheUrl(item, {w:100, h:100})" placeholder-src="~/assets/placeholder-logo.svg")
               .absolute-top-right.q-pa-none(:class="(photoHover === item.id) ? '':'hidden'")
                 q-btn(dense flat icon="delete" size="10px" @click="confirmRemovePhoto(item.id)")
               .absolute-top-left.q-pa-none(:class="(photoHover === item.id) ? '':'hidden'")
