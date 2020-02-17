@@ -226,6 +226,9 @@
 							"MaxAge": "3000"
 						}
 					]
+				},
+				"AccelerateConfiguration": {
+					"AccelerationStatus": "Enabled"
 				}
 			}
 		},
