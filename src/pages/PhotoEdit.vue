@@ -2,7 +2,7 @@
   q-page.row.justify-center(padding)
     .col.form-box(v-if="!loading")
       q-card.form-box(bordered)
-        q-img(:src="cacheUrl(selectedPhotoDetails, {w:450,h:350,c:'fit'})" style="max-width:450px;max-height:350px" contain)
+        q-img.justify-center(:src="cacheUrl(selectedPhotoDetails, {w:450,h:350,c:'fit'})" :style="imageStyle" contain)
         q-card-section.q-gutter-sm
           y-album-input-ro(v-model="selectedPhotoDetails.id" label="Id" dense)
           y-album-input-ro(v-model="dimensions" :label="$t('Dimensions')" dense)
@@ -53,7 +53,7 @@ export default {
   computed: {
     dimensions () {
       const { width, height } = this.selectedPhotoDetails
-      const imageRatio = ((width >= height) ? width / height : height / width).toFixed(2)
+      const imageRatio = ((width >= height) ? width / height : height / width).toFixed(1)
       const standardRatios = {
         1: '1:1',
         1.25: '5:4',
@@ -65,7 +65,7 @@ export default {
       }
       let ratio = -1
       Object.keys(standardRatios).forEach(val => {
-        if (parseFloat(val).toFixed(2) === imageRatio) {
+        if (parseFloat(val).toFixed(1) === imageRatio) {
           ratio = val
         }
       })
@@ -74,6 +74,14 @@ export default {
         dimensionsString += ` (${standardRatios[ratio]})`
       }
       return dimensionsString
+    },
+    imageStyle () {
+      const { width, height } = this.selectedPhotoDetails
+      const maxWidth = 450
+      const maxHeight = 350
+      const newHeight = (width / maxWidth > height / maxHeight) ? Math.round(height / (width / maxWidth)) : maxHeight
+
+      return `max-width: ${maxWidth}px;height: ${newHeight}px;`
     },
     filesize () {
       if (!this.selectedPhotoDetails.size) {
