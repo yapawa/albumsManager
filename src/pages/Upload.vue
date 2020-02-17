@@ -14,6 +14,7 @@
       @finish="finish"
       @uploaded="uploaded"
       @added="added"
+      :useAccelerateEndpoint="accelerationConfig"
     )
 </template>
 
@@ -174,6 +175,13 @@ export default {
         width: file.__width.toString(),
         height: file.__height.toString()
       }
+    },
+    accelerationConfig () {
+      const config = require('src/config/config.json')
+      if (config.transferAcceleration) {
+        return config.transferAcceleration === true
+      }
+      return false
     }
   }
 }

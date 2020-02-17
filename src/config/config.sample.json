@@ -1,3 +1,4 @@
 {
-  "cacheDomain": "dxxxx.cloudfront.net"
+  "cacheDomain": "dxxxx.cloudfront.net",
+  "transferAcceleration": true
 }
