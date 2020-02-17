@@ -43,7 +43,9 @@
         transition-group.row.q-gutter-sm(type="transition" name="flip-list")
           q-card.bg-grey-9.albumTh.cursor-pointer(v-for="item in albumData.children.items" :key="item.id" @click="$router.push({name: 'album', params:{id:item.id}})" data-type="children")
             q-img(v-if="item.covers.length>0" :src="cacheUrl(item.covers[0], {w:100, h:100})" :ratio="1" placeholder-src="~/assets/placeholder-logo.svg")
-              .absolute-top-right.q-pa-none {{getContentCount(item) }}
+            q-img(v-else src="~/assets/placeholder-logo.svg" :ratio="1")
+            div
+              q-badge(color="secondary" floating) {{getContentCount(item) }}
             q-card-section.q-pa-xs
               .text-caption.text-center.ellipsis {{item.name}}
       draggable(v-if="albumData.type=='album'"
