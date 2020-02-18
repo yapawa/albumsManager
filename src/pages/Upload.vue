@@ -95,14 +95,17 @@ export default {
           slug: slug(path.basename(f.name, path.extname(f.name)))
         }
       })
-      const newCovers = [...covers, ...coversToAdd]
-      const input = {
-        id: this.albumId,
-        covers: JSON.stringify(newCovers)
+      if (coversToAdd.length > 0) {
+        const newCovers = [...covers, ...coversToAdd]
+        const input = {
+          id: this.albumId,
+          covers: JSON.stringify(newCovers)
+        }
+        return this.$Amplify.API.graphql(
+          this.$Amplify.graphqlOperation(updateAlbum, { input })
+        )
       }
-      return this.$Amplify.API.graphql(
-        this.$Amplify.graphqlOperation(updateAlbum, { input })
-      )
+      return true
     },
     parseExifDateTime (datetime) {
       const re = /(\d{4}):(\d{2}):(\d{2})\s+(\d{2}):(\d{2}):(\d{2})/
