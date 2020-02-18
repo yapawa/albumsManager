@@ -51,36 +51,43 @@ export default {
     }
   },
   beforeDestroy () {
-    this.subscriptionCreate.unsubscribe()
-    this.subscriptionUpdate.unsubscribe()
+    try {
+      this.subscriptionCreate.unsubscribe()
+      this.subscriptionUpdate.unsubscribe()
+    } catch (err) {}
   },
   created () {
-    this.fetchAllAlbums().then(list => {
-      this.albumsList = list
-    })
-    this.subscriptionCreate = this.$Amplify.API.graphql(
-      this.$Amplify.graphqlOperation(onCreateAlbum)
-    ).subscribe({
-      next: (albumData) => {
-        const item = albumData.value.data.onCreateAlbum
-        const list = extend(true, [], this.albumsList)
-        list.push(item)
-        this.albumsList = list
-      }
-    })
-    this.subscriptionUpdate = this.$Amplify.API.graphql(
-      this.$Amplify.graphqlOperation(onUpdateAlbum)
-    ).subscribe({
-      next: (albumData) => {
-        const item = albumData.value.data.onUpdateAlbum
-        const list = extend(true, [], this.albumsList)
-        const index = list.findIndex(x => x.id === item.id)
-        fields.forEach(field => {
-          list[index][field] = item[field]
+    this.$Amplify.Auth.currentAuthenticatedUser()
+      .then(user => {
+        this.fetchAllAlbums().then(list => {
+          this.albumsList = list
         })
-        this.albumsList = list
-      }
-    })
+        this.subscriptionCreate = this.$Amplify.API.graphql(
+          this.$Amplify.graphqlOperation(onCreateAlbum)
+        ).subscribe({
+          next: (albumData) => {
+            const item = albumData.value.data.onCreateAlbum
+            const list = extend(true, [], this.albumsList)
+            list.push(item)
+            this.albumsList = list
+          }
+        })
+        this.subscriptionUpdate = this.$Amplify.API.graphql(
+          this.$Amplify.graphqlOperation(onUpdateAlbum)
+        ).subscribe({
+          next: (albumData) => {
+            const item = albumData.value.data.onUpdateAlbum
+            const list = extend(true, [], this.albumsList)
+            const index = list.findIndex(x => x.id === item.id)
+            fields.forEach(field => {
+              list[index][field] = item[field]
+            })
+            this.albumsList = list
+          }
+        })
+      })
+      .catch(() => {
+      })
   },
   methods: {
     fetchAllAlbums (nextToken = null) {

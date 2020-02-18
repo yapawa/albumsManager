@@ -63,7 +63,8 @@ export default {
       .then(user => {
         this.$router.push({ name: 'home' }).catch()
       })
-      .catch()
+      .catch(err => { // eslint-disable-line handle-callback-err
+      })
   }
 }
 </script>
