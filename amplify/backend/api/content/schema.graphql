@@ -23,6 +23,8 @@ type Album
   updatedAt: AWSDateTime
   orderBy: OrderBy
   orderDirection: Direction
+  contentCountTotal: Int
+  contentCountPublic: Int
 }
 
 type Photo

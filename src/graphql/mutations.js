@@ -29,6 +29,8 @@ export const createAlbum = /* GraphQL */ `
           updatedAt
           orderBy
           orderDirection
+          contentCountTotal
+          contentCountPublic
         }
         parentId
         children {
@@ -50,6 +52,8 @@ export const createAlbum = /* GraphQL */ `
         updatedAt
         orderBy
         orderDirection
+        contentCountTotal
+        contentCountPublic
       }
       parentId
       children {
@@ -70,6 +74,8 @@ export const createAlbum = /* GraphQL */ `
           updatedAt
           orderBy
           orderDirection
+          contentCountTotal
+          contentCountPublic
         }
         nextToken
       }
@@ -107,6 +113,8 @@ export const createAlbum = /* GraphQL */ `
       updatedAt
       orderBy
       orderDirection
+      contentCountTotal
+      contentCountPublic
     }
   }
 `;
@@ -138,6 +146,8 @@ export const updateAlbum = /* GraphQL */ `
           updatedAt
           orderBy
           orderDirection
+          contentCountTotal
+          contentCountPublic
         }
         parentId
         children {
@@ -159,6 +169,8 @@ export const updateAlbum = /* GraphQL */ `
         updatedAt
         orderBy
         orderDirection
+        contentCountTotal
+        contentCountPublic
       }
       parentId
       children {
@@ -179,6 +191,8 @@ export const updateAlbum = /* GraphQL */ `
           updatedAt
           orderBy
           orderDirection
+          contentCountTotal
+          contentCountPublic
         }
         nextToken
       }
@@ -216,6 +230,8 @@ export const updateAlbum = /* GraphQL */ `
       updatedAt
       orderBy
       orderDirection
+      contentCountTotal
+      contentCountPublic
     }
   }
 `;
@@ -247,6 +263,8 @@ export const deleteAlbum = /* GraphQL */ `
           updatedAt
           orderBy
           orderDirection
+          contentCountTotal
+          contentCountPublic
         }
         parentId
         children {
@@ -268,6 +286,8 @@ export const deleteAlbum = /* GraphQL */ `
         updatedAt
         orderBy
         orderDirection
+        contentCountTotal
+        contentCountPublic
       }
       parentId
       children {
@@ -288,6 +308,8 @@ export const deleteAlbum = /* GraphQL */ `
           updatedAt
           orderBy
           orderDirection
+          contentCountTotal
+          contentCountPublic
         }
         nextToken
       }
@@ -325,6 +347,8 @@ export const deleteAlbum = /* GraphQL */ `
       updatedAt
       orderBy
       orderDirection
+      contentCountTotal
+      contentCountPublic
     }
   }
 `;
@@ -355,6 +379,8 @@ export const createPhoto = /* GraphQL */ `
           updatedAt
           orderBy
           orderDirection
+          contentCountTotal
+          contentCountPublic
         }
         parentId
         children {
@@ -376,6 +402,8 @@ export const createPhoto = /* GraphQL */ `
         updatedAt
         orderBy
         orderDirection
+        contentCountTotal
+        contentCountPublic
       }
       albumId
       position
@@ -427,6 +455,8 @@ export const updatePhoto = /* GraphQL */ `
           updatedAt
           orderBy
           orderDirection
+          contentCountTotal
+          contentCountPublic
         }
         parentId
         children {
@@ -448,6 +478,8 @@ export const updatePhoto = /* GraphQL */ `
         updatedAt
         orderBy
         orderDirection
+        contentCountTotal
+        contentCountPublic
       }
       albumId
       position
@@ -499,6 +531,8 @@ export const deletePhoto = /* GraphQL */ `
           updatedAt
           orderBy
           orderDirection
+          contentCountTotal
+          contentCountPublic
         }
         parentId
         children {
@@ -520,6 +554,8 @@ export const deletePhoto = /* GraphQL */ `
         updatedAt
         orderBy
         orderDirection
+        contentCountTotal
+        contentCountPublic
       }
       albumId
       position

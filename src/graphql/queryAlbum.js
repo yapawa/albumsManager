@@ -14,7 +14,9 @@ const albumFields = [
   'publishedAt',
   'updatedAt',
   'orderBy',
-  'orderDirection'
+  'orderDirection',
+  'contentCountTotal',
+  'contentCountPublic'
 ]
 
 const photoFields = [
