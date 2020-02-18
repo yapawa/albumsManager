@@ -140,13 +140,6 @@ export default {
   },
   created () {
     this.fetchPhotoDetails(this.$route.params.id)
-  },
-  beforeRouteUpdate (to, from, next) {
-    console.log('beforeRouteUpdate')
-    console.log(to)
-    console.log(from)
-    // this.fetchPhotoDetails(this.photoId)
-    next()
   }
 }
 </script>
