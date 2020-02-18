@@ -21,4 +21,6 @@ export default async ({
 }) => {
   Vue.use(AmplifyPlugin, AmplifyModules)
   Vue.prototype.$AmplifyEventBus = AmplifyEventBus
+  Amplify.Logger.LOG_LEVEL = process.env.PROD ? 'WARN' : 'INFO'
+  Vue.prototype.$Logger = new AmplifyModules.Logger('yapawa', 'WARN')
 }

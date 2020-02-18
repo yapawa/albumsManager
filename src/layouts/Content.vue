@@ -138,7 +138,7 @@ export default {
         const config = require('src/config/config.json')
         cacheDomain = config.cacheDomain
       } catch (err) {
-        console.error(err)
+        this.$Logger.error('setCacheDomain', err)
       }
       this.cacheDomain = cacheDomain
     }

@@ -109,7 +109,7 @@ export default {
       const s3Key = getProp('s3Key', file)
 
       if (!s3Key) {
-        console.error('q-uploader: invalid or no Key specified')
+        this.$Logger.error('q-uploader: invalid or no Key specified')
         this.workingThreads--
         return
       }

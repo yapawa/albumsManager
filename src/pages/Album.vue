@@ -199,7 +199,7 @@ export default {
           this.updateCounters(this.activeAlbum.id)
         })
           .catch(err => {
-            console.error('deletePhoto', err)
+            this.$Logger.error('deletePhoto', err)
             this.confirmDeletePhoto = false
             this.deletingPhoto = false
             this.toDelete = null

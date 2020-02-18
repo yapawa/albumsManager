@@ -16,7 +16,7 @@ export default {
         const path = `${photo.file.key}/${version}/${transformations}/${photo.slug}.${format}`
         return `https://${this.cacheDomain}/${path}`
       } catch (err) {
-        console.error(err)
+        this.$Logger.error('thumbnails.js::yapawaCache', err)
         return null
       }
     }

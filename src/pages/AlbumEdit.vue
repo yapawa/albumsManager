@@ -101,7 +101,7 @@ export default {
           this.$router.push({ name: 'album' })
         })
         .catch((err) => {
-          console.error(err)
+          this.$Logger.error(err)
           this.error = err
         })
         .finally(() => {

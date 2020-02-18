@@ -71,7 +71,7 @@ export default {
         this.credentials = this.$Amplify.Auth.essentialCredentials(credentials)
       })
       .catch(err => { // eslint-disable-line handle-callback-err
-        console.error(err)
+        this.$Logger.error(err)
         this.credentials = null
       })
     this.$Amplify.Auth.currentUserInfo().then(userInfo => {
