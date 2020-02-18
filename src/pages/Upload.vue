@@ -14,7 +14,7 @@
       @finish="finish"
       @uploaded="uploaded"
       @added="added"
-      :useAccelerateEndpoint="accelerationConfig"
+      :useAccelerateEndpoint="accelerationConfig()"
     )
 </template>
 
@@ -22,6 +22,8 @@
 import { uid, date } from 'quasar'
 import { createPhoto, updateAlbum } from 'src/graphql/queryAlbum'
 import { YUploader } from 'components/uploader'
+import AlbumCounters from 'src/mixins/albumCounters'
+
 const path = require('path')
 
 const slug = require('slug')
@@ -46,6 +48,9 @@ export default {
   components: {
     YUploader
   },
+  mixins: [
+    AlbumCounters
+  ],
   computed: {
     ensureCredentials () {
       return (this.credentials && this.credentials.authenticated && this.credentials.authenticated === true && this.userInfo)
@@ -76,9 +81,13 @@ export default {
   },
   methods: {
     finish () {
-      this.updateCovers().then(data => {
-        this.$router.push({ name: 'album' })
-      })
+      this.updateCovers()
+        .then(data => {
+          return this.updateCounters(this.activeAlbum.id)
+        })
+        .then(data => {
+          this.$router.push({ name: 'album' })
+        })
     },
     updateCovers () {
       const covers = this.activeAlbum.covers || []
@@ -105,7 +114,7 @@ export default {
           this.$Amplify.graphqlOperation(updateAlbum, { input })
         )
       }
-      return true
+      return Promise.resolve(true)
     },
     parseExifDateTime (datetime) {
       const re = /(\d{4}):(\d{2}):(\d{2})\s+(\d{2}):(\d{2}):(\d{2})/

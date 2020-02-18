@@ -57,22 +57,34 @@ export const getAlbum = `query GetAlbum($id: ID!) {
     children {
       items {
         ${albumFields.join('\n')}
-        children {
-          items {
-            id
-          }
-        }
-        photos {
-          items {
-            id
-          }
-        }
       }
       nextToken
     }
     photos {
       items {
         ${photoFields.join('\n')}
+      }
+      nextToken
+    }
+  }
+}`
+
+export const countContent = `query GetAlbum($id: ID!) {
+  getAlbum(id: $id) {
+    ${albumFields.join('\n')}
+    children {
+      items {
+        id
+        visibility
+        status
+      }
+      nextToken
+    }
+    photos {
+      items {
+        id
+        visibility
+        status
       }
       nextToken
     }

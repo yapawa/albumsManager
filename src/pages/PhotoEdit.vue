@@ -30,6 +30,7 @@ import YAlbumForm from 'components/albums'
 import { date, format } from 'quasar'
 const { humanStorageSize } = format
 import YThumbnails from 'src/mixins/thumbnails'
+import AlbumCounters from 'src/mixins/albumCounters'
 
 const path = require('path')
 const slug = require('slug')
@@ -48,7 +49,8 @@ export default {
     ...YAlbumForm
   },
   mixins: [
-    YThumbnails
+    YThumbnails,
+    AlbumCounters
   ],
   computed: {
     dimensions () {
@@ -122,6 +124,9 @@ export default {
       this.$Amplify.API.graphql(
         this.$Amplify.graphqlOperation(updatePhoto, { input })
       )
+        .then((res) => {
+          return this.updateCounters(this.selectedPhotoDetails.albumId)
+        })
         .then((res) => {
           this.$router.push({ name: 'album', params: { id: this.selectedPhotoDetails.albumId } })
         })

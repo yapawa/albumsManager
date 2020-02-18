@@ -110,7 +110,9 @@ export default {
         slug: slug(this.$t('Albums')),
         status: 'published',
         orderBy: 'position',
-        orderDirection: 'asc'
+        orderDirection: 'asc',
+        contentCountTotal: 0,
+        contentCountPublic: 0
       }
       this.sendQuery(input)
     },
@@ -129,7 +131,9 @@ export default {
         orderBy: this.orderBy,
         orderDirection: this.orderDirection,
         description,
-        summary: this.summary ? this.summary.trim() : description
+        summary: this.summary ? this.summary.trim() : description,
+        childrenCountTotal: 0,
+        childrenCountPublic: 0
       }
       this.sendQuery(input)
     },

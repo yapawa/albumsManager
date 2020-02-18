@@ -12,7 +12,9 @@ const fields = [
   'updatedAt',
   'publishedAt',
   'orderBy',
-  'orderDirection'
+  'orderDirection',
+  'contentCountTotal',
+  'contentCountPublic'
 ]
 const listAlbums = `query ListAlbums(
   $filter: ModelAlbumFilterInput

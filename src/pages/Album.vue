@@ -88,6 +88,8 @@ import YAlbumForm from 'components/albums'
 import draggable from 'vuedraggable'
 import { debounce, event } from 'quasar'
 import YThumbnails from 'src/mixins/thumbnails'
+import AlbumCounters from 'src/mixins/albumCounters'
+
 export default {
   name: 'Album',
   data () {
@@ -115,7 +117,8 @@ export default {
     draggable
   },
   mixins: [
-    YThumbnails
+    YThumbnails,
+    AlbumCounters
   ],
   beforeRouteUpdate (to, from, next) {
     this.showEdit = false
@@ -193,6 +196,7 @@ export default {
           this.confirmDeletePhoto = false
           this.deletingPhoto = false
           this.toDelete = null
+          this.updateCounters(this.activeAlbum.id)
         })
           .catch(err => {
             console.error('deletePhoto', err)
@@ -357,7 +361,13 @@ export default {
       dataTransfer.setData('text', JSON.stringify(this.clonePhoto(this.albumData.photos.items.filter(el => el.id === dragEl.dataset.id)[0])))
     },
     getContentCount (item) {
-      return item.children.items.length + item.photos.items.length
+      const totalCount = item.contentCountTotal || 0
+      const publicCount = item.contentCountPublic || 0
+      let display = `${totalCount}`
+      if (totalCount !== publicCount) {
+        display = `${display} (${publicCount})`
+      }
+      return display
     }
   },
   computed: {

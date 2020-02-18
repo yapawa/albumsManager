@@ -30,6 +30,7 @@
 import { updateAlbum } from 'src/graphql/queryAlbum'
 import YAlbumForm from 'components/albums'
 import { date } from 'quasar'
+import AlbumCounters from 'src/mixins/albumCounters'
 
 const slug = require('slug')
 slug.defaults.mode = 'rfc3986'
@@ -47,6 +48,9 @@ export default {
   components: {
     ...YAlbumForm
   },
+  mixins: [
+    AlbumCounters
+  ],
   computed: {
     activeAlbum: {
       get () {
@@ -91,9 +95,13 @@ export default {
         this.$Amplify.graphqlOperation(updateAlbum, { input })
       )
         .then((res) => {
+          return this.updateCounters(this.activeAlbum.id)
+        })
+        .then(res => {
           this.$router.push({ name: 'album' })
         })
         .catch((err) => {
+          console.error(err)
           this.error = err
         })
         .finally(() => {
