@@ -9,6 +9,18 @@ Parameters:
     Type: String
   
   
+  
+  
+  functionusersCustomMessageArn: 
+    Type: String
+    Default: functionusersCustomMessageArn
+  
+  functionusersCustomMessageName: 
+    Type: String
+    Default: functionusersCustomMessageName
+  
+  
+  
 
     
   identityPoolName:
@@ -46,10 +58,10 @@ Parameters:
                 
   defaultPasswordPolicy:
     Type: String
-                
+            
   passwordPolicyMinLength:
-    Type: Number
-                  
+    Type: String
+                      
   passwordPolicyCharacters:
     Type: CommaDelimitedList
               
@@ -100,7 +112,7 @@ Parameters:
                     
   userPoolGroupList:
     Type: CommaDelimitedList
-                                                
+                                    
   parentStack:
     Type: String
                 
@@ -109,7 +121,7 @@ Parameters:
               
   dependsOn:
     Type: CommaDelimitedList
-    
+                
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
 
@@ -117,32 +129,32 @@ Resources:
   
   
   # BEGIN SNS ROLE RESOURCE
-  SNSRole:
+  SNSRole: 
   # Created to allow the UserPool SMS Config to publish via the Simple Notification Service during MFA Process
     Type: AWS::IAM::Role
     Properties:
       RoleName: !If [ShouldNotCreateEnvResources, 'usersdf21d54a_sns-role', !Join ['',[ 'sns', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
-      AssumeRolePolicyDocument:
+      AssumeRolePolicyDocument: 
         Version: "2012-10-17"
-        Statement:
+        Statement: 
           - Sid: ""
             Effect: "Allow"
-            Principal:
+            Principal: 
               Service: "cognito-idp.amazonaws.com"
-            Action:
+            Action: 
               - "sts:AssumeRole"
-            Condition:
+            Condition: 
               StringEquals:
                 sts:ExternalId: usersdf21d54a_role_external_id
-      Policies:
-        -
+      Policies: 
+        - 
           PolicyName: usersdf21d54a-sns-policy
-          PolicyDocument:
+          PolicyDocument: 
             Version: "2012-10-17"
-            Statement:
-              -
+            Statement: 
+              - 
                 Effect: "Allow"
-                Action:
+                Action: 
                   - "sns:Publish"
                 Resource: "*"
   # BEGIN USER POOL RESOURCES
@@ -154,15 +166,27 @@ Resources:
     Properties:
       UserPoolName: !If [ShouldNotCreateEnvResources, !Ref userPoolName, !Join ['',[!Ref userPoolName, '-', !Ref env]]]
       
-      AdminCreateUserConfig:
-        AllowAdminCreateUserOnly: true
-      Schema:
+      Schema: 
+        
         -
           Name: email
           Required: true
           Mutable: true
         
       
+      
+      LambdaConfig:
+        
+        
+          CustomMessage: !Ref functionusersCustomMessageArn
+        
+        
+        
+        
+        
+        
+        
+        
       
       
       AutoVerifiedAttributes: !Ref autoVerifiedAttributes
@@ -181,12 +205,21 @@ Resources:
           
       MfaConfiguration: !Ref mfaConfiguration
       SmsVerificationMessage: !Ref smsVerificationMessage
-      SmsConfiguration:
+      SmsConfiguration: 
         SnsCallerArn: !GetAtt SNSRole.Arn
         ExternalId: usersdf21d54a_role_external_id
     
   
     
+  
+  UserPoolCustomMessageLambdaInvokePermission: 
+    Type: "AWS::Lambda::Permission"
+    DependsOn: UserPool
+    Properties: 
+      Action: "lambda:invokeFunction"
+      Principal: "cognito-idp.amazonaws.com"
+      FunctionName: !Ref functionusersCustomMessageName
+      SourceArn: !GetAtt UserPool.Arn
     
   
     
@@ -248,7 +281,7 @@ Resources:
     Type: 'AWS::Lambda::Function'
     Properties:
       Code:
-        ZipFile: !Join
+        ZipFile: !Join 
           - |+
           - - 'const response = require(''cfn-response'');'
             - 'const aws = require(''aws-sdk'');'
@@ -264,7 +297,7 @@ Resources:
             - '   };'
             - '   identity.describeUserPoolClient(params).promise()'
             - '     .then((res) => {'
-            - '       response.send(event, context, response.SUCCESS, {''appSecret'': res.UserPoolClient.ClientSecret});'
+            - '       response.send(event, context, response.SUCCESS, {''appSecret'': res.UserPoolClient.ClientSecret});'   
             - '     })'
             - '     .catch((err) => {'
             - '       response.send(event, context, response.FAILED, {err});'
@@ -274,7 +307,7 @@ Resources:
       Handler: index.handler
       Runtime: nodejs10.x
       Timeout: '300'
-      Role: !GetAtt
+      Role: !GetAtt 
         - UserPoolClientRole
         - Arn
     DependsOn: UserPoolClientRole
@@ -285,7 +318,7 @@ Resources:
     Type: 'AWS::IAM::Policy'
     Properties:
       PolicyName: usersdf21d54a_userpoolclient_lambda_iam_policy
-      Roles:
+      Roles: 
         - !Ref UserPoolClientRole
       PolicyDocument:
         Version: '2012-10-17'
@@ -302,7 +335,7 @@ Resources:
     Type: 'AWS::IAM::Policy'
     Properties:
       PolicyName: usersdf21d54a_userpoolclient_lambda_log_policy
-      Roles:
+      Roles: 
         - !Ref UserPoolClientRole
       PolicyDocument:
         Version: 2012-10-17
@@ -312,10 +345,10 @@ Resources:
               - 'logs:CreateLogGroup'
               - 'logs:CreateLogStream'
               - 'logs:PutLogEvents'
-            Resource: !Sub
+            Resource: !Sub  
               - arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*
               - { region: !Ref "AWS::Region",  account: !Ref "AWS::AccountId", lambda: !Ref UserPoolClientLambda}
-    DependsOn: UserPoolClientLambdaPolicy
+    DependsOn: UserPoolClientLambdaPolicy  
   UserPoolClientInputs:
   # Values passed to Userpool client Lambda
   # Depends on UserPool for Id
@@ -340,7 +373,7 @@ Resources:
   IdentityPool:
   # Always created
     Type: AWS::Cognito::IdentityPool
-    Properties:
+    Properties: 
       IdentityPoolName: !If [ShouldNotCreateEnvResources, 'users', !Join ['',['users', '__', !Ref env]]]
       
       CognitoIdentityProviders:
@@ -356,14 +389,14 @@ Resources:
       AllowUnauthenticatedIdentities: !Ref allowUnauthenticatedIdentities
        
        
-    DependsOn: UserPoolClientInputs
+    DependsOn: UserPoolClientInputs 
     
   
   IdentityPoolRoleMap:
   # Created to map Auth and Unauth roles to the identity pool
   # Depends on Identity Pool for ID ref
     Type: AWS::Cognito::IdentityPoolRoleAttachment
-    Properties:
+    Properties: 
       IdentityPoolId: !Ref IdentityPool
       Roles:
           unauthenticated: !Ref unauthRoleArn
@@ -377,7 +410,7 @@ Outputs :
     Value: !Ref 'IdentityPool'
     Description:  Id for the identity pool
   IdentityPoolName:
-    Value: !GetAtt IdentityPool.Name
+    Value: !GetAtt IdentityPool.Name 
   
   
   

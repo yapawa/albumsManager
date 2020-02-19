@@ -1,0 +1,14 @@
+{
+    "trigger": true,
+    "modules": [
+        "custom"
+    ],
+    "parentResource": "users",
+    "functionName": "usersCustomMessage",
+    "parentStack": "auth",
+    "triggerEnvs": "[]",
+    "triggerTemplate": "CustomMessage.json.ejs",
+    "roleName": "usersCustomMessage",
+    "skipEdit": true,
+    "resourceName": "usersCustomMessage"
+}

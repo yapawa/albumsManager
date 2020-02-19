@@ -15,7 +15,7 @@
     "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
     "defaultPasswordPolicy": true,
-    "passwordPolicyMinLength": 8,
+    "passwordPolicyMinLength": "8",
     "passwordPolicyCharacters": [
         "Requires Lowercase",
         "Requires Uppercase"
@@ -45,7 +45,7 @@
     "thirdPartyAuth": false,
     "userPoolGroups": false,
     "adminQueries": false,
-    "triggers": "{}",
+    "triggers": "{\"CustomMessage\":[\"custom\"]}",
     "hostedUI": false,
     "userPoolGroupList": [],
     "authRoleArn": {
@@ -64,5 +64,15 @@
         "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "dependsOn": []
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "usersCustomMessage",
+            "triggerProvider": "Cognito",
+            "attributes": [
+                "Arn",
+                "Name"
+            ]
+        }
+    ]
 }
