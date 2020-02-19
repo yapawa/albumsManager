@@ -6,9 +6,9 @@
         "framework": "vue",
         "config": {
             "SourceDir": "src",
-            "DistributionDir": "dist/pwa",
-            "BuildCommand": "quasar build -m pwa",
-            "StartCommand": "quasar serve --history dist/pwa"
+            "DistributionDir": "dist/spa",
+            "BuildCommand": "quasar build -m spa",
+            "StartCommand": "quasar serve --history dist/spa"
         }
     },
     "providers": [
