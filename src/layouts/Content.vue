@@ -133,14 +133,9 @@ export default {
       this.dpr = parseFloat(parseFloat(dpr).toFixed(1))
     },
     setCacheDomain () {
-      let cacheDomain = null
-      try {
-        const config = require('src/config/config.json')
-        cacheDomain = config.cacheDomain
-      } catch (err) {
-        this.$Logger.error('setCacheDomain', err)
+      if (process.env.cacheDomain) {
+        this.cacheDomain = process.env.cacheDomain
       }
-      this.cacheDomain = cacheDomain
     }
   }
 }

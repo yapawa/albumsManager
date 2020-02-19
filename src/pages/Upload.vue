@@ -189,9 +189,8 @@ export default {
       }
     },
     accelerationConfig () {
-      const config = require('src/config/config.json')
-      if (config.transferAcceleration) {
-        return config.transferAcceleration === true
+      if (process.env.transferAcceleration && process.env.transferAcceleration === 'true') {
+        return true
       }
       return false
     }
