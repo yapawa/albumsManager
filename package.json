@@ -1,11 +1,11 @@
 {
-  "name": "manager-try2",
+  "name": "YapawaManager",
   "version": "0.0.1",
   "description": "Manage Yapawa albums and photos",
   "productName": "Yapawa Albums Manager",
   "cordovaId": "net.yapawa.manager",
-  "capacitorId": "",
-  "author": "Daniel Muller <daniel@danielmuller.me>",
+  "capacitorId": "net.yapawa.manager",
+  "author": "Daniel Muller <daniel@yapawa.net>",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
