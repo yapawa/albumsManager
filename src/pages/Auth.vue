@@ -1,6 +1,6 @@
 <template lang="pug">
   q-page(padding)
-    .window-height.window-width.column.items-center
+    .fit.column.items-center
       .col-auto.q-mb-md
         q-btn-toggle(
           flat
