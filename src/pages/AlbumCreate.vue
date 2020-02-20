@@ -132,8 +132,8 @@ export default {
         orderDirection: this.orderDirection,
         description,
         summary: this.summary ? this.summary.trim() : description,
-        childrenCountTotal: 0,
-        childrenCountPublic: 0
+        contentCountTotal: 0,
+        contentCountPublic: 0
       }
       this.sendQuery(input)
     },
