@@ -32,9 +32,9 @@
       q-separator.q-my-sm
       draggable(v-if="albumData.type=='collection'"
         v-model="albumData.children.items"
-        group="children"
         :disabled="false"
         :sort="albumData.orderBy == 'position'"
+        group="children"
         animation="200"
         ghostClass="ghost"
         @sort="onSort"
@@ -50,9 +50,9 @@
               .text-caption.text-center.ellipsis {{item.name}}
       draggable(v-if="albumData.type=='album'"
         v-model="albumData.photos.items"
+        :sort="albumData.orderBy == 'position'"
         :group="{ name: 'photos', pull: 'clone', put: false }"
         :disabled="false"
-        :sort="albumData.orderBy == 'position'"
         animation="200"
         ghostClass="ghost"
         @sort="onSort"
