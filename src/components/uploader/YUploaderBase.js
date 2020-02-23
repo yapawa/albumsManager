@@ -10,7 +10,6 @@ import QBadge from 'quasar/src/components/badge/QBadge.js'
 import QImg from 'quasar/src/components/img/QImg.js'
 import QCard from 'quasar/src/components/card/QCard.js'
 import LoadImage from 'blueimp-load-image/js'
-import { extend } from 'quasar'
 
 export default Vue.extend({
   name: 'YUploaderBase',
@@ -152,26 +151,19 @@ export default Vue.extend({
                 file.__img = {
                   src: img.toDataURL(file.type)
                 }
-                file.__meta = null
                 if (data.exif) {
-                  file.__meta = data.exif.getAll()
-                  file.__orientation = data.exif.get(0x0112) || -1
+                  file.__orientation = data.exif[0x0112] || -1
                   const [imageWidth, imageHeight] = file.__orientation >= 5 && file.__orientation <= 8
                     ? [file.__height, file.__width]
                     : [file.__width, file.__height]
                   file.__width = imageWidth
                   file.__height = imageHeight
                 }
-                if (data.iptc) {
-                  file.__meta = extend(true, file.__meta, data.iptc.getAll())
-                }
                 resolve(true)
               },
               {
-                meta: true,
                 maxWidth: 600,
                 maxHeight: 600,
-                canvas: true,
                 orientation: true
               }
             )
