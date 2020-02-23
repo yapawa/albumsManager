@@ -36,7 +36,8 @@
     "storage": {
         "originals": {
             "service": "S3",
-            "providerPlugin": "awscloudformation"
+            "providerPlugin": "awscloudformation",
+            "dependsOn": []
         }
     },
     "hosting": {
@@ -50,6 +51,20 @@
             "service": "Lambda",
             "providerPlugin": "awscloudformation",
             "build": true
+        },
+        "exifReader": {
+            "service": "Lambda",
+            "providerPlugin": "awscloudformation",
+            "build": true,
+            "dependsOn": [
+                {
+                    "category": "storage",
+                    "resourceName": "originals",
+                    "attributes": [
+                        "BucketName"
+                    ]
+                }
+            ]
         }
     }
 }

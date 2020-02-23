@@ -1,0 +1,11 @@
+{
+    "permissions": {
+        "storage": {
+            "originals": [
+                "create",
+                "read",
+                "update"
+            ]
+        }
+    }
+}
