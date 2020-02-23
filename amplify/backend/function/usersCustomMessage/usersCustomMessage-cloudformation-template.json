@@ -118,7 +118,7 @@
 				"Runtime": "nodejs10.x",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-yapawamanager-prod-143758-deployment",
+					"S3Bucket": "amplify-yapawamanager-prod-184041-deployment",
 					"S3Key": "amplify-builds/usersCustomMessage-55704c61796d71373849-build.zip"
 				}
 			}
