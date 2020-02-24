@@ -8,6 +8,7 @@ Amplify Params - DO NOT EDIT */
 const AWS = require('aws-sdk')
 const S3 = new AWS.S3()
 const ExifReader = require('exifreader')
+const zlib = require('zlib')
 
 exports.handler = async (event) => {
   console.log(JSON.stringify(event, null, 2))
@@ -30,10 +31,11 @@ exports.handler = async (event) => {
       .then(exif => {
         console.log('exif data parsed')
         const exifParams = {
-          Key: `${decodeURIComponent(event.s3.object.key)}.exif`,
+          Key: `${decodeURIComponent(event.s3.object.key)}.exif.gz`,
           Bucket: event.s3.bucket.name,
           ContentType: 'application/json',
-          Body: JSON.stringify(exif, null, 2)
+          ContentEncoding: 'gzip',
+          Body: zlib.gzipSync(JSON.stringify(exif, null, 2))
         }
         return S3.putObject(exifParams).promise().then(res => {
           console.log('exif data stored')
