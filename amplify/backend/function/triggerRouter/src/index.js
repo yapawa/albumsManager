@@ -23,11 +23,11 @@ exports.handler = async (event) => {
       const proc = await processImage(item) // eslint-disable-line no-unused-vars
     }
   }
-
   return true
 }
 
 const processImage = async (item) => {
+  console.log('call processImage')
   const exifExec = await execParseExif(item) // eslint-disable-line no-unused-vars
   return {
     exif: exifExec
@@ -40,5 +40,6 @@ const execParseExif = (item) => {
     InvocationType: 'Event',
     Payload: JSON.stringify(item)
   }
+  console.log('call exifReader')
   return Lambda.invoke(params).promise()
 }
