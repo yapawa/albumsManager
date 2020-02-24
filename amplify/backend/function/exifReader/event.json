@@ -1,0 +1,34 @@
+{
+  "eventVersion": "2.1",
+  "eventSource": "aws:s3",
+  "awsRegion": "ap-southeast-1",
+  "eventTime": "2020-02-23T17:02:25.976Z",
+  "eventName": "ObjectCreated:Put",
+  "userIdentity": {
+    "principalId": "AWS:AROAVRHI3MBC6TXSAJHNZ:CognitoIdentityCredentials"
+  },
+  "requestParameters": {
+    "sourceIPAddress": "1.2.3.4"
+  },
+  "responseElements": {
+    "x-amz-request-id": "689D8ECAA03DE114",
+    "x-amz-id-2": "QNDtaWFBLUHobvTJIORA9ASkLK3Us4TGmqwHIK7sEryxTGtxG/lkm8SBV45TlB+IPOb/z87FiOGqOlNdh+UsOfQWXpvx3uI9"
+  },
+  "s3": {
+    "s3SchemaVersion": "1.0",
+    "configurationId": "NThhY2ZhYjktYjcxYy00N2ExLTg2MmItZGVhZGMxZjA3ZDZj",
+    "bucket": {
+      "name": "yapawa-originals-184041-prod",
+      "ownerIdentity": {
+        "principalId": "AJP0S9633X65F"
+      },
+      "arn": "arn:aws:s3:::yapawa-originals-184041-prod"
+    },
+    "object": {
+      "key": "public/211d80b9-2b57-4213-d488-34cdc608ba30/f243ccbb-4976-dcd1-ac05-cdff0b9c2a06/IMG_20200202_125612.jpg",
+      "size": 1912821,
+      "eTag": "e08d86e6df160faf11bb5e898f4552e5",
+      "sequencer": "005E52B022038E08AA"
+    }
+  }
+}
