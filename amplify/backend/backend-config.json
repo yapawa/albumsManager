@@ -1,75 +1,85 @@
 {
-	"auth": {
-		"users": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "usersCustomMessage",
-					"triggerProvider": "Cognito",
-					"attributes": [
-						"Arn",
-						"Name"
-					]
-				}
-			]
-		}
-	},
-	"api": {
-		"content": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"additionalAuthenticationProviders": [],
-					"defaultAuthentication": {
-						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
-						"userPoolConfig": {
-							"userPoolId": "authusers"
-						}
-					}
-				}
-			}
-		}
-	},
-	"storage": {
-		"originals": {
-			"service": "S3",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": []
-		}
-	},
-	"hosting": {
-		"S3AndCloudFront": {
-			"service": "S3AndCloudFront",
-			"providerPlugin": "awscloudformation"
-		}
-	},
-	"function": {
-		"usersCustomMessage": {
-			"service": "Lambda",
-			"providerPlugin": "awscloudformation",
-			"build": true
-		},
-		"exifReader": {
-			"service": "Lambda",
-			"providerPlugin": "awscloudformation",
-			"build": true,
-			"dependsOn": [
-				{
-					"category": "storage",
-					"resourceName": "originals",
-					"attributes": [
-						"BucketName"
-					]
-				}
-			]
-		},
-		"triggerRouter": {
-			"service": "Lambda",
-			"providerPlugin": "awscloudformation",
-			"build": true
-		}
-	}
+    "auth": {
+        "users": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "function",
+                    "resourceName": "usersCustomMessage",
+                    "triggerProvider": "Cognito",
+                    "attributes": [
+                        "Arn",
+                        "Name"
+                    ]
+                }
+            ]
+        }
+    },
+    "api": {
+        "content": {
+            "service": "AppSync",
+            "providerPlugin": "awscloudformation",
+            "output": {
+                "authConfig": {
+                    "additionalAuthenticationProviders": [],
+                    "defaultAuthentication": {
+                        "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+                        "userPoolConfig": {
+                            "userPoolId": "authusers"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "storage": {
+        "originals": {
+            "service": "S3",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "function",
+                    "resourceName": "triggerRouter",
+                    "attributes": [
+                        "Name",
+                        "Arn",
+                        "LambdaExecutionRole"
+                    ]
+                }
+            ]
+        }
+    },
+    "hosting": {
+        "S3AndCloudFront": {
+            "service": "S3AndCloudFront",
+            "providerPlugin": "awscloudformation"
+        }
+    },
+    "function": {
+        "usersCustomMessage": {
+            "service": "Lambda",
+            "providerPlugin": "awscloudformation",
+            "build": true
+        },
+        "exifReader": {
+            "service": "Lambda",
+            "providerPlugin": "awscloudformation",
+            "build": true,
+            "dependsOn": [
+                {
+                    "category": "storage",
+                    "resourceName": "originals",
+                    "attributes": [
+                        "BucketName"
+                    ]
+                }
+            ]
+        },
+        "triggerRouter": {
+            "service": "Lambda",
+            "providerPlugin": "awscloudformation",
+            "build": true
+        }
+    }
 }
