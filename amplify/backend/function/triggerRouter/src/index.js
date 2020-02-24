@@ -19,7 +19,7 @@ exports.handler = async (event) => {
     const key = item.s3.object.key
     const ext = path.extname(key).toLowerCase().replace(/^\./, '')
     const filesize = item.s3.object.size
-    if (imageExtensions.includes(ext) && filesize > 500) {
+    if (imageExtensions.includes(ext) && filesize > 5000) {
       const proc = await processImage(item) // eslint-disable-line no-unused-vars
     }
   }
