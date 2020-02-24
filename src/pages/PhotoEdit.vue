@@ -2,7 +2,7 @@
   q-page.row.justify-center(padding)
     .col.form-box(v-if="!loading")
       q-card.form-box(bordered)
-        q-img.justify-center(:src="cacheUrl(selectedPhotoDetails, {w:450,h:350,c:'fit'})" :style="imageStyle" contain)
+        q-img.justify-center(:src="cacheUrl(selectedPhotoDetails, {w:450,h:350,c:'fit'})" :style="imageStyle" contain @click="imgOriginal=true")
         q-card-section.q-gutter-sm
           y-album-input-ro(v-model="selectedPhotoDetails.id" label="Id" dense)
           y-album-input-ro(v-model="dimensions" :label="$t('Dimensions')" dense)
@@ -22,6 +22,14 @@
           q-btn.q-px-md(:label="$t('Update')" color="primary" text-color="black" @click="updatePhoto" :disabled="!canUpdate")
     .col.form-box.text-center(v-else)
       q-spinner(size="3em")
+    q-dialog(
+      v-if="!loading"
+      v-model="imgOriginal"
+      maximized
+      content-class="bg-black"
+    )
+      div.flex.flex-center
+        q-img.justify-center(:src="fullscreenUrl(selectedPhotoDetails)" :style="fullscreenImageStyle(selectedPhotoDetails)" contain v-close-popup)
 </template>
 
 <script>
@@ -42,7 +50,8 @@ export default {
   data () {
     return {
       selectedPhotoDetails: {},
-      loading: true
+      loading: true,
+      imgOriginal: false
     }
   },
   components: {
@@ -83,7 +92,7 @@ export default {
       const maxHeight = 350
       const newHeight = (width / maxWidth > height / maxHeight) ? Math.round(height / (width / maxWidth)) : maxHeight
 
-      return `max-width: ${maxWidth}px;height: ${newHeight}px;`
+      return `max-width: ${maxWidth}px;height: ${newHeight}px;cursor:zoom-in`
     },
     filesize () {
       if (!this.selectedPhotoDetails.size) {
@@ -136,6 +145,16 @@ export default {
         .finally(() => {
           this.loading = false
         })
+    },
+    fullscreenUrl (selectedPhotoDetails) {
+      const width = Math.min(this.$q.screen.width, selectedPhotoDetails.width)
+      const height = Math.min(this.$q.screen.height, selectedPhotoDetails.height)
+      return this.cacheUrl(selectedPhotoDetails, { w: width, h: height, c: 'fit' })
+    },
+    fullscreenImageStyle (selectedPhotoDetails) {
+      const width = Math.min(this.$q.screen.width, selectedPhotoDetails.width)
+      const height = Math.min(this.$q.screen.height, selectedPhotoDetails.height)
+      return `max-width: ${width}px;height: ${height}px;cursor:zoom-out`
     }
   },
   created () {
