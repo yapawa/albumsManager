@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  div(style="font-size:0.9em")
     q-tree(
       @update:selected="onSelect"
       :nodes="renderTree"
@@ -12,8 +12,8 @@
     )
       template(v-slot:default-header="prop")
         .row.no-wrap.fit(@drop="onDrop" @dragleave="onDragAction" @dragenter="onDragAction" @dragover="onDragAction" :data-id="prop.node.id")
-          q-icon.no-pointer-events.q-tree__icon.q-mr-sm.no-pointer-events(:name="prop.node.icon" :color="prop.node.iconColor")
-          div.no-pointer-events {{ prop.node.label }}
+          q-icon.no-pointer-events.q-tree__icon.q-mr-sm.no-pointer-events(:name="prop.node.icon" :color="prop.node.iconColor" size="18px")
+          div.no-pointer-events.ellipsis {{ prop.node.label }}
 </template>
 
 <script>
