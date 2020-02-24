@@ -60,10 +60,10 @@
 					]
 				},
 				"Runtime": "nodejs10.x",
-				"Timeout": "25",
+				"Timeout": "5",
 				"Code": {
 					"S3Bucket": "amplify-yapawamanager-prod-184041-deployment",
-					"S3Key": "amplify-builds/triggerRouter-626d4b4938796f353354-build.zip"
+					"S3Key": "amplify-builds/triggerRouter-386c693465756775727a-build.zip"
 				}
 			}
 		},

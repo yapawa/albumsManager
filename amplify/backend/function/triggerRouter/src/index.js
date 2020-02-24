@@ -1,10 +1,44 @@
+const AWS = require('aws-sdk')
+const Lambda = new AWS.Lambda()
+const path = require('path')
+const imageExtensions = [
+  'jpg',
+  'jpeg',
+  'png',
+  'tiff',
+  'tif',
+  'gif'
+]
+const env = process.env.ENV
 
 exports.handler = async (event) => {
   console.log(JSON.stringify(event, null, 2))
-  // TODO implement
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify('Hello from Lambda!')
+
+  for (let i = 0; i < event.Records.length; i++) {
+    const item = event.Records[i]
+    const key = item.s3.object.key
+    const ext = path.extname(key).toLowerCase().replace(/^\./, '')
+    const filesize = item.s3.object.size
+    if (imageExtensions.includes(ext) && filesize > 500) {
+      const proc = await processImage(item) // eslint-disable-line no-unused-vars
+    }
   }
-  return response
+
+  return true
+}
+
+const processImage = async (item) => {
+  const exifExec = await execParseExif(item) // eslint-disable-line no-unused-vars
+  return {
+    exif: exifExec
+  }
+}
+
+const execParseExif = (item) => {
+  const params = {
+    FunctionName: `exifReader-${env}`,
+    InvocationType: 'Event',
+    Payload: JSON.stringify(item)
+  }
+  return Lambda.invoke(params).promise()
 }
