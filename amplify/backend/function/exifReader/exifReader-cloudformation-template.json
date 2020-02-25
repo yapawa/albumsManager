@@ -70,7 +70,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-yapawamanager-prod-184041-deployment",
-					"S3Key": "amplify-builds/exifReader-7863554b69503071496c-build.zip"
+					"S3Key": "amplify-builds/exifReader-43743951636e61723535-build.zip"
 				}
 			}
 		},
