@@ -65,7 +65,7 @@ const listToTree = (list) => {
         mappedArr[mappedElem.parentId].children.sort(albumOrder(mappedArr[mappedElem.parentId].orderBy, mappedArr[mappedElem.parentId].orderDirection))
       } else {
         tree.push(mappedElem)
-        tree.sort(albumOrder('order', 'asc'))
+        tree.sort(albumOrder(mappedElem.orderBy, mappedElem.orderDirection))
       }
     }
   }
