@@ -36,6 +36,7 @@
 import { createAlbum } from 'src/graphql/queryAlbum'
 import { date, uid } from 'quasar'
 import YAlbumForm from 'components/albums'
+import AlbumCounters from 'src/mixins/albumCounters'
 
 const slug = require('slug')
 slug.defaults.mode = 'rfc3986'
@@ -66,6 +67,9 @@ export default {
   components: {
     ...YAlbumForm
   },
+  mixins: [
+    AlbumCounters
+  ],
   created () {
     if (this.hasRoot === false) {
       this.createRoot()
@@ -145,6 +149,9 @@ export default {
       this.$Amplify.API.graphql(
         this.$Amplify.graphqlOperation(createAlbum, { input: input })
       )
+        .then((res) => {
+          return this.updateCounters(this.parentAlbumId).then(update => { return res })
+        })
         .then(({ data }) => {
           if (data.createAlbum.id !== 'root') {
             this.$router.push({ path: `/album/${data.createAlbum.id}` })
