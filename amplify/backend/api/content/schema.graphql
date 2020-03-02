@@ -2,6 +2,7 @@ type Album
   @model
   @auth(rules: [
     {allow: private}
+    {allow: private, provider: iam, operations: [read]}
   ])
 {
   id: ID!
@@ -23,14 +24,15 @@ type Album
   updatedAt: AWSDateTime
   orderBy: OrderBy
   orderDirection: Direction
-  contentCountTotal: Int
-  contentCountPublic: Int
+  contentCountTotal: Int @auth(rules: [{allow: private}, {allow: private, provider: iam, operations: [read, update]}])
+  contentCountPublic: Int @auth(rules: [{allow: private}, {allow: private, provider: iam, operations: [read, update]}])
 }
 
 type Photo
   @model
   @auth(rules: [
     {allow: private}
+    {allow: private, provider: iam, operations: [read]}
   ])
 {
   id: ID!
