@@ -1,0 +1,12 @@
+{
+    "permissions": {
+        "function": {
+            "buildTree": [
+                "read"
+            ],
+            "buildAlbum": [
+                "read"
+            ]
+        }
+    }
+}

@@ -61,6 +61,11 @@ type S3Object {
     region: String!
 }
 
+type Mutation {
+  buildTree: String @function(name: "runBuild-${env}")
+  buildAlbum(id: String): String @function(name: "runBuild-${env}")
+}
+
 enum Status {
   deleted
   draft

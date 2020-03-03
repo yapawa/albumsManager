@@ -6,9 +6,37 @@ export const getAlbum = /* GraphQL */ `
     getAlbum(id: $id) {
       id
       name
+      parentId
+      covers
+      position
+      slug
+      description
+      summary
+      type
+      visibility
+      status
+      createdAt
+      publishedAt
+      updatedAt
+      orderBy
+      orderDirection
       parent {
         id
         name
+        parentId
+        covers
+        position
+        slug
+        description
+        summary
+        type
+        visibility
+        status
+        createdAt
+        publishedAt
+        updatedAt
+        orderBy
+        orderDirection
         parent {
           id
           name
@@ -29,30 +57,15 @@ export const getAlbum = /* GraphQL */ `
           contentCountTotal
           contentCountPublic
         }
-        parentId
         children {
           nextToken
         }
+        contentCountTotal
+        contentCountPublic
         photos {
           nextToken
         }
-        covers
-        position
-        slug
-        description
-        summary
-        type
-        visibility
-        status
-        createdAt
-        publishedAt
-        updatedAt
-        orderBy
-        orderDirection
-        contentCountTotal
-        contentCountPublic
       }
-      parentId
       children {
         items {
           id
@@ -76,6 +89,8 @@ export const getAlbum = /* GraphQL */ `
         }
         nextToken
       }
+      contentCountTotal
+      contentCountPublic
       photos {
         items {
           id
@@ -97,21 +112,6 @@ export const getAlbum = /* GraphQL */ `
         }
         nextToken
       }
-      covers
-      position
-      slug
-      description
-      summary
-      type
-      visibility
-      status
-      createdAt
-      publishedAt
-      updatedAt
-      orderBy
-      orderDirection
-      contentCountTotal
-      contentCountPublic
     }
   }
 `;
@@ -125,6 +125,20 @@ export const listAlbums = /* GraphQL */ `
       items {
         id
         name
+        parentId
+        covers
+        position
+        slug
+        description
+        summary
+        type
+        visibility
+        status
+        createdAt
+        publishedAt
+        updatedAt
+        orderBy
+        orderDirection
         parent {
           id
           name
@@ -145,28 +159,14 @@ export const listAlbums = /* GraphQL */ `
           contentCountTotal
           contentCountPublic
         }
-        parentId
         children {
           nextToken
         }
+        contentCountTotal
+        contentCountPublic
         photos {
           nextToken
         }
-        covers
-        position
-        slug
-        description
-        summary
-        type
-        visibility
-        status
-        createdAt
-        publishedAt
-        updatedAt
-        orderBy
-        orderDirection
-        contentCountTotal
-        contentCountPublic
       }
       nextToken
     }
@@ -176,52 +176,6 @@ export const getPhoto = /* GraphQL */ `
   query GetPhoto($id: ID!) {
     getPhoto(id: $id) {
       id
-      album {
-        id
-        name
-        parent {
-          id
-          name
-          parentId
-          covers
-          position
-          slug
-          description
-          summary
-          type
-          visibility
-          status
-          createdAt
-          publishedAt
-          updatedAt
-          orderBy
-          orderDirection
-          contentCountTotal
-          contentCountPublic
-        }
-        parentId
-        children {
-          nextToken
-        }
-        photos {
-          nextToken
-        }
-        covers
-        position
-        slug
-        description
-        summary
-        type
-        visibility
-        status
-        createdAt
-        publishedAt
-        updatedAt
-        orderBy
-        orderDirection
-        contentCountTotal
-        contentCountPublic
-      }
       albumId
       position
       file {
@@ -242,19 +196,24 @@ export const getPhoto = /* GraphQL */ `
       createdAt
       publishedAt
       updatedAt
-    }
-  }
-`;
-export const listPhotos = /* GraphQL */ `
-  query ListPhotos(
-    $filter: ModelPhotoFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listPhotos(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
+      album {
         id
-        album {
+        name
+        parentId
+        covers
+        position
+        slug
+        description
+        summary
+        type
+        visibility
+        status
+        createdAt
+        publishedAt
+        updatedAt
+        orderBy
+        orderDirection
+        parent {
           id
           name
           parentId
@@ -274,6 +233,27 @@ export const listPhotos = /* GraphQL */ `
           contentCountTotal
           contentCountPublic
         }
+        children {
+          nextToken
+        }
+        contentCountTotal
+        contentCountPublic
+        photos {
+          nextToken
+        }
+      }
+    }
+  }
+`;
+export const listPhotos = /* GraphQL */ `
+  query ListPhotos(
+    $filter: ModelPhotoFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPhotos(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
         albumId
         position
         file {
@@ -294,6 +274,26 @@ export const listPhotos = /* GraphQL */ `
         createdAt
         publishedAt
         updatedAt
+        album {
+          id
+          name
+          parentId
+          covers
+          position
+          slug
+          description
+          summary
+          type
+          visibility
+          status
+          createdAt
+          publishedAt
+          updatedAt
+          orderBy
+          orderDirection
+          contentCountTotal
+          contentCountPublic
+        }
       }
       nextToken
     }
