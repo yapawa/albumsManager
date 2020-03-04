@@ -26,6 +26,19 @@ exports.handler = async (event) => {
       } else {
         response.message = 'Argument ID is missing'
       }
+    } else if (event.fieldName === 'buildAll') {
+      const result = await invoke(functionBuildTreeName, { build: 'tree', return: 'albumIds' }, true)
+      const albumIds = JSON.parse(JSON.parse(result).Payload)
+      const runBuildAlbums = []
+      for (const albumId in albumIds) {
+        const runBuildAlbum = invoke(functionBuildAlbumName, { build: 'album', id: albumId })
+        runBuildAlbums.push(runBuildAlbum)
+      }
+      const res = await Promise.all(runBuildAlbums) // eslint-disable-line no-unused-vars
+      return {
+        statusCode: 202,
+        message: `Build albums invoked ${albumIds.length}`
+      }
     } else {
       response.message = `Only fields buildTree and buildAlbum are supported. You sent ${event.fieldName}`
     }
@@ -35,17 +48,20 @@ exports.handler = async (event) => {
   return JSON.stringify(response)
 }
 
-const invoke = (fct, payload) => {
+const invoke = (fct, payload, sync = false) => {
   const params = {
     FunctionName: fct,
-    InvocationType: 'Event',
+    InvocationType: sync ? 'RequestResponse' : 'Event',
     Payload: JSON.stringify(payload)
   }
   return lambda.invoke(params).promise()
     .then(res => {
-      const response = {
+      let response = {
         statusCode: 202,
         message: `${fct} invoked`
+      }
+      if (payload.return) {
+        response = res
       }
       return JSON.stringify(response)
     })

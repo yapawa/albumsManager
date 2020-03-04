@@ -64,6 +64,7 @@ type S3Object {
 type Mutation {
   buildTree: String @function(name: "runBuild-${env}")
   buildAlbum(id: String): String @function(name: "runBuild-${env}")
+  buildAll: String @function(name: "runBuild-${env}")
 }
 
 enum Status {

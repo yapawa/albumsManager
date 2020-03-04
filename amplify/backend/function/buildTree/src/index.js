@@ -62,6 +62,9 @@ exports.handler = async (event) => {
   const resList = await writeS3('list', list)
   const resTree = await writeS3('tree', tree)
 
+  if (event.return && event.return === 'albumIds') {
+    return list.map(item => item.id)
+  }
   const response = {
     statusCode: 201,
     message: 'Tree and List created',

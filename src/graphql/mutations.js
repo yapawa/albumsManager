@@ -11,6 +11,11 @@ export const buildAlbum = /* GraphQL */ `
     buildAlbum(id: $id)
   }
 `;
+export const buildAll = /* GraphQL */ `
+  mutation BuildAll {
+    buildAll
+  }
+`;
 export const createAlbum = /* GraphQL */ `
   mutation CreateAlbum(
     $input: CreateAlbumInput!
