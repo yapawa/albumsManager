@@ -304,7 +304,8 @@ const writeS3 = async (filename, data) => {
     Key: key,
     ContentType: 'application/json',
     CacheControl: 'max-age=10',
-    Body: JSON.stringify(data, null, 2)
+    Body: JSON.stringify(data, null, 2),
+    ContentDisposition: `attachment; filename="${filename}.json"`
   }
   const res = await S3.putObject(params).promise() // eslint-disable-line no-unused-vars
   return `s3://${S3.config.params.Bucket}/${key}`
