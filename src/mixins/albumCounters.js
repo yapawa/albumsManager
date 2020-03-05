@@ -1,5 +1,9 @@
 import { countContent, updateAlbum } from 'src/graphql/queryAlbum'
+import BuildApi from 'src/mixins/buildApi'
 export default {
+  mixins: [
+    BuildApi
+  ],
   methods: {
     countContent (albumId) {
       return this.$Amplify.API.graphql(
@@ -24,6 +28,12 @@ export default {
         return this.$Amplify.API.graphql(
           this.$Amplify.graphqlOperation(updateAlbum, { input })
         )
+          .then(res => {
+            return this.apiBuildTree()
+          })
+          .then(res => {
+            return this.apiBuildAlbum(albumId)
+          })
       })
     }
   }

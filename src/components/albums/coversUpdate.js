@@ -1,4 +1,5 @@
 import { updateAlbum } from 'src/graphql/queryAlbum'
+import BuildApi from 'src/mixins/buildApi'
 
 const getCovers = `query GetAlbum($id: ID!) {
   getAlbum(id: $id) {
@@ -12,13 +13,19 @@ export default {
       maxCovers: 4
     }
   },
+  mixins: [
+    BuildApi
+  ],
   methods: {
     updateCovers (albumId, covers) {
       const input = {
         id: albumId,
         covers: JSON.stringify(covers)
       }
-      this.$Amplify.API.graphql(this.$Amplify.graphqlOperation(updateAlbum, { input }))
+      return this.$Amplify.API.graphql(this.$Amplify.graphqlOperation(updateAlbum, { input }))
+        .then(res => {
+          return this.apiBuildTree()
+        })
     },
     addPhotoToCovers (albumId, photo) {
       this.$Amplify.API.graphql(this.$Amplify.graphqlOperation(getCovers, { id: albumId }))

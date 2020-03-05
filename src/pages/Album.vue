@@ -89,6 +89,7 @@ import draggable from 'vuedraggable'
 import { debounce, event } from 'quasar'
 import YThumbnails from 'src/mixins/thumbnails'
 import AlbumCounters from 'src/mixins/albumCounters'
+import BuildApi from 'src/mixins/buildApi'
 
 export default {
   name: 'Album',
@@ -118,7 +119,8 @@ export default {
   },
   mixins: [
     YThumbnails,
-    AlbumCounters
+    AlbumCounters,
+    BuildApi
   ],
   beforeRouteUpdate (to, from, next) {
     this.showEdit = false
@@ -225,6 +227,8 @@ export default {
       }
       Promise.all(updatePromises).then(res => {
         this.orderHasChanged = false
+      }).then(res => {
+        return this.apiBuildAlbum(this.activeAlbum.id)
       })
     },
     fetchAlbum (id) {
@@ -324,6 +328,9 @@ export default {
       ).then(res => {
         this.orderHasChanged = false
         this.updatePositionLater.cancel()
+        return res
+      }).then(res => {
+        return this.apiBuildAlbum(this.albumData.id)
       })
     },
     onSort (evt) {
