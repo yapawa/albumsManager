@@ -11,6 +11,7 @@
       :credentials="credentials"
       :options="{partSize: 10 * 1024 * 1024, queueSize: 5}"
       :maxConcurrentUploads="5"
+      :multiple="this.$route.name==='Upload'"
       @finish="finish"
       @uploaded="uploaded"
       @added="added"
@@ -20,7 +21,7 @@
 
 <script>
 import { uid, date } from 'quasar'
-import { createPhoto, updateAlbum } from 'src/graphql/queryAlbum'
+import { createPhoto, updatePhoto, updateAlbum, getPhoto } from 'src/graphql/queryAlbum'
 import { YUploader } from 'components/uploader'
 import AlbumCounters from 'src/mixins/albumCounters'
 
@@ -38,6 +39,8 @@ export default {
       userInfo: null,
       uploadBatch: null,
       albumId: null,
+      photoId: null,
+      photoToReplace: null,
       position: 1,
       dialogData: null,
       showDialog: false,
@@ -53,7 +56,14 @@ export default {
   ],
   computed: {
     ensureCredentials () {
-      return (this.credentials && this.credentials.authenticated && this.credentials.authenticated === true && this.userInfo)
+      const hasCredentials = (this.credentials && this.credentials.authenticated && this.credentials.authenticated === true && this.userInfo)
+      let hasPhotoInfo = false
+      if (this.$route.name === 'Upload') {
+        hasPhotoInfo = true
+      } else {
+        hasPhotoInfo = this.photoToReplace !== null
+      }
+      return hasCredentials && hasPhotoInfo
     },
     activeAlbum () {
       return this.$store.state.albums.active
@@ -64,8 +74,13 @@ export default {
       this.$router.replace({ name: 'album' })
       return
     }
-    this.albumId = this.$route.params.id
-    this.position = this.activeAlbum.photosCount + 1
+    if (this.$route.name === 'Upload') {
+      this.albumId = this.$route.params.id
+      this.position = this.activeAlbum.photosCount + 1
+    } else {
+      this.photoId = this.$route.params.id
+      this.fetchPhotoToReplace(this.photoId)
+    }
     this.$Amplify.Auth.currentCredentials()
       .then(credentials => {
         this.credentials = this.$Amplify.Auth.essentialCredentials(credentials)
@@ -80,13 +95,21 @@ export default {
     this.uploadBatch = uid()
   },
   methods: {
+    fetchPhotoToReplace (id) {
+      this.$Amplify.API.graphql(
+        this.$Amplify.graphqlOperation(getPhoto, { id })
+      ).then(({ data }) => {
+        this.photoToReplace = data.getPhoto
+        this.albumId = this.photoToReplace.albumId
+      })
+    },
     finish () {
       this.updateCovers()
         .then(data => {
           return this.updateCounters(this.activeAlbum.id)
         })
         .then(data => {
-          this.$router.push({ name: 'album' })
+          this.$router.push({ name: 'album', params: { id: this.activeAlbum.id } })
         })
     },
     updateCovers () {
@@ -156,16 +179,22 @@ export default {
         capturedAt,
         publishedAt: file.__updatedAt
       }
+      const query = this.photoToReplace ? updatePhoto : createPhoto
       this.$Amplify.API.graphql(
-        this.$Amplify.graphqlOperation(createPhoto, { input })
+        this.$Amplify.graphqlOperation(query, { input })
       )
     },
     added (files) {
       for (let i = 0; i < files.length; i++) {
-        const photoId = uid()
-        files[i].__position = this.position
-        files[i].__id = photoId
-        this.position++
+        if (this.$route.name === 'Upload') {
+          const photoId = uid()
+          files[i].__position = this.position
+          files[i].__id = photoId
+          this.position++
+        } else {
+          files[i].__position = this.photoToReplace.position
+          files[i].__id = this.photoToReplace.id
+        }
       }
     },
     getKey (file) {

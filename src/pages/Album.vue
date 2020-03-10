@@ -70,6 +70,7 @@
                 q-btn(dense flat icon="delete" size="10px" @click="confirmRemovePhoto(item.id)")
               .absolute-top-left.q-pa-none(:class="(photoHover === item.id) ? '':'hidden'")
                 q-btn(dense flat icon="edit" size="10px" :to="{name: 'PhotoEdit', params: {id: item.id }}")
+                q-btn(dense flat icon="publish" size="10px" :to="{name: 'ReplacePhoto', params: {id: item.id }}")
               .absolute-bottom-right.q-pa-none(:class="(photoHover === item.id) ? '':'hidden'")
                 q-btn(dense flat icon="rotate_left" size="10px" @click="rotate(item.id, 'left')")
                 q-btn(dense flat icon="rotate_right" size="10px" @click="rotate(item.id, 'right')")

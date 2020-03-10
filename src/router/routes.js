@@ -53,6 +53,14 @@ const routes = [
         }
       },
       {
+        path: 'photo/:id/replace',
+        name: 'ReplacePhoto',
+        component: () => import('pages/Upload.vue'),
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
         path: 'upload/:id',
         name: 'Upload',
         component: () => import('pages/Upload.vue'),
