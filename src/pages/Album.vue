@@ -73,6 +73,8 @@
               .absolute-bottom-right.q-pa-none(:class="(photoHover === item.id) ? '':'hidden'")
                 q-btn(dense flat icon="rotate_left" size="10px" @click="rotate(item.id, 'left')")
                 q-btn(dense flat icon="rotate_right" size="10px" @click="rotate(item.id, 'right')")
+              .absolute-bottom-left.q-pa-none(:class="(photoHover === item.id) ? '':'hidden'")
+                q-btn.rotate-180(dense flat icon="publish" size="10px" @click="getOriginal(item.id)")
     q-dialog(v-model="confirmDeletePhoto" persistent)
       q-card.bg-grey-8
         q-card-section.row.items-center.justify-center
@@ -89,7 +91,7 @@ import { getAlbum, updateAlbum, updatePhoto, onUpdateAlbum, onCreateAlbum, onUpd
 import { albumOrder } from 'src/utils/ordering'
 import YAlbumForm from 'components/albums'
 import draggable from 'vuedraggable'
-import { debounce, event } from 'quasar'
+import { debounce, event, exportFile } from 'quasar'
 import YThumbnails from 'src/mixins/thumbnails'
 import AlbumCounters from 'src/mixins/albumCounters'
 import BuildApi from 'src/mixins/buildApi'
@@ -412,6 +414,12 @@ export default {
               this.apiBuildAlbumLater(this.activeAlbum.id)
             })
         })
+    },
+    getOriginal (itemId) {
+      const item = this.albumData.photos.items.filter(el => el.id === itemId)[0]
+      this.$Amplify.Storage.get(item.file.key, { download: true }).then(data => {
+        exportFile(item.name, data.Body, data.ContentType)
+      })
     }
   },
   computed: {
