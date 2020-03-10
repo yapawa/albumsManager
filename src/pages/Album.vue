@@ -70,6 +70,9 @@
                 q-btn(dense flat icon="delete" size="10px" @click="confirmRemovePhoto(item.id)")
               .absolute-top-left.q-pa-none(:class="(photoHover === item.id) ? '':'hidden'")
                 q-btn(dense flat icon="edit" size="10px" :to="{name: 'PhotoEdit', params: {id: item.id }}")
+              .absolute-bottom-right.q-pa-none(:class="(photoHover === item.id) ? '':'hidden'")
+                q-btn(dense flat icon="rotate_left" size="10px" @click="rotate(item.id, 'left')")
+                q-btn(dense flat icon="rotate_right" size="10px" @click="rotate(item.id, 'right')")
     q-dialog(v-model="confirmDeletePhoto" persistent)
       q-card.bg-grey-8
         q-card-section.row.items-center.justify-center
@@ -165,6 +168,7 @@ export default {
       }
     })
     this.updatePositionLater = debounce(this.updatePosition, 4000)
+    this.apiBuildAlbumLater = debounce(this.apiBuildAlbum, 5000)
   },
   beforeDestroy () {
     this.subscriptionUpdate.unsubscribe()
@@ -375,6 +379,39 @@ export default {
         display = `${display} (${publicCount})`
       }
       return display
+    },
+    rotate (itemId, direction) {
+      const angle = direction === 'left' ? 270 : 90
+
+      const elem = document.querySelector(`div.q-card[data-id="${itemId}"] .q-img__image`)
+      elem.classList.remove('rotate-90')
+      elem.classList.remove('rotate-270')
+      elem.classList.add(`rotate-${angle}`)
+
+      const item = this.albumData.photos.items.filter(el => el.id === itemId)[0]
+      const rotatePhoto = `mutation RotatePhoto($key: String, $angle: Int) {
+        rotatePhoto(key: $key, angle: $angle)
+      }`
+
+      this.$q.loading.show({
+        delay: 400 // ms
+      })
+      this.$Amplify.API.graphql(this.$Amplify.graphqlOperation(rotatePhoto, { key: item.file.key, angle }))
+        .then(res => {
+          const newMetadata = JSON.parse(res.data.rotatePhoto)
+          const input = {
+            id: itemId,
+            size: newMetadata.size,
+            width: newMetadata.width,
+            height: newMetadata.height,
+            updatedAt: newMetadata.modifiedAt
+          }
+          this.$Amplify.API.graphql(this.$Amplify.graphqlOperation(updatePhoto, { input }))
+            .then(res => {
+              this.$q.loading.hide()
+              this.apiBuildAlbumLater(this.activeAlbum.id)
+            })
+        })
     }
   },
   computed: {
