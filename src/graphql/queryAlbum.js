@@ -119,27 +119,24 @@ export const getPhoto = `query GetPhoto($id: ID!) {
 
 export const createPhoto = `mutation CreatePhoto(
   $input: CreatePhotoInput!
-  $condition: ModelPhotoConditionInput
 ) {
-  createPhoto(input: $input, condition: $condition) {
+  createPhoto(input: $input) {
     ${photoFields.join('\n')}
   }
 }`
 
 export const updateAlbum = `mutation UpdateAlbum(
   $input: UpdateAlbumInput!
-  $condition: ModelAlbumConditionInput
 ) {
-  updateAlbum(input: $input, condition: $condition) {
+  updateAlbum(input: $input) {
     ${albumFields.join('\n')}
   }
 }`
 
 export const updatePhoto = `mutation UpdatePhoto(
   $input: UpdatePhotoInput!
-  $condition: ModelPhotoConditionInput
 ) {
-  updatePhoto(input: $input, condition: $condition) {
+  updatePhoto(input: $input) {
     ${photoFields.join('\n')}
   }
 }`
@@ -177,9 +174,8 @@ subscription OnDeletePhoto {
 export const deletePhoto = `
 mutation DeletePhoto(
   $input: DeletePhotoInput!
-  $condition: ModelPhotoConditionInput
 ) {
-  deletePhoto(input: $input, condition: $condition) {
+  deletePhoto(input: $input) {
     id
   }
 }`
