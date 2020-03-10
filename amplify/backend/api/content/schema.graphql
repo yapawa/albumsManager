@@ -65,6 +65,7 @@ type Mutation {
   buildTree: String @function(name: "runBuild-${env}")
   buildAlbum(id: String): String @function(name: "runBuild-${env}")
   buildAll: String @function(name: "runBuild-${env}")
+  rotatePhoto(key: String angle: Int): String @function(name: "rotate-${env}")
 }
 
 enum Status {
