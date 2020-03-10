@@ -19,7 +19,7 @@
     "fitty": "^2.3.0",
     "quasar": "^1.9.8",
     "slug": "^2.1.1",
-    "vue-i18n": "^8.15.4",
+    "vue-i18n": "^8.15.5",
     "vuedraggable": "^2.23.2"
   },
   "devDependencies": {
