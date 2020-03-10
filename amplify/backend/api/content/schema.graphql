@@ -55,7 +55,7 @@ type Photo
   updatedAt: AWSDateTime
 }
 
-type S3Object {
+type S3Object @aws_iam @aws_cognito_user_pools {
     bucket: String!
     key: String!
     region: String!
