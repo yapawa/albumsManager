@@ -109,5 +109,7 @@ Benutze eine Nummer im Format: +12345678900`,
   'Update from name': 'Vom Name aktualisieren',
   Dimensions: 'Dimensionen',
   Filename: 'Datei Name',
-  Size: 'Grösse'
+  Size: 'Grösse',
+  'Build all Albums': 'Alle Alben erstellen',
+  'Generate API Data': 'API Daten generieren'
 }

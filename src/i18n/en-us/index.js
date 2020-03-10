@@ -115,5 +115,7 @@ export default {
   'Update from name': 'Update from Name',
   Dimensions: 'Dimensions',
   Filename: 'Filename',
-  Size: 'Size'
+  Size: 'Size',
+  'Build all Albums': 'Build all Albums',
+  'Generate API Data': 'Generate API Data'
 }
