@@ -179,7 +179,7 @@ export default {
         owner: this.userInfo.username,
         filename: file.name,
         modifiedAt: file.lastModified.toString(),
-        uploadedAt: Date.now().toString(),
+        uploadedAt: new Date().toISOString(),
         uploadBatch: this.uploadBatch,
         albumId: this.albumId,
         photoId: file.__id,
