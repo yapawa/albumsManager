@@ -12,12 +12,12 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@quasar/extras": "^1.5.2",
+    "@quasar/extras": "^1.6.0",
     "aws-amplify": "^2.2.6",
     "aws-amplify-vue": "^1.1.4",
     "blueimp-load-image": "^2.26.0",
     "fitty": "^2.3.0",
-    "quasar": "^1.9.8",
+    "quasar": "^1.9.10",
     "slug": "^2.1.1",
     "vue-i18n": "^8.15.5",
     "vuedraggable": "^2.23.2"
