@@ -6,6 +6,7 @@ export const getAlbum = /* GraphQL */ `
     getAlbum(id: $id) {
       id
       name
+      event
       parentId
       covers
       position
@@ -23,6 +24,7 @@ export const getAlbum = /* GraphQL */ `
       parent {
         id
         name
+        event
         parentId
         covers
         position
@@ -40,6 +42,7 @@ export const getAlbum = /* GraphQL */ `
         parent {
           id
           name
+          event
           parentId
           covers
           position
@@ -70,6 +73,7 @@ export const getAlbum = /* GraphQL */ `
         items {
           id
           name
+          event
           parentId
           covers
           position
@@ -125,6 +129,7 @@ export const listAlbums = /* GraphQL */ `
       items {
         id
         name
+        event
         parentId
         covers
         position
@@ -142,6 +147,7 @@ export const listAlbums = /* GraphQL */ `
         parent {
           id
           name
+          event
           parentId
           covers
           position
@@ -199,6 +205,7 @@ export const getPhoto = /* GraphQL */ `
       album {
         id
         name
+        event
         parentId
         covers
         position
@@ -216,6 +223,7 @@ export const getPhoto = /* GraphQL */ `
         parent {
           id
           name
+          event
           parentId
           covers
           position
@@ -277,6 +285,7 @@ export const listPhotos = /* GraphQL */ `
         album {
           id
           name
+          event
           parentId
           covers
           position

@@ -28,6 +28,7 @@ const listAlbums = `query ListAlbums(
     items {
       id
       name
+      event
       parentId
       covers
       position

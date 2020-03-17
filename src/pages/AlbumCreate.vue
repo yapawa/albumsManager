@@ -12,6 +12,7 @@
         q-card-section(v-if="!loading").q-gutter-sm
           y-album-type(v-model="type")
           y-album-input(v-model="name" :label="$t('Name')")
+          y-album-input(v-model="event" :label="$t('Event')")
           y-album-input(v-model="description" :label="$t('Description')" type="textarea")
           y-album-select-parent(v-model="parentAlbumId")
           q-expansion-item(
@@ -48,6 +49,7 @@ export default {
       loading: false,
       error: false,
       name: null,
+      event: null,
       description: null,
       parentAlbumId: 'root',
       newAlbumId: uid(),
@@ -127,6 +129,7 @@ export default {
         id: this.newAlbumId,
         parentId: this.parentAlbumId,
         name: this.name ? this.name.trim() : null,
+        event: this.event ? this.event.trim() : null,
         visibility: this.visibility,
         position,
         type: this.type,

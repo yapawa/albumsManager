@@ -12,6 +12,7 @@
         q-card-section(v-if="!loading").q-gutter-sm
           y-album-type(v-model="albumData.type" v-if="canUpdateType")
           y-album-input(v-model="albumData.name" :label="$t('Name')")
+          y-album-input(v-model="albumData.event" :label="$t('Event')")
           y-album-input(v-model="albumData.slug" :label="$t('Slug')" :updateIcon="true" @clickIcon="updateSlug")
           y-album-input(v-model="albumData.description" :label="$t('Description')" type="textarea")
           y-album-input(v-model="albumData.summary" :label="$t('Summary')" type="textarea")
@@ -75,6 +76,7 @@ export default {
       const input = {
         id: this.activeAlbum.id,
         name: this.albumData.name ? this.albumData.name.trim() : null,
+        event: this.albumData.event ? this.albumData.event.trim() : null,
         visibility: this.albumData.visibility,
         slug: this.albumData.slug ? slug(this.albumData.slug) : this.albumData.name ? slug(this.albumData.name) : null,
         type: this.activeAlbum.type,

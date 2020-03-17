@@ -6,6 +6,7 @@ export const onCreateAlbum = /* GraphQL */ `
     onCreateAlbum {
       id
       name
+      event
       parentId
       covers
       position
@@ -23,6 +24,7 @@ export const onCreateAlbum = /* GraphQL */ `
       parent {
         id
         name
+        event
         parentId
         covers
         position
@@ -40,6 +42,7 @@ export const onCreateAlbum = /* GraphQL */ `
         parent {
           id
           name
+          event
           parentId
           covers
           position
@@ -70,6 +73,7 @@ export const onCreateAlbum = /* GraphQL */ `
         items {
           id
           name
+          event
           parentId
           covers
           position
@@ -120,6 +124,7 @@ export const onUpdateAlbum = /* GraphQL */ `
     onUpdateAlbum {
       id
       name
+      event
       parentId
       covers
       position
@@ -137,6 +142,7 @@ export const onUpdateAlbum = /* GraphQL */ `
       parent {
         id
         name
+        event
         parentId
         covers
         position
@@ -154,6 +160,7 @@ export const onUpdateAlbum = /* GraphQL */ `
         parent {
           id
           name
+          event
           parentId
           covers
           position
@@ -184,6 +191,7 @@ export const onUpdateAlbum = /* GraphQL */ `
         items {
           id
           name
+          event
           parentId
           covers
           position
@@ -234,6 +242,7 @@ export const onDeleteAlbum = /* GraphQL */ `
     onDeleteAlbum {
       id
       name
+      event
       parentId
       covers
       position
@@ -251,6 +260,7 @@ export const onDeleteAlbum = /* GraphQL */ `
       parent {
         id
         name
+        event
         parentId
         covers
         position
@@ -268,6 +278,7 @@ export const onDeleteAlbum = /* GraphQL */ `
         parent {
           id
           name
+          event
           parentId
           covers
           position
@@ -298,6 +309,7 @@ export const onDeleteAlbum = /* GraphQL */ `
         items {
           id
           name
+          event
           parentId
           covers
           position
@@ -370,6 +382,7 @@ export const onCreatePhoto = /* GraphQL */ `
       album {
         id
         name
+        event
         parentId
         covers
         position
@@ -387,6 +400,7 @@ export const onCreatePhoto = /* GraphQL */ `
         parent {
           id
           name
+          event
           parentId
           covers
           position
@@ -443,6 +457,7 @@ export const onUpdatePhoto = /* GraphQL */ `
       album {
         id
         name
+        event
         parentId
         covers
         position
@@ -460,6 +475,7 @@ export const onUpdatePhoto = /* GraphQL */ `
         parent {
           id
           name
+          event
           parentId
           covers
           position
@@ -516,6 +532,7 @@ export const onDeletePhoto = /* GraphQL */ `
       album {
         id
         name
+        event
         parentId
         covers
         position
@@ -533,6 +550,7 @@ export const onDeletePhoto = /* GraphQL */ `
         parent {
           id
           name
+          event
           parentId
           covers
           position

@@ -29,6 +29,7 @@ export const createAlbum = /* GraphQL */ `
     createAlbum(input: $input, condition: $condition) {
       id
       name
+      event
       parentId
       covers
       position
@@ -46,6 +47,7 @@ export const createAlbum = /* GraphQL */ `
       parent {
         id
         name
+        event
         parentId
         covers
         position
@@ -63,6 +65,7 @@ export const createAlbum = /* GraphQL */ `
         parent {
           id
           name
+          event
           parentId
           covers
           position
@@ -93,6 +96,7 @@ export const createAlbum = /* GraphQL */ `
         items {
           id
           name
+          event
           parentId
           covers
           position
@@ -146,6 +150,7 @@ export const deleteAlbum = /* GraphQL */ `
     deleteAlbum(input: $input, condition: $condition) {
       id
       name
+      event
       parentId
       covers
       position
@@ -163,6 +168,7 @@ export const deleteAlbum = /* GraphQL */ `
       parent {
         id
         name
+        event
         parentId
         covers
         position
@@ -180,6 +186,7 @@ export const deleteAlbum = /* GraphQL */ `
         parent {
           id
           name
+          event
           parentId
           covers
           position
@@ -210,6 +217,7 @@ export const deleteAlbum = /* GraphQL */ `
         items {
           id
           name
+          event
           parentId
           covers
           position
@@ -285,6 +293,7 @@ export const createPhoto = /* GraphQL */ `
       album {
         id
         name
+        event
         parentId
         covers
         position
@@ -302,6 +311,7 @@ export const createPhoto = /* GraphQL */ `
         parent {
           id
           name
+          event
           parentId
           covers
           position
@@ -361,6 +371,7 @@ export const updatePhoto = /* GraphQL */ `
       album {
         id
         name
+        event
         parentId
         covers
         position
@@ -378,6 +389,7 @@ export const updatePhoto = /* GraphQL */ `
         parent {
           id
           name
+          event
           parentId
           covers
           position
@@ -437,6 +449,7 @@ export const deletePhoto = /* GraphQL */ `
       album {
         id
         name
+        event
         parentId
         covers
         position
@@ -454,6 +467,7 @@ export const deletePhoto = /* GraphQL */ `
         parent {
           id
           name
+          event
           parentId
           covers
           position
@@ -491,6 +505,7 @@ export const updateAlbum = /* GraphQL */ `
     updateAlbum(input: $input, condition: $condition) {
       id
       name
+      event
       parentId
       covers
       position
@@ -508,6 +523,7 @@ export const updateAlbum = /* GraphQL */ `
       parent {
         id
         name
+        event
         parentId
         covers
         position
@@ -525,6 +541,7 @@ export const updateAlbum = /* GraphQL */ `
         parent {
           id
           name
+          event
           parentId
           covers
           position
@@ -555,6 +572,7 @@ export const updateAlbum = /* GraphQL */ `
         items {
           id
           name
+          event
           parentId
           covers
           position

@@ -1,6 +1,7 @@
 const albumFields = [
   'id',
   'name',
+  'event',
   'parentId',
   'covers',
   'position',
