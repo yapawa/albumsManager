@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Hosting resource stack creation using Amplify CLI",
+  "Description": "Public Site Hosting resource stack creation using Amplify CLI",
   "Parameters": {
     "env": {
       "Type": "String"
@@ -72,80 +72,20 @@
         },
         "WebsiteConfiguration": {
           "IndexDocument": "index.html",
-          "ErrorDocument": "index.html"
+          "ErrorDocument": "404.html"
         },
-        "CorsConfiguration": {
-          "CorsRules": [
-            {
-              "AllowedHeaders": [
-                "Authorization",
-                "Content-Length"
-              ],
-              "AllowedMethods": [
-                "GET"
-              ],
-              "AllowedOrigins": [
-                "*"
-              ],
-              "MaxAge": 3000
-            }
-          ]
-        }
-      }
-    },
-    "PrivateBucketPolicy": {
-      "Type": "AWS::S3::BucketPolicy",
-      "DependsOn": "OriginAccessIdentity",
-      "Properties": {
-        "PolicyDocument": {
-          "Id": "MyPolicy",
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Sid": "APIReadForGetBucketObjects",
-              "Effect": "Allow",
-              "Principal": {
-                "CanonicalUser": {
-                  "Fn::GetAtt": [
-                    "OriginAccessIdentity",
-                    "S3CanonicalUserId"
-                  ]
-                }
-              },
-              "Action": "s3:GetObject",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:aws:s3:::",
-                    {
-                      "Ref": "S3Bucket"
-                    },
-                    "/*"
-                  ]
-                ]
-              }
-            }
-          ]
-        },
-        "Bucket": {
-          "Ref": "S3Bucket"
-        }
-      }
-    },
-    "OriginAccessIdentity": {
-      "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
-      "Properties": {
-        "CloudFrontOriginAccessIdentityConfig": {
-          "Comment": "CloudFrontOriginAccessIdentityConfig"
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": false,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": false,
+          "RestrictPublicBuckets": true
         }
       }
     },
     "CloudFrontDistribution": {
       "Type": "AWS::CloudFront::Distribution",
       "DependsOn": [
-        "S3Bucket",
-        "OriginAccessIdentity"
+        "S3Bucket"
       ],
       "Properties": {
         "DistributionConfig": {
@@ -157,83 +97,78 @@
             "MinimumProtocolVersion": "TLSv1.2_2018",
             "SslSupportMethod": "sni-only"
           },
+          "Comment": "YapawaSiteHosting",
           "Origins": [
             {
               "DomainName": {
-                "Fn::GetAtt": [
-                  "S3Bucket",
-                  "DomainName"
-                ]
-              },
-              "Id": "hostingS3Bucket",
-              "S3OriginConfig": {
-                "OriginAccessIdentity": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "origin-access-identity/cloudfront/",
+                "Fn::Select": [
+                  2,
+                  {
+                    "Fn::Split": [
+                      "/",
                       {
-                        "Ref": "OriginAccessIdentity"
+                        "Fn::GetAtt": [
+                          "S3Bucket",
+                          "WebsiteURL"
+                        ]
                       }
                     ]
-                  ]
-                }
+                  }
+                ]
+              },
+              "Id": "siteS3Bucket",
+              "CustomOriginConfig": {
+                "OriginProtocolPolicy": "http-only"
               }
             }
           ],
           "Enabled": "true",
+          "HttpVersion": "http2",
           "DefaultCacheBehavior": {
             "AllowedMethods": [
-              "DELETE",
               "GET",
               "HEAD",
-              "OPTIONS",
-              "PATCH",
-              "POST",
-              "PUT"
+              "OPTIONS"
             ],
-            "TargetOriginId": "hostingS3Bucket",
+            "TargetOriginId": "siteS3Bucket",
             "ForwardedValues": {
               "QueryString": "false"
             },
             "ViewerProtocolPolicy": "redirect-to-https",
             "DefaultTTL": 86400,
             "MaxTTL": 31536000,
-            "MinTTL": 60,
+            "MinTTL": 0,
             "Compress": true
           },
           "DefaultRootObject": "index.html",
           "CustomErrorResponses": [
             {
-              "ErrorCachingMinTTL": 300,
-              "ErrorCode": 400,
-              "ResponseCode": 200,
-              "ResponsePagePath": "/"
+              "ErrorCachingMinTTL": 10,
+              "ErrorCode": 400
             },
             {
-              "ErrorCachingMinTTL": 300,
-              "ErrorCode": 403,
-              "ResponseCode": 200,
-              "ResponsePagePath": "/"
+              "ErrorCachingMinTTL": 10,
+              "ErrorCode": 403
             },
             {
-              "ErrorCachingMinTTL": 300,
-              "ErrorCode": 404,
-              "ResponseCode": 200,
-              "ResponsePagePath": "/"
+              "ErrorCachingMinTTL": 10,
+              "ErrorCode": 404
             }
-          ],
-          "Comment": "YapawaManagerHosting"
+          ]
         }
       }
     },
     "CustomDomain": {
       "Type": "AWS::Route53::RecordSetGroup",
       "Properties": {
-        "HostedZoneId": {"Ref": "hostedZoneId"},
+        "HostedZoneId": {
+          "Ref": "hostedZoneId"
+        },
         "RecordSets": [
           {
-            "Name": {"Ref": "domainName"},
+            "Name": {
+              "Ref": "domainName"
+            },
             "Type": "A",
             "AliasTarget": {
               "HostedZoneId": "Z2FDTNDATAQYW2",
@@ -246,7 +181,9 @@
             }
           },
           {
-            "Name": {"Ref": "domainName"},
+            "Name": {
+              "Ref": "domainName"
+            },
             "Type": "AAAA",
             "AliasTarget": {
               "HostedZoneId": "Z2FDTNDATAQYW2",
@@ -274,32 +211,6 @@
         "Ref": "S3Bucket"
       }
     },
-    "WebsiteURL": {
-      "Value": {
-        "Fn::GetAtt": [
-          "S3Bucket",
-          "WebsiteURL"
-        ]
-      },
-      "Description": "URL for website hosted on S3"
-    },
-    "S3BucketSecureURL": {
-      "Value": {
-        "Fn::Join": [
-          "",
-          [
-            "https://",
-            {
-              "Fn::GetAtt": [
-                "S3Bucket",
-                "DomainName"
-              ]
-            }
-          ]
-        ]
-      },
-      "Description": "Name of S3 bucket to hold website content"
-    },
     "CloudFrontDistributionID": {
       "Value": {
         "Ref": "CloudFrontDistribution"
@@ -312,6 +223,15 @@
           "DomainName"
         ]
       }
+    },
+    "WebsiteURL": {
+      "Value": {
+        "Fn::GetAtt": [
+          "S3Bucket",
+          "WebsiteURL"
+        ]
+      },
+      "Description": "URL for website hosted on S3"
     },
     "CloudFrontSecureURL": {
       "Value": {
@@ -327,11 +247,6 @@
             }
           ]
         ]
-      }
-    },
-    "CloudFrontOriginAccessIdentity": {
-      "Value": {
-        "Ref": "OriginAccessIdentity"
       }
     }
   }
