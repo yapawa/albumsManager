@@ -13,13 +13,13 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.6.0",
-    "aws-amplify": "^2.2.6",
+    "aws-amplify": "^2.2.7",
     "aws-amplify-vue": "^1.1.4",
     "blueimp-load-image": "^2.26.0",
     "fitty": "^2.3.0",
-    "quasar": "^1.9.10",
+    "quasar": "^1.9.11",
     "slug": "^2.1.1",
-    "vue-i18n": "^8.15.5",
+    "vue-i18n": "^8.15.6",
     "vuedraggable": "^2.23.2"
   },
   "devDependencies": {
