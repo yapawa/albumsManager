@@ -26,6 +26,17 @@ export const canEditAlbum = state => {
   return hasActive(state)
 }
 
+export const canDeleteAlbum = state => {
+  if (hasActive(state)) {
+    if (state.active.type === 'collection') {
+      return state.active.childrenCount === 0
+    } else {
+      return true
+    }
+  }
+  return false
+}
+
 export const canAddAlbum = state => {
   if (hasActive(state)) {
     return state.active.type === 'collection'

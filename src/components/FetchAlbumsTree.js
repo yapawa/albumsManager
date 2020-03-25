@@ -41,19 +41,27 @@ const onUpdateAlbum = `subscription OnUpdateAlbum {
   }
 }
 `
+const onDeleteAlbum = `subscription OnDeleteAlbum {
+  onDeleteAlbum {
+    id
+  }
+}
+`
 
 export default {
   name: 'FetchAlbums',
   data () {
     return {
       subscriptionCreate: null,
-      subscriptionUpdate: null
+      subscriptionUpdate: null,
+      subscriptionDelete: null
     }
   },
   beforeDestroy () {
     try {
       this.subscriptionCreate.unsubscribe()
       this.subscriptionUpdate.unsubscribe()
+      this.subscriptionDelete.unsubscribe()
     } catch (err) {}
   },
   created () {
@@ -82,6 +90,17 @@ export default {
             fields.forEach(field => {
               list[index][field] = item[field]
             })
+            this.albumsList = list
+          }
+        })
+        this.subscriptionDelete = this.$Amplify.API.graphql(
+          this.$Amplify.graphqlOperation(onDeleteAlbum)
+        ).subscribe({
+          next: (albumData) => {
+            const item = albumData.value.data.onDeleteAlbum
+            const list = extend(true, [], this.albumsList)
+            const index = list.findIndex(x => x.id === item.id)
+            list.splice(index, 1)
             this.albumsList = list
           }
         })

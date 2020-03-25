@@ -154,6 +154,13 @@ export const onUpdateAlbum = `subscription OnUpdateAlbum {
   }
 }`
 
+export const onDeleteAlbum = /* GraphQL */ `
+subscription OnDeleteAlbum {
+  onDeleteAlbum {
+    id
+  }
+}`
+
 export const onCreatePhoto = `subscription OnCreatePhoto {
   onCreatePhoto {
     ${photoFields.join('\n')}
@@ -180,3 +187,18 @@ mutation DeletePhoto(
     id
   }
 }`
+export const deleteAlbum = `
+  mutation DeleteAlbum(
+    $input: DeleteAlbumInput!
+  ) {
+    deleteAlbum(input: $input) {
+      id
+      photos {
+        items {
+          id
+        }
+        nextToken
+      }
+    }
+  }
+`
