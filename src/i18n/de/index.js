@@ -111,5 +111,6 @@ Benutze eine Nummer im Format: +12345678900`,
   Filename: 'Datei Name',
   Size: 'Grösse',
   'Build all Albums': 'Alle Alben erstellen',
-  'Generate API Data': 'API Daten generieren'
+  'Generate API Data': 'API Daten generieren',
+  Event: 'Veranstaltung'
 }
