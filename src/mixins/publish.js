@@ -13,7 +13,8 @@ export default {
       return this.$Amplify.Auth.currentCredentials()
         .then(credentials => {
           const detail = {
-            aws_user_pools_web_client_id: this.$Amplify.default._config.aws_user_pools_web_client_id
+            aws_user_pools_web_client_id: this.$Amplify.default._config.aws_user_pools_web_client_id,
+            action: 'need-build'
           }
           const params = {
             Entries: [
