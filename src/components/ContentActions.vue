@@ -52,6 +52,7 @@
       )
       q-btn.q-ml-sm(
         v-if="hasUpdate"
+        :loading="isPublishing"
         color="primary"
         text-color="grey-10"
         no-caps

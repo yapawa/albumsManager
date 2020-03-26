@@ -3,13 +3,12 @@ import * as EventBridge from 'aws-sdk/clients/eventbridge'
 export default {
   data () {
     return {
-      credentials: null
+      credentials: null,
+      isPublishing: false
     }
   },
   methods: {
     publish () {
-      console.log(this.$Amplify.default._config)
-
       return this.$Amplify.Auth.currentCredentials()
         .then(credentials => {
           const detail = {
@@ -34,7 +33,11 @@ export default {
           })
           return eventbridge.putEvents(params).promise().then(res => {
             if (res.FailedEntryCount === 0) {
-              this.lastPublish = true
+              this.isPublishing = true
+              setTimeout(() => {
+                this.isPublishing = false
+                this.lastPublish = true
+              }, 55000)
             }
             return true
           })
