@@ -8,6 +8,7 @@
         no-caps
         dense
         no-wrap
+        :class="$q.screen.gt.xs ? 'q-pr-xs' : ''"
         :label="$q.screen.gt.xs ? $t('Delete Album') : ''"
         icon="delete"
         @click="showDeleteAlbum = true"
@@ -19,6 +20,7 @@
         no-caps
         dense
         no-wrap
+        :class="$q.screen.gt.xs ? 'q-pr-xs' : ''"
         :label="$q.screen.gt.xs ? $t('Edit Album') : ''"
         icon="edit"
         :to="{name: 'AlbumEdit'}"
@@ -30,6 +32,7 @@
         no-caps
         dense
         no-wrap
+        :class="$q.screen.gt.xs ? 'q-pr-xs' : ''"
         :label="$q.screen.gt.xs ? $t('New Album') : ''"
         icon="add_photo_alternate"
         :to="{name: 'AlbumCreate'}"
@@ -41,10 +44,23 @@
         no-caps
         dense
         no-wrap
+        :class="$q.screen.gt.xs ? 'q-pr-xs' : ''"
         :label="$q.screen.gt.xs ? $t('Add Photos') : ''"
         icon="add_to_photos"
         :to="{name: 'Upload'}"
         :disabled="alreadyUploading"
+      )
+      q-btn.q-ml-sm(
+        v-if="hasUpdate"
+        color="primary"
+        text-color="grey-10"
+        no-caps
+        dense
+        no-wrap
+        :class="$q.screen.gt.xs ? 'q-pr-xs' : ''"
+        :label="$q.screen.gt.xs ? $t('Publish Site') : ''"
+        icon="cloud_upload"
+        @click="publish"
       )
     q-dialog(v-model="showDeleteAlbum" persistent)
       q-card(style="min-width:380px")
@@ -60,6 +76,7 @@
 
 <script>
 import deleteAlbumMixin from 'src/mixins/deleteAlbum'
+import publishMixin from 'src/mixins/publish'
 
 export default {
   name: 'ContentActions',
@@ -69,7 +86,8 @@ export default {
     }
   },
   mixins: [
-    deleteAlbumMixin
+    deleteAlbumMixin,
+    publishMixin
   ],
   methods: {
     deleteAlbum () {
@@ -97,6 +115,9 @@ export default {
     },
     alreadyUploading () {
       return this.$route.name === 'Upload'
+    },
+    hasUpdate () {
+      return this.$store.getters['ui/hasUpdate']
     }
   }
 }

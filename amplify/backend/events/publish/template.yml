@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Add EventBridge put rights to AuthUser
+Parameters:
+  authRoleName:
+    Type: String
+  env:
+    Type: String
+
+Conditions:
+  ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
+
+Resources:
+  EventBridgeAuthPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !If [ShouldNotCreateEnvResources, 'EventBridgeAuthPolicy', !Join ['-',[ 'EventBridgeAuthPolicy', !Select [3, !Split ['-', !Ref 'AWS::StackName']], !Ref env]]]
+      Roles:
+        - !Ref authRoleName
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Effect: Allow
+            Action:
+              - events:PutEvents
+            Resource: "*"

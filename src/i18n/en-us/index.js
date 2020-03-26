@@ -121,5 +121,6 @@ export default {
   Size: 'Size',
   'Build all Albums': 'Build all Albums',
   'Generate API Data': 'Generate API Data',
-  Event: 'Event'
+  Event: 'Event',
+  'Publish Site': 'Publish Site'
 }

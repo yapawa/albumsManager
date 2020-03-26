@@ -115,5 +115,6 @@ Benutze eine Nummer im Format: +12345678900`,
   Size: 'Grösse',
   'Build all Albums': 'Alle Alben erstellen',
   'Generate API Data': 'API Daten generieren',
-  Event: 'Veranstaltung'
+  Event: 'Veranstaltung',
+  'Publish Site': 'Seite Publizieren'
 }

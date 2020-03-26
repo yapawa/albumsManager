@@ -115,5 +115,6 @@ export default {
   Size: 'Taille',
   'Build all Albums': 'Construire tous les Albums',
   'Generate API Data': 'Générer les données pour l\'API',
-  Event: 'Évènement'
+  Event: 'Évènement',
+  'Publish Site': 'Publier Site'
 }

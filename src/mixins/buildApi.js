@@ -20,6 +20,7 @@ export default {
       return this.$Amplify.API.graphql(
         this.$Amplify.graphqlOperation(buildTree)
       ).then(res => {
+        this.lastUpdate = true
         return res
       })
     },
@@ -27,6 +28,7 @@ export default {
       return this.$Amplify.API.graphql(
         this.$Amplify.graphqlOperation(buildAlbum, { id: albumId })
       ).then(res => {
+        this.lastUpdate = true
         return res
       })
     },
@@ -34,8 +36,19 @@ export default {
       return this.$Amplify.API.graphql(
         this.$Amplify.graphqlOperation(buildAll)
       ).then(res => {
+        this.lastUpdate = true
         return res
       })
+    }
+  },
+  computed: {
+    lastUpdate: {
+      get () {
+        return this.$store.state.ui.lastUpdate
+      },
+      set () {
+        this.$store.commit('ui/lastUpdate')
+      }
     }
   }
 }

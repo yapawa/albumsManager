@@ -164,5 +164,11 @@
 				}
 			]
 		}
+	},
+	"events": {
+		"publish": {
+			"service": "EventBridge",
+			"providerPlugin": "awscloudformation"
+		}
 	}
 }
