@@ -30,7 +30,7 @@ exports.handler = async (event) => {
       const result = await invoke(functionBuildTreeName, { build: 'tree', return: 'albumIds' }, true)
       const albumIds = JSON.parse(JSON.parse(result).Payload)
       const runBuildAlbums = []
-      for (const albumId in albumIds) {
+      for (const albumId of albumIds) {
         const runBuildAlbum = invoke(functionBuildAlbumName, { build: 'album', id: albumId })
         runBuildAlbums.push(runBuildAlbum)
       }
