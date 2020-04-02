@@ -43,6 +43,7 @@ type Photo
   file: S3Object
   width: Int
   height: Int
+  gravity: Gravity
   size: Int
   contentType: String
   name: String
@@ -98,4 +99,12 @@ enum OrderBy {
 enum AlbumType {
   collection
   album
+}
+
+enum Gravity {
+  center
+  top
+  bottom
+  left
+  right
 }

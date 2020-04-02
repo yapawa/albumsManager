@@ -10,6 +10,9 @@ export default {
         if (this.dpr > 1 && !options.dpr) {
           options.dpr = this.dpr
         }
+        if (photo.gravity && photo.gravity !== 'center') {
+          options.g = photo.gravity
+        }
         const format = this.supportsWebp ? 'webp' : 'jpg'
         const version = date.formatDate(photo.updatedAt, 'X')
         const transformations = Object.keys(options).map(key => `${key}_${options[key]}`.toLowerCase()).sort().join(',')

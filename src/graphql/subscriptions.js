@@ -102,6 +102,7 @@ export const onCreateAlbum = /* GraphQL */ `
           position
           width
           height
+          gravity
           size
           contentType
           name
@@ -220,6 +221,7 @@ export const onUpdateAlbum = /* GraphQL */ `
           position
           width
           height
+          gravity
           size
           contentType
           name
@@ -338,6 +340,7 @@ export const onDeleteAlbum = /* GraphQL */ `
           position
           width
           height
+          gravity
           size
           contentType
           name
@@ -368,6 +371,7 @@ export const onCreatePhoto = /* GraphQL */ `
       }
       width
       height
+      gravity
       size
       contentType
       name
@@ -443,6 +447,7 @@ export const onUpdatePhoto = /* GraphQL */ `
       }
       width
       height
+      gravity
       size
       contentType
       name
@@ -518,6 +523,7 @@ export const onDeletePhoto = /* GraphQL */ `
       }
       width
       height
+      gravity
       size
       contentType
       name

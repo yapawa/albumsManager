@@ -367,6 +367,7 @@ export default {
         },
         width: el.width,
         height: el.height,
+        gravity: el.gravity,
         updatedAt: el.updatedAt,
         slug: el.slug
       }

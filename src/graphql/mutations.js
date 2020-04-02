@@ -125,6 +125,7 @@ export const createAlbum = /* GraphQL */ `
           position
           width
           height
+          gravity
           size
           contentType
           name
@@ -246,6 +247,7 @@ export const deleteAlbum = /* GraphQL */ `
           position
           width
           height
+          gravity
           size
           contentType
           name
@@ -279,6 +281,7 @@ export const createPhoto = /* GraphQL */ `
       }
       width
       height
+      gravity
       size
       contentType
       name
@@ -357,6 +360,7 @@ export const updatePhoto = /* GraphQL */ `
       }
       width
       height
+      gravity
       size
       contentType
       name
@@ -435,6 +439,7 @@ export const deletePhoto = /* GraphQL */ `
       }
       width
       height
+      gravity
       size
       contentType
       name
@@ -601,6 +606,7 @@ export const updateAlbum = /* GraphQL */ `
           position
           width
           height
+          gravity
           size
           contentType
           name

@@ -116,5 +116,11 @@ export default {
   'Build all Albums': 'Construire tous les Albums',
   'Generate API Data': 'Générer les données pour l\'API',
   Event: 'Évènement',
-  'Publish Site': 'Publier Site'
+  'Publish Site': 'Publier Site',
+  Gravity: 'Gravité',
+  center: 'Centre (défaut)',
+  top: 'Haut',
+  bottom: 'Bas',
+  right: 'Droite',
+  left: 'Gauche'
 }

@@ -122,5 +122,11 @@ export default {
   'Build all Albums': 'Build all Albums',
   'Generate API Data': 'Generate API Data',
   Event: 'Event',
-  'Publish Site': 'Publish Site'
+  'Publish Site': 'Publish Site',
+  Gravity: 'Gravity',
+  center: 'Center (default)',
+  top: 'Top',
+  bottom: 'Bottom',
+  right: 'Right',
+  left: 'Left'
 }

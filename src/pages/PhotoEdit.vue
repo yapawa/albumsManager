@@ -11,6 +11,7 @@
           y-album-input(v-model="selectedPhotoDetails.name" :label="$t('Name')" dense)
           y-album-input(v-model="selectedPhotoDetails.slug" :label="$t('Slug')" outlined dense :updateIcon="true" @clickIcon="updateSlug")
           y-album-input(v-model="selectedPhotoDetails.description" :label="$t('Description')" type="textarea" :autogrow="true" dense)
+          y-album-select-gravity(v-model="selectedPhotoDetails.gravity" dense :isVertical="isVertical")
           y-album-select-visibility(v-model="selectedPhotoDetails.visibility" dense)
           y-album-select-status(v-model="selectedPhotoDetails.status" dense)
           y-album-date-time(v-model="selectedPhotoDetails.capturedAt" :label="$t('capturedAt')" dense)
@@ -62,6 +63,10 @@ export default {
     AlbumCounters
   ],
   computed: {
+    isVertical () {
+      const { width, height } = this.selectedPhotoDetails
+      return height > width
+    },
     dimensions () {
       const { width, height } = this.selectedPhotoDetails
       const imageRatio = ((width >= height) ? width / height : height / width).toFixed(1)
@@ -125,6 +130,7 @@ export default {
         name: this.selectedPhotoDetails.name,
         slug: this.selectedPhotoDetails.slug ? slug(this.selectedPhotoDetails.slug) : this.selectedPhotoDetails.name ? slug(this.selectedPhotoDetails.name) : null,
         description: this.selectedPhotoDetails.description,
+        gravity: this.selectedPhotoDetails.gravity === 'center' ? null : this.selectedPhotoDetails.gravity,
         visibility: this.selectedPhotoDetails.visibility,
         status: this.selectedPhotoDetails.status,
         capturedAt: date.formatDate(this.selectedPhotoDetails.capturedAt, 'YYYY-MM-DDTHH:mm:ss.SSSZ')

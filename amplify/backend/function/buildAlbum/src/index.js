@@ -43,6 +43,7 @@ const getAlbum = `query GetAlbum(
         position
         width
         height
+        gravity
         size
         contentType
         name

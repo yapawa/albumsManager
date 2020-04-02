@@ -3,6 +3,7 @@ import YAlbumInput from 'components/albums/input'
 import YAlbumInputRo from 'components/albums/input-ro'
 import YAlbumDateTime from 'components/albums/datetime'
 import YAlbumSelectParent from 'components/albums/selectParent'
+import YAlbumSelectGravity from 'components/albums/selectGravity'
 import YAlbumSelectVisibility from 'components/albums/selectVisibility'
 import YAlbumSelectStatus from 'components/albums/selectStatus'
 import YAlbumSelectOrderBy from 'components/albums/selectOrderBy'
@@ -15,6 +16,7 @@ export default {
   YAlbumInputRo,
   YAlbumDateTime,
   YAlbumSelectParent,
+  YAlbumSelectGravity,
   YAlbumSelectVisibility,
   YAlbumSelectStatus,
   YAlbumSelectOrderBy,
