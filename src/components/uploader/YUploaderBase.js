@@ -138,36 +138,33 @@ export default Vue.extend({
       files.forEach(file => {
         this.__updateFile(file, 'idle')
         this.uploadSize += file.size
-
         if (this.noThumbnails !== true && file.type.toUpperCase().startsWith('IMAGE')) {
-          const p = new Promise((resolve, reject) => {
-            LoadImage(
-              file,
-              (img, data) => {
-                file.__width = data.originalWidth
-                file.__height = data.originalHeight
-                file.__orientation = -1
-
-                file.__img = {
-                  src: img.toDataURL(file.type)
-                }
-                if (data.exif) {
-                  file.__orientation = data.exif[0x0112] || -1
-                  const [imageWidth, imageHeight] = file.__orientation >= 5 && file.__orientation <= 8
-                    ? [file.__height, file.__width]
-                    : [file.__width, file.__height]
-                  file.__width = imageWidth
-                  file.__height = imageHeight
-                }
-                resolve(true)
-              },
-              {
-                maxWidth: 600,
-                maxHeight: 600,
-                orientation: true
+          const p = LoadImage(
+            file,
+            {
+              maxWidth: 600,
+              maxHeight: 600,
+              orientation: true,
+              canvas: true,
+              meta: true
+            })
+            .then(data => {
+              file.__width = data.originalWidth
+              file.__height = data.originalHeight
+              file.__orientation = -1
+              file.__img = {
+                src: data.image.toDataURL(file.type)
               }
-            )
-          })
+              if (data.exif) {
+                file.__orientation = data.exif[0x0112] || -1
+                file.__exif = data.exif.getAll()
+                const [imageWidth, imageHeight] = file.__orientation >= 5 && file.__orientation <= 8
+                  ? [file.__height, file.__width]
+                  : [file.__width, file.__height]
+                file.__width = imageWidth
+                file.__height = imageHeight
+              }
+            })
           filesReady.push(p)
         }
       })
