@@ -86,8 +86,8 @@ export default {
         description: this.albumData.description ? this.albumData.description.trim() : null,
         summary: this.albumData.summary ? this.albumData.summary.trim() : null,
         parentId: this.activeAlbum.parentId,
-        createdAt: date.formatDate(this.activeAlbum.createdAt, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),
-        publishedAt: date.formatDate(this.activeAlbum.publishedAt, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
+        createdAt: date.formatDate(this.albumData.createdAt, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),
+        publishedAt: date.formatDate(this.albumData.publishedAt, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
       }
       if (this.canUpdateType) {
         input.type = this.albumData.type
