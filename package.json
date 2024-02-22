@@ -15,7 +15,7 @@
     "@quasar/extras": "^1.9.3",
     "aws-amplify": "^5.3.12",
     "aws-amplify-vue": "^2.1.2",
-    "aws-sdk": "^2.728.0",
+    "aws-sdk": "^2.1563.0",
     "blueimp-load-image": "^5.14.0",
     "fitty": "^2.3.2",
     "quasar": "^1.12.13",
