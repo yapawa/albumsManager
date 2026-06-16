@@ -6,6 +6,6 @@
   "license": "Apache-2.0",
   "devDependencies": {},
   "dependencies": {
-    "exifreader": "^4.6.0"
+    "exifreader": "^4.38.1"
   }
 }
